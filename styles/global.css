@@ -1,0 +1,96 @@
+/* Focus states for all interactive elements */
+button:focus,
+[role="button"]:focus,
+a:focus,
+input:focus,
+select:focus,
+textarea:focus,
+[tabindex]:focus {
+  outline: 3px solid #0057a3;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 87, 163, 0.2);
+}
+
+/* Ant Design specific focus states */
+.ant-btn:focus,
+.ant-input:focus,
+.ant-select:focus,
+.ant-select-selector:focus,
+.ant-input-affix-wrapper:focus,
+.ant-input-search:focus,
+.ant-menu-item:focus {
+  outline: 3px solid #0057a3;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 87, 163, 0.2);
+}
+
+/* Focus states for dropdown items */
+.ant-select-item-option:focus,
+.ant-dropdown-menu-item:focus {
+  background-color: #e6f7ff;
+  outline: 2px solid #0057a3;
+  outline-offset: -2px;
+}
+
+/* Focus states for table rows */
+.ant-table-row:focus {
+  outline: 3px solid #0057a3;
+  outline-offset: -2px;
+  box-shadow: 0 0 0 4px rgba(0, 87, 163, 0.2);
+}
+
+/* Focus states for cards */
+.ant-card:focus-within {
+  outline: 3px solid #0057a3;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 87, 163, 0.2);
+}
+
+/* Focus states for list items */
+.ant-list-item:focus-within {
+  outline: 3px solid #0057a3;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 87, 163, 0.2);
+}
+
+/* Remove default focus styles that might conflict */
+.ant-btn:focus,
+.ant-input:focus,
+.ant-select:focus {
+  box-shadow: none;
+}
+
+/* Ensure proper contrast for focus indicators */
+:focus {
+  outline-color: #0057a3;
+}
+
+/* Add smooth transition for focus states */
+* {
+  transition: outline-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* High contrast mode support */
+@media (forced-colors: active) {
+  :focus {
+    outline: 3px solid CanvasText !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/* Focus visible polyfill support */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
+.js-focus-visible .focus-visible {
+  outline: 3px solid #0057a3;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 87, 163, 0.2);
+} 

@@ -1,6 +1,7 @@
 import { ConfigProvider } from 'antd';
-import '../styles/globals.css';
+import '../styles/global.css';
 import MainLayout from '../components/MainLayout';
+import ScrollToTop from '../components/ScrollToTop';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -34,6 +35,7 @@ function MyApp({ Component, pageProps }) {
       }}
     >
       <MainLayout>
+        <ScrollToTop />
         <Component {...pageProps} />
       </MainLayout>
     </ConfigProvider>

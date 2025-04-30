@@ -2,7 +2,7 @@ export const clubs = [
   {
     id: 1,
     name: 'CLB Tiếng Anh',
-    description: 'Câu lạc bộ Tiếng Anh FTU2 - Nơi giao lưu và học hỏi tiếng Anh',
+    description: 'Câu lạc bộ Tiếng Anh FTU2 - Nơi giao lưu và học hỏi tiếng Anh. Chúng tôi tổ chức các buổi giao lưu, workshop, và các hoạt động ngoại khóa để nâng cao kỹ năng tiếng Anh cho sinh viên. Tham gia cùng chúng tôi để có những trải nghiệm thú vị và bổ ích!',
     logoUrl: '/images/english-club.png',
     domain: 'Tiếng Anh',
     deadline: '2025-05-15'
@@ -10,7 +10,7 @@ export const clubs = [
   {
     id: 2,
     name: 'CLB Kinh doanh',
-    description: 'Câu lạc bộ Kinh doanh FTU2 - Phát triển kỹ năng kinh doanh',
+    description: 'Câu lạc bộ Kinh doanh FTU2 - Phát triển kỹ năng kinh doanh. Chúng tôi cung cấp các khóa học, workshop và cơ hội thực hành để giúp sinh viên phát triển tư duy kinh doanh và kỹ năng lãnh đạo.',
     logoUrl: '/images/business-club.png',
     domain: 'Kinh doanh',
     deadline: '2025-05-20'
@@ -18,7 +18,7 @@ export const clubs = [
   {
     id: 3,
     name: 'CLB Công nghệ',
-    description: 'Câu lạc bộ Công nghệ FTU2 - Nơi gặp gỡ những người yêu công nghệ',
+    description: 'Câu lạc bộ Công nghệ FTU2 - Nơi gặp gỡ những người yêu công nghệ. Chúng tôi tổ chức các buổi workshop, hackathon và các sự kiện công nghệ để giúp sinh viên cập nhật kiến thức và kỹ năng trong lĩnh vực công nghệ thông tin.',
     logoUrl: '/images/tech-club.png',
     domain: 'Công nghệ',
     deadline: '2025-05-25'

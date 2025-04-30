@@ -1,39 +1,44 @@
-import { Table, Avatar } from 'antd';
+import { Table, Tag } from 'antd';
+import { format } from 'date-fns';
+import styles from '../styles/ListPage.module.css';
 
-const ClubList = ({ data }) => {
-  // Get unique domains for filtering
-  const uniqueDomains = [...new Set(data.map(club => club.domain))];
+export default function ClubList({ data }) {
+  if (!data || data.length === 0) {
+    return null;
+  }
 
   const columns = [
     {
-      title: 'Logo',
-      dataIndex: 'logoUrl',
-      key: 'logo',
-      render: (logoUrl) => (
-        <Avatar src={logoUrl} size="large" />
+      title: 'Tên câu lạc bộ',
+      dataIndex: 'name',
+      key: 'name',
+      width: '40%',
+      render: (text) => (
+        <div style={{ fontWeight: 500 }}>{text}</div>
       ),
     },
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Domain',
-      dataIndex: 'domain',
-      key: 'domain',
-      filters: uniqueDomains.map(domain => ({
-        text: domain,
-        value: domain,
+      title: 'Lĩnh vực',
+      dataIndex: 'category',
+      key: 'category',
+      width: '30%',
+      filters: [...new Set(data.map((item) => item.category))].map((category) => ({
+        text: category,
+        value: category,
       })),
-      onFilter: (value, record) => record.domain === value,
+      onFilter: (value, record) => record.category === value,
     },
     {
-      title: 'Deadline',
-      dataIndex: 'deadline',
-      key: 'deadline',
-      render: (deadline) => new Date(deadline).toLocaleDateString(),
-      sorter: (a, b) => new Date(a.deadline) - new Date(b.deadline),
+      title: 'Ngày thành lập',
+      dataIndex: 'foundedDate',
+      key: 'foundedDate',
+      width: '30%',
+      sorter: (a, b) => new Date(a.foundedDate) - new Date(b.foundedDate),
+      render: (date) => (
+        <Tag color="blue">
+          {format(new Date(date), 'yyyy-MM-dd')}
+        </Tag>
+      ),
     },
   ];
 
@@ -42,9 +47,14 @@ const ClubList = ({ data }) => {
       columns={columns}
       dataSource={data}
       rowKey="id"
-      pagination={{ pageSize: 10 }}
+      rowClassName={(_, index) => index % 2 === 0 ? styles.evenRow : ''}
+      className={styles.table}
+      pagination={{
+        pageSize: 10,
+        showSizeChanger: false,
+        showTotal: (total) => `Tổng số: ${total}`,
+      }}
+      scroll={{ x: 'max-content' }}
     />
   );
-};
-
-export default ClubList; 
+} 

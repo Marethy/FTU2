@@ -1,0 +1,58 @@
+.pageContainer {
+  padding: 24px 50px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.breadcrumb {
+  margin: 16px 0 24px 24px;
+}
+
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+}
+
+.filterContainer {
+  margin-bottom: 24px;
+}
+
+/* Table styles */
+.table {
+  width: 100%;
+}
+
+.evenRow {
+  background-color: #fafafa;
+}
+
+.table :global(.ant-table-row:hover) {
+  background-color: #e6f7ff;
+}
+
+.table :global(.ant-table-cell) {
+  padding: 12px 16px !important;
+}
+
+/* Focus styles for accessibility */
+.table :global(.ant-table-row:focus),
+.table :global(.ant-select-focused .ant-select-selector),
+.table :global(.ant-input-affix-wrapper-focused) {
+  outline: 2px solid #1890ff;
+  outline-offset: 2px;
+}
+
+/* Hide scrollbars but keep functionality */
+.table :global(.ant-table-body::-webkit-scrollbar) {
+  display: none;
+}
+
+.table :global(.ant-table-body) {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.tableHeader {
+  text-align: left;
+} 

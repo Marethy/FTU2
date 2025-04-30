@@ -1,45 +1,61 @@
-import { Table } from 'antd';
+import { List, Avatar, Tag, Typography, Empty } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 
-const ContestList = ({ data }) => {
-  // Get unique clubs for filtering
-  const uniqueClubs = [...new Set(data.map(contest => contest.club))];
+const { Title, Paragraph } = Typography;
 
-  const columns = [
-    {
-      title: 'Title',
-      dataIndex: 'title',
-      key: 'title',
-    },
-    {
-      title: 'Club',
-      dataIndex: 'club',
-      key: 'club',
-      filters: uniqueClubs.map(club => ({
-        text: club,
-        value: club,
-      })),
-      onFilter: (value, record) => record.club === value,
-    },
-    {
-      title: 'Deadline',
-      dataIndex: 'deadline',
-      key: 'deadline',
-      render: (deadline) => new Date(deadline).toLocaleDateString(),
-      sorter: (a, b) => new Date(a.deadline) - new Date(b.deadline),
-    },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
-    },
-  ];
-
+const ContestList = ({ contests }) => {
   return (
-    <Table
-      columns={columns}
-      dataSource={data}
-      rowKey="id"
-      pagination={{ pageSize: 10 }}
+    <List
+      itemLayout="horizontal"
+      dataSource={contests}
+      locale={{
+        emptyText: (
+          <Empty
+            image="https://img.freepik.com/free-vector/no-data-concept-illustration_114360-536.jpg"
+            imageStyle={{ height: 200 }}
+            description="Không có cuộc thi nào được tìm thấy"
+          />
+        )
+      }}
+      renderItem={item => (
+        <List.Item
+          actions={[
+            <Tag color={new Date(item.deadline) > new Date() ? 'green' : 'red'}>
+              {new Date(item.deadline) > new Date() ? 'Open' : 'Closed'}
+            </Tag>
+          ]}
+        >
+          <List.Item.Meta
+            avatar={
+              <Avatar
+                src={item.logoUrl}
+                alt={item.title}
+                icon={<UserOutlined />}
+                style={{ backgroundColor: '#f0f0f0' }}
+              />
+            }
+            title={<a href={`/contests/${item.id}`}>{item.title}</a>}
+            description={
+              <Paragraph
+                ellipsis={{
+                  rows: 3,
+                  expandable: true,
+                  symbol: 'Đọc thêm',
+                  tooltip: item.description
+                }}
+                style={{ 
+                  margin: 0,
+                  lineHeight: '1.5em',
+                  maxHeight: '4.5em',
+                  overflow: 'hidden'
+                }}
+              >
+                {item.description}
+              </Paragraph>
+            }
+          />
+        </List.Item>
+      )}
     />
   );
 };

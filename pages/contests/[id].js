@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { Card, Tag, Skeleton, Typography, Space } from 'antd';
+import Link from 'next/link';
+import { Card, Tag, Skeleton, Typography, Space, Breadcrumb } from 'antd';
 import { contests } from '../../data/contests';
 
 const { Title, Paragraph } = Typography;
@@ -59,24 +60,32 @@ const ContestDetail = ({ contest }) => {
         <meta property="og:description" content={contest.description} />
       </Head>
 
-      <Card>
-        <Space direction="vertical" size="large" style={{ width: '100%' }}>
-          <div>
-            <Title level={2}>{contest.title}</Title>
-            <Tag color="blue">{contest.club}</Tag>
-            <Tag color={new Date(contest.deadline) > new Date() ? 'green' : 'red'}>
-              {new Date(contest.deadline) > new Date() ? 'Open' : 'Closed'}
-            </Tag>
-          </div>
-          
-          <Paragraph>{contest.description}</Paragraph>
-          
-          <div>
-            <Title level={4}>Deadline</Title>
-            <Paragraph>{new Date(contest.deadline).toLocaleDateString()}</Paragraph>
-          </div>
-        </Space>
-      </Card>
+      <div style={{ padding: '24px' }}>
+        <Breadcrumb style={{ margin: '16px 0' }}>
+          <Breadcrumb.Item><Link href="/">Trang chủ</Link></Breadcrumb.Item>
+          <Breadcrumb.Item><Link href="/contests">Cuộc thi</Link></Breadcrumb.Item>
+          <Breadcrumb.Item>{contest.title}</Breadcrumb.Item>
+        </Breadcrumb>
+
+        <Card>
+          <Space direction="vertical" size="large" style={{ width: '100%' }}>
+            <div>
+              <Title level={2}>{contest.title}</Title>
+              <Tag color="blue">{contest.club}</Tag>
+              <Tag color={new Date(contest.deadline) > new Date() ? 'green' : 'red'}>
+                {new Date(contest.deadline) > new Date() ? 'Open' : 'Closed'}
+              </Tag>
+            </div>
+            
+            <Paragraph>{contest.description}</Paragraph>
+            
+            <div>
+              <Title level={4}>Deadline</Title>
+              <Paragraph>{new Date(contest.deadline).toLocaleDateString()}</Paragraph>
+            </div>
+          </Space>
+        </Card>
+      </div>
     </>
   );
 };
