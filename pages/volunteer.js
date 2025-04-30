@@ -1,11 +1,24 @@
 import { useState } from 'react';
-import { Table, Input } from 'antd';
-import { volunteers } from '../data/volunteers';
+import { Table, Empty } from 'antd';
+import { volunteers as volunteersData } from '../data/volunteers';
 import FilterBar from '../components/FilterBar';
 
 const VolunteerPage = () => {
-  const [searchKeyword, setSearchKeyword] = useState('');
   const [selectedDomains, setSelectedDomains] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState('');
+
+  // Get unique clubs for FilterBar
+  const uniqueClubs = [...new Set(volunteersData.map(volunteer => volunteer.club))];
+
+  // Filter volunteers based on selected domains and search keyword
+  const filteredVolunteers = volunteersData.filter(volunteer => {
+    const matchesDomain = selectedDomains.length === 0 || 
+                         selectedDomains.includes(volunteer.club);
+    const matchesSearch = !searchKeyword || 
+                         volunteer.title.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+                         volunteer.description.toLowerCase().includes(searchKeyword.toLowerCase());
+    return matchesDomain && matchesSearch;
+  });
 
   const columns = [
     {
@@ -17,41 +30,42 @@ const VolunteerPage = () => {
       title: 'Club',
       dataIndex: 'club',
       key: 'club',
+      filters: uniqueClubs.map(club => ({
+        text: club,
+        value: club,
+      })),
+      onFilter: (value, record) => record.club === value,
     },
     {
       title: 'Deadline',
       dataIndex: 'deadline',
       key: 'deadline',
+      render: (deadline) => new Date(deadline).toLocaleDateString(),
       sorter: (a, b) => new Date(a.deadline) - new Date(b.deadline),
     },
   ];
 
-  const filteredVolunteers = volunteers.filter(volunteer => {
-    const matchesSearch = volunteer.title.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-                         volunteer.club.toLowerCase().includes(searchKeyword.toLowerCase());
-    const matchesDomain = selectedDomains.length === 0 || selectedDomains.includes(volunteer.club);
-    return matchesSearch && matchesDomain;
-  });
-
   return (
     <div style={{ padding: '20px' }}>
       <h1>Volunteer Opportunities</h1>
-      <div style={{ marginBottom: '20px' }}>
-        <Input.Search
-          placeholder="Search by title or club"
-          onChange={e => setSearchKeyword(e.target.value)}
-          style={{ width: 200, marginRight: '20px' }}
-        />
-        <FilterBar
-          selectedDomains={selectedDomains}
-          setSelectedDomains={setSelectedDomains}
-        />
-      </div>
+      <FilterBar
+        domains={uniqueClubs}
+        onDomainChange={setSelectedDomains}
+        onSearch={setSearchKeyword}
+      />
       <Table
         columns={columns}
         dataSource={filteredVolunteers}
         rowKey="id"
-        locale={{ emptyText: 'No data' }}
+        pagination={{ pageSize: 10 }}
+        locale={{
+          emptyText: (
+            <Empty
+              description="No volunteer opportunities found"
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+            />
+          ),
+        }}
       />
     </div>
   );

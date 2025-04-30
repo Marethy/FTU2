@@ -1,5 +1,4 @@
 import { Table, Avatar } from 'antd';
-import { format } from 'date-fns';
 
 const ClubList = ({ data }) => {
   // Get unique domains for filtering
@@ -33,7 +32,7 @@ const ClubList = ({ data }) => {
       title: 'Deadline',
       dataIndex: 'deadline',
       key: 'deadline',
-      render: (deadline) => format(new Date(deadline), 'MMM dd, yyyy'),
+      render: (deadline) => new Date(deadline).toLocaleDateString(),
       sorter: (a, b) => new Date(a.deadline) - new Date(b.deadline),
     },
   ];

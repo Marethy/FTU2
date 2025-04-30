@@ -1,45 +1,51 @@
-import { Card, List, Typography } from 'antd';
+import { Typography, Collapse, List } from 'antd';
 import { activities, surveys } from '../data/studentActivities';
 
 const { Title } = Typography;
+const { Panel } = Collapse;
 
 const StudentPage = () => {
+  // Calculate total points
   const totalPoints = [...activities, ...surveys].reduce((sum, item) => sum + item.points, 0);
+
+  // Format date helper
+  const formatDate = (dateString) => new Date(dateString).toLocaleDateString();
 
   return (
     <div style={{ padding: '20px' }}>
       <Title level={2}>Student Dashboard</Title>
-      <Card style={{ marginBottom: '20px' }}>
-        <Title level={3}>Total Points: {totalPoints}</Title>
-      </Card>
+      <Title level={3} style={{ marginBottom: '24px' }}>
+        Total Points: {totalPoints}
+      </Title>
 
-      <Card title="Activities" style={{ marginBottom: '20px' }}>
-        <List
-          dataSource={activities}
-          renderItem={item => (
-            <List.Item>
-              <List.Item.Meta
-                title={item.title}
-                description={`Date: ${item.date} | Points: ${item.points}`}
-              />
-            </List.Item>
-          )}
-        />
-      </Card>
-
-      <Card title="Surveys">
-        <List
-          dataSource={surveys}
-          renderItem={item => (
-            <List.Item>
-              <List.Item.Meta
-                title={item.title}
-                description={`Date: ${item.date} | Points: ${item.points}`}
-              />
-            </List.Item>
-          )}
-        />
-      </Card>
+      <Collapse defaultActiveKey={['activities', 'surveys']}>
+        <Panel header="Activities" key="activities">
+          <List
+            dataSource={activities}
+            renderItem={item => (
+              <List.Item>
+                <List.Item.Meta
+                  title={item.title}
+                  description={`Date: ${formatDate(item.date)} | Points: ${item.points}`}
+                />
+              </List.Item>
+            )}
+          />
+        </Panel>
+        <Panel header="Surveys" key="surveys">
+          <List
+            dataSource={surveys}
+            renderItem={item => (
+              <List.Item>
+                <List.Item.Meta
+                  title={item.title}
+                  description={`Date: ${formatDate(item.date)} | Points: ${item.points}`}
+                />
+              </List.Item>
+            )}
+          />
+        </Panel>
+      </Collapse>
     </div>
   );
 };

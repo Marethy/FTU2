@@ -1,6 +1,34 @@
 # FTU2 Connect
 
-Website kết nối sinh viên FTU2 với các câu lạc bộ và hoạt động trong trường.
+A platform for connecting students with clubs, activities, and volunteer opportunities at FTU2.
+
+## Frontend Setup
+
+```bash
+# Navigate to frontend directory (or root if not in subfolder)
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+The application will be available at `http://localhost:3000`.
+
+## Features
+
+- Club listings and filtering
+- Volunteer opportunities
+- Student activities and points tracking
+- Contests and competitions
+- Modern UI with Ant Design components
+- Responsive design
+
+## Theme
+
+The application uses UFM blue (#0057a3) as its primary color throughout the interface.
 
 ## Công nghệ sử dụng
 

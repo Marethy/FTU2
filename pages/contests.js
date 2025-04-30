@@ -1,12 +1,13 @@
-import { Typography } from 'antd';
+import { contests as contestsData } from '../data/contests';
+import ContestList from '../components/ContestList';
 
-const { Title } = Typography;
-
-export default function Contests() {
+const ContestsPage = () => {
   return (
-    <div>
-      <Title level={2}>Cuộc thi</Title>
-      <div>Thông tin các cuộc thi sẽ được cập nhật sớm</div>
+    <div style={{ padding: '20px' }}>
+      <h1>Contests</h1>
+      <ContestList data={contestsData} />
     </div>
   );
-} 
+};
+
+export default ContestsPage; 
