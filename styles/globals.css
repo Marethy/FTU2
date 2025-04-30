@@ -11,6 +11,87 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   background-color: #f0f2f5;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+/* Typography */
+h1 { font-size: 24px; font-weight: 600; margin-bottom: 24px; }
+h2 { font-size: 20px; font-weight: 600; margin-bottom: 20px; }
+h3 { font-size: 16px; font-weight: 500; margin-bottom: 16px; }
+
+/* Menu hover effects */
+.menu-item-hover:hover {
+  background-color: rgba(0, 87, 163, 0.05) !important;
+}
+
+/* Table styles */
+.ant-table-row:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.ant-table-row:hover {
+  background-color: #f0f7ff !important;
+}
+
+/* Form controls */
+.ant-select, .ant-input-search {
+  border-radius: 6px;
+}
+
+.ant-select:hover, .ant-input-search:hover {
+  border-color: #0057a3;
+}
+
+/* Card styles */
+.ant-card {
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
+}
+
+.ant-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Button styles */
+.ant-btn:focus-visible {
+  outline: 2px solid #0057a3;
+  outline-offset: 2px;
+}
+
+/* Accessibility */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid #0057a3;
+  outline-offset: 2px;
+}
+
+/* Transitions */
+.ant-collapse-content {
+  transition: all 0.3s;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 /* Custom overrides (if needed) */ 

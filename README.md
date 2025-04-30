@@ -26,6 +26,40 @@ The application will be available at `http://localhost:3000`.
 - Modern UI with Ant Design components
 - Responsive design
 
+## UI/UX Design System
+
+### Colors
+- Primary: UFM Blue (#0057a3)
+- Background: Light Gray (#f0f2f5)
+- Container: White (#ffffff)
+- Border: Light Gray (#e8e8e8)
+
+### Typography
+- Font Family: System font stack
+- Base Size: 14px
+- Headings:
+  - H1: 24px, 600 weight
+  - H2: 20px, 600 weight
+  - H3: 16px, 500 weight
+
+### Components
+- Cards: 8px border radius, subtle shadow
+- Buttons: 6px border radius, hover effects
+- Tables: Alternating row colors, hover highlight
+- Forms: Consistent spacing, clear focus states
+
+### Accessibility
+- WCAG AA compliant color contrast
+- Keyboard navigation support
+- Focus indicators for interactive elements
+- Semantic HTML structure
+
+### Layout
+- Fixed header with navigation
+- Breadcrumb for wayfinding
+- Maximum content width: 1280px
+- Consistent spacing (16px/24px)
+
 ## Theme
 
 The application uses UFM blue (#0057a3) as its primary color throughout the interface.
@@ -76,6 +110,7 @@ npm start
 - `/components`: Các component tái sử dụng
 - `/data`: Dữ liệu mẫu
 - `/pages`: Các trang của ứng dụng
+- `/styles`: Global styles và theme configuration
 
 ## Tính năng
 
