@@ -1,58 +1,36 @@
-import { useRouter } from 'next/router';
+'use client'
+
+import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Card, Tag, Skeleton, Typography, Space, Breadcrumb } from 'antd';
-import { volunteers } from '../../data/volunteers';
+import { volunteers } from '@/data/volunteers';
+import MainLayout from '@/components/MainLayout';
 
 const { Title, Paragraph } = Typography;
 
-export async function getStaticPaths() {
-  const paths = volunteers.map(volunteer => ({
-    params: { id: volunteer.id.toString() }
-  }));
-
-  return {
-    paths,
-    fallback: true
-  };
-}
-
-export async function getStaticProps({ params }) {
+export default function VolunteerDetail({ params }) {
   const volunteer = volunteers.find(v => v.id.toString() === params.id);
 
   if (!volunteer) {
-    return {
-      notFound: true
-    };
-  }
-
-  return {
-    props: { volunteer }
-  };
-}
-
-const VolunteerDetail = ({ volunteer }) => {
-  const router = useRouter();
-
-  if (router.isFallback) {
     return (
-      <div style={{ padding: '24px' }}>
-        <Skeleton active />
-      </div>
+      <MainLayout>
+        <div style={{ padding: '24px', textAlign: 'center' }}>
+          <Title level={3}>Volunteer activity not found</Title>
+          <Paragraph>Sorry, the activity you're looking for doesn't exist.</Paragraph>
+        </div>
+      </MainLayout>
     );
   }
 
-  if (!volunteer) {
-    return (
-      <div style={{ padding: '24px', textAlign: 'center' }}>
-        <Title level={3}>Volunteer opportunity not found</Title>
-        <Paragraph>Sorry, the volunteer opportunity you're looking for doesn't exist.</Paragraph>
-      </div>
-    );
-  }
+  const breadcrumbItems = [
+    { title: <Link href="/">Trang chủ</Link> },
+    { title: <Link href="/volunteer">Tình nguyện</Link> },
+    { title: volunteer.title }
+  ];
 
   return (
-    <>
+    <MainLayout>
       <Head>
         <title>{volunteer.title} - FTU2 Connect</title>
         <meta name="description" content={volunteer.description} />
@@ -61,11 +39,7 @@ const VolunteerDetail = ({ volunteer }) => {
       </Head>
 
       <div style={{ padding: '24px' }}>
-        <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item><Link href="/">Trang chủ</Link></Breadcrumb.Item>
-          <Breadcrumb.Item><Link href="/volunteer">Tình nguyện</Link></Breadcrumb.Item>
-          <Breadcrumb.Item>{volunteer.title}</Breadcrumb.Item>
-        </Breadcrumb>
+        <Breadcrumb style={{ margin: '16px 0' }} items={breadcrumbItems} />
 
         <Card>
           <Space direction="vertical" size="large" style={{ width: '100%' }}>
@@ -86,8 +60,6 @@ const VolunteerDetail = ({ volunteer }) => {
           </Space>
         </Card>
       </div>
-    </>
+    </MainLayout>
   );
-};
-
-export default VolunteerDetail; 
+} 
