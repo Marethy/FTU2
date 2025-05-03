@@ -1,11 +1,30 @@
-import { Table, Tag } from "antd";
+import { Table, Tag, Empty } from "antd";
 import { format } from "date-fns";
 import styles from "../styles/Volunteer.module.css";
-
-export default function VolunteerList({ data }) {
+import Link from "next/link";
+export default function VolunteerList({
+  data,
+  filters,
+  setSelectedDomains,
+  setFilters,
+  setSelectedSortNameOrDate,
+}) {
   if (!data || data.length === 0) {
-    return null;
+    return (
+      <Empty
+        image={Empty.PRESENTED_IMAGE_SIMPLE}
+        description="Chưa có hoạt động nào"
+      />
+    );
   }
+
+  // Apply search filter
+  const searchFilteredData = data.filter(
+    (volunteer) =>
+      !filters.search ||
+      volunteer.title.toLowerCase().includes(filters.search.toLowerCase()) ||
+      volunteer.club.toLowerCase().includes(filters.search.toLowerCase())
+  );
 
   const columns = [
     {
@@ -13,7 +32,20 @@ export default function VolunteerList({ data }) {
       dataIndex: "title",
       key: "title",
       width: "40%",
-      render: (text) => <div style={{ fontWeight: 500 }}>{text}</div>,
+      render: (text, objectData) => {
+        return (
+          <div style={{ fontWeight: 500 }}>
+            <Link href={`/volunteer/${objectData.id}`}>{text}</Link>
+          </div>
+        );
+      },
+      sorter: (a, b) => a.title.localeCompare(b.title),
+      sortOrder:
+        filters.sort === "name_asc"
+          ? "ascend"
+          : filters.sort === "name_desc"
+          ? "descend"
+          : null,
     },
     {
       title: "Câu lạc bộ",
@@ -24,6 +56,7 @@ export default function VolunteerList({ data }) {
         text: club,
         value: club,
       })),
+      filteredValue: filters.club ?? null,
       onFilter: (value, record) => record.club === value,
     },
     {
@@ -32,6 +65,12 @@ export default function VolunteerList({ data }) {
       key: "deadline",
       width: "30%",
       sorter: (a, b) => new Date(a.deadline) - new Date(b.deadline),
+      sortOrder:
+        filters.sort === "deadline_asc"
+          ? "ascend"
+          : filters.sort === "deadline_desc"
+          ? "descend"
+          : null,
       render: (date) => {
         const isExpired = new Date(date) < new Date();
         return (
@@ -46,7 +85,7 @@ export default function VolunteerList({ data }) {
   return (
     <Table
       columns={columns}
-      dataSource={data}
+      dataSource={searchFilteredData}
       rowKey="id"
       rowClassName={(_, index) => (index % 2 === 0 ? styles.evenRow : "")}
       className={styles.table}
@@ -56,6 +95,29 @@ export default function VolunteerList({ data }) {
         showTotal: (total) => `Tổng số: ${total}`,
       }}
       scroll={{ x: "max-content" }}
+      locale={{
+        emptyText: "Không có hoạt động phù hợp",
+      }}
+      onChange={(pagination, filterDatas, sorter) => {
+        if (filterDatas.club !== undefined) {
+          setFilters((prev) => ({ ...prev, club: filterDatas.club }));
+          setSelectedDomains(filterDatas.club);
+        }
+
+        if (sorter.columnKey === "deadline") {
+          var sort =
+            sorter.order === "ascend" ? "deadline_asc" : "deadline_desc";
+          setSelectedSortNameOrDate(sort);
+          setFilters((prev) => ({ ...prev, sort }));
+        } else if (sorter.columnKey === "title") {
+          var sort = sorter.order === "ascend" ? "name_asc" : "name_desc";
+          setSelectedSortNameOrDate(sort);
+          setFilters((prev) => ({ ...prev, sort }));
+        } else {
+          setSelectedSortNameOrDate(null);
+          setFilters((prev) => ({ ...prev, sort: null }));
+        }
+      }}
     />
   );
 }

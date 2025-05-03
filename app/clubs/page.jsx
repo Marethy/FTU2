@@ -11,9 +11,14 @@ import styles from '@/styles/ListPage.module.css';
 import MainLayout from '@/components/MainLayout';
 
 export default function ClubsPage() {
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [selectedCategories, setSelectedCategories] = useState(['all']);
+  const [filters, setFilters] = useState({
+    domain: null,
+    search: '',
+    sort: null
+  });
   const [loading, setLoading] = useState(true);
+  const [selectedDomains, setSelectedDomains] = useState([]);
+  const [selectedSortNameOrDate, setSelectedSortNameOrDate] = useState();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -57,10 +62,6 @@ export default function ClubsPage() {
       );
     }
 
-    const filteredData = clubs
-      .filter(c => selectedCategories.includes('all') || selectedCategories.includes(c.category))
-      .filter(c => c.name.toLowerCase().includes(searchKeyword.toLowerCase()));
-
     return (
       <MainLayout>
         <div className={styles.pageContainer}>
@@ -71,12 +72,14 @@ export default function ClubsPage() {
               <Row gutter={[16, 16]} align="middle">
                 <Col>
                   <FilterBar
-                    searchKeyword={searchKeyword}
-                    setSearchKeyword={setSearchKeyword}
-                    selectedCategories={selectedCategories}
-                    setSelectedCategories={setSelectedCategories}
-                    categories={['all', ...new Set(clubs.map(c => c.category))]}
-                    style={{ width: 240 }}
+                    domains={[...new Set(clubs.map(c => c.domain))]}
+                    onDomainChange={(domains) => setFilters(prev => ({ ...prev, domain: domains }))}
+                    selectedDomains={selectedDomains}
+                    setSelectedDomains={setSelectedDomains}
+                    selectedSortNameOrDate={selectedSortNameOrDate}
+                    setSelectedSortNameOrDate={setSelectedSortNameOrDate}
+                    onSearch={(keyword) => setFilters(prev => ({ ...prev, search: keyword }))}
+                    onSortChange={(sort) => setFilters(prev => ({ ...prev, sort }))}
                   />
                   <Tooltip title="Phím tắt Ctrl + D" placement="right">
                     <QuestionCircleOutlined 
@@ -88,14 +91,10 @@ export default function ClubsPage() {
               </Row>
             </div>
 
-            {filteredData.length > 0 ? (
-              <ClubList data={filteredData} />
-            ) : (
-              <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description="Không có câu lạc bộ phù hợp"
-              />
-            )}
+            <ClubList data={clubs} filters={filters} 
+            setSelectedDomains={setSelectedDomains} 
+            setFilters={setFilters}
+            setSelectedSortNameOrDate={setSelectedSortNameOrDate}/>
           </Card>
         </div>
       </MainLayout>

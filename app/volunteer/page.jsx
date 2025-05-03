@@ -11,9 +11,14 @@ import styles from '@/styles/Volunteer.module.css';
 import MainLayout from '@/components/MainLayout';
 
 export default function VolunteerPage() {
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [selectedClubs, setSelectedClubs] = useState(['all']);
+  const [filters, setFilters] = useState({
+    club: null,
+    search: '',
+    sort: null
+  });
   const [loading, setLoading] = useState(true);
+  const [selectedDomains, setSelectedDomains] = useState([]);
+  const [selectedSortNameOrDate, setSelectedSortNameOrDate] = useState();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -57,10 +62,6 @@ export default function VolunteerPage() {
       );
     }
 
-    const filteredData = volunteers
-      .filter(v => selectedClubs.includes('all') || selectedClubs.includes(v.club))
-      .filter(v => v.title.toLowerCase().includes(searchKeyword.toLowerCase()));
-
     return (
       <MainLayout>
         <div className={styles.pageContainer}>
@@ -71,12 +72,14 @@ export default function VolunteerPage() {
               <Row gutter={[16, 16]} align="middle">
                 <Col>
                   <FilterBar
-                    searchKeyword={searchKeyword}
-                    setSearchKeyword={setSearchKeyword}
-                    selectedClubs={selectedClubs}
-                    setSelectedClubs={setSelectedClubs}
-                    clubs={['all', ...new Set(volunteers.map(v => v.club))]}
-                    style={{ width: 240 }}
+                    onDomainChange={(clubs) => setFilters(prev => ({ ...prev, club: clubs }))}
+                    onSearch={(keyword) => setFilters(prev => ({ ...prev, search: keyword }))}
+                    onSortChange={(sort) => setFilters(prev => ({ ...prev, sort }))}
+                    domains={[...new Set(volunteers.map(v => v.club))]}
+                    selectedDomains={selectedDomains}
+                    setSelectedDomains={setSelectedDomains}
+                    selectedSortNameOrDate={selectedSortNameOrDate}
+                    setSelectedSortNameOrDate={setSelectedSortNameOrDate}
                   />
                   <Tooltip title="Phím tắt Ctrl + D" placement="right">
                     <QuestionCircleOutlined 
@@ -88,14 +91,9 @@ export default function VolunteerPage() {
               </Row>
             </div>
 
-            {filteredData.length > 0 ? (
-              <VolunteerList data={filteredData} />
-            ) : (
-              <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description="Không có hoạt động phù hợp"
-              />
-            )}
+            <VolunteerList data={volunteers} filters={filters} setSelectedDomains={setSelectedDomains} 
+            setFilters={setFilters}
+            setSelectedSortNameOrDate={setSelectedSortNameOrDate}/>
           </Card>
         </div>
       </MainLayout>

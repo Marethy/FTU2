@@ -1,13 +1,21 @@
-import { Input, Select, Space } from 'antd';
-import { useState, useEffect, useRef } from 'react';
-import { SearchOutlined } from '@ant-design/icons';
+import { Input, Select, Space } from "antd";
+import { useState, useEffect, useRef } from "react";
+import { SearchOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
 const { Option } = Select;
 
-const FilterBar = ({ onSearch, onDomainChange, onSortChange, domains = [] }) => {
-  const [selectedDomains, setSelectedDomains] = useState([]);
-  const [searchKeyword, setSearchKeyword] = useState('');
+const FilterBar = ({
+  onSearch,
+  onDomainChange,
+  selectedDomains,
+  setSelectedDomains,
+  selectedSortNameOrDate,
+  setSelectedSortNameOrDate,
+  onSortChange,
+  domains = [],
+}) => {
+  const [searchKeyword, setSearchKeyword] = useState("");
   const searchInputRef = useRef(null);
   const domainSelectRef = useRef(null);
 
@@ -21,27 +29,32 @@ const FilterBar = ({ onSearch, onDomainChange, onSortChange, domains = [] }) => 
     onSearch?.(value);
   };
 
+  const handleSortChange = (value) => {
+    setSelectedSortNameOrDate(value);
+    onSortChange?.(value);
+  };
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       // Focus search with Ctrl/Cmd + F
-      if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+      if ((e.ctrlKey || e.metaKey) && e.key === "f") {
         e.preventDefault();
         searchInputRef.current?.focus();
       }
       // Focus domain filter with Ctrl/Cmd + D
-      if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+      if ((e.ctrlKey || e.metaKey) && e.key === "d") {
         e.preventDefault();
         domainSelectRef.current?.focus();
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   return (
-    <Space 
-      style={{ width: '100%', marginBottom: '16px' }}
+    <Space
+      style={{ width: "100%", marginBottom: "16px" }}
       role="search"
       aria-label="Bộ lọc và tìm kiếm"
     >
@@ -49,8 +62,9 @@ const FilterBar = ({ onSearch, onDomainChange, onSortChange, domains = [] }) => 
         ref={domainSelectRef}
         mode="multiple"
         allowClear
-        style={{ width: '200px' }}
+        style={{ width: "200px" }}
         placeholder="Lọc theo lĩnh vực"
+        value={selectedDomains}
         onChange={handleDomainChange}
         aria-label="Lọc theo lĩnh vực"
         aria-describedby="domain-filter-description"
@@ -58,11 +72,10 @@ const FilterBar = ({ onSearch, onDomainChange, onSortChange, domains = [] }) => 
         className="focusable-select"
         aria-keyshortcuts="Control+D"
       >
-        <Option value="all">Tất cả lĩnh vực</Option>
-        {domains.map(domain => (
-          <Option 
-            key={domain} 
-            value={domain} 
+        {domains.map((domain) => (
+          <Option
+            key={domain}
+            value={domain}
             tabIndex={0}
             aria-selected={false}
           >
@@ -71,7 +84,8 @@ const FilterBar = ({ onSearch, onDomainChange, onSortChange, domains = [] }) => 
         ))}
       </Select>
       <span id="domain-filter-description" className="sr-only">
-        Chọn một hoặc nhiều lĩnh vực để lọc kết quả. Nhấn Control + D để nhanh chóng chuyển đến bộ lọc này.
+        Chọn một hoặc nhiều lĩnh vực để lọc kết quả. Nhấn Control + D để nhanh
+        chóng chuyển đến bộ lọc này.
       </span>
 
       <Input.Search
@@ -79,7 +93,7 @@ const FilterBar = ({ onSearch, onDomainChange, onSortChange, domains = [] }) => 
         placeholder="Tìm kiếm"
         allowClear
         onSearch={handleSearch}
-        style={{ width: '300px' }}
+        style={{ width: "300px" }}
         aria-label="Tìm kiếm"
         aria-describedby="search-description"
         tabIndex={0}
@@ -88,13 +102,15 @@ const FilterBar = ({ onSearch, onDomainChange, onSortChange, domains = [] }) => 
         aria-keyshortcuts="Control+F"
       />
       <span id="search-description" className="sr-only">
-        Nhập từ khóa để tìm kiếm. Nhấn Control + F để nhanh chóng chuyển đến ô tìm kiếm này.
+        Nhập từ khóa để tìm kiếm. Nhấn Control + F để nhanh chóng chuyển đến ô
+        tìm kiếm này.
       </span>
 
       <Select
         placeholder="Sắp xếp"
         style={{ width: 200 }}
-        onChange={onSortChange}
+        onChange={handleSortChange}
+        value={selectedSortNameOrDate}
       >
         <Option value="name_asc">Tên A-Z</Option>
         <Option value="name_desc">Tên Z-A</Option>
@@ -140,4 +156,4 @@ const styles = `
     white-space: nowrap;
     border: 0;
   }
-`; 
+`;
