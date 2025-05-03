@@ -10,10 +10,13 @@ import styles from '@/styles/ListPage.module.css';
 export default function SurveysPage() {
   const workbook = xlsx.readFile(path.resolve('data/FTU2-data.xlsx'));
   const sheet2 = workbook.Sheets[workbook.SheetNames[1]];
-  const raw = xlsx.utils.sheet_to_json(sheet2, { defval: '' });
+  const raw = xlsx.utils.sheet_to_json(sheet2, {
+    defval: '',
+    range: 1  // skip the first row (the merged title)
+  });
   const surveys = raw.map(row => ({
-    STT: row['STT'],
-    Ten: row['Tên']
+    STT: row.STT,
+    Ten: row.Tên
   }));
 
   return (

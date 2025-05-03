@@ -1,6 +1,6 @@
 'use client';
 
-import { Table, Card } from 'antd';
+import { List, Card } from 'antd';
 import styles from '../styles/ListPage.module.css';
 
 export default function SurveysList({ surveys }) {
@@ -9,24 +9,13 @@ export default function SurveysList({ surveys }) {
       title={<h1 className={styles.pageTitle}>CÁC KHẢO SÁT GẦN NHẤT CỦA NHÀ TRƯỜNG</h1>}
       className={styles.card}
     >
-      <Table
+      <List
         dataSource={surveys}
-        rowKey="STT"
-        pagination={false}
-        columns={[
-          { 
-            title: 'STT', 
-            dataIndex: 'STT', 
-            key: 'STT',
-            width: '10%'
-          },
-          { 
-            title: 'Tên', 
-            dataIndex: 'Ten', 
-            key: 'Ten',
-            width: '90%'
-          }
-        ]}
+        renderItem={s => (
+          <List.Item key={s.STT}>
+            <strong>{s.STT}.</strong> {s.Ten}
+          </List.Item>
+        )}
       />
     </Card>
   );
