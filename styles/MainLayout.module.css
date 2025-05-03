@@ -3,14 +3,10 @@
 }
 
 .header {
-  position: fixed;
-  z-index: 1;
-  width: 100%;
   display: flex;
   align-items: center;
-  height: 64px;
-  padding: 0 50px;
-  background: #001529;
+  padding: 0 24px;
+  position: relative;
 }
 
 .logoContainer {
@@ -20,48 +16,32 @@
 .logo {
   display: flex;
   align-items: center;
+  color: inherit;
   text-decoration: none;
 }
 
 .logoText {
-  color: #fff !important;
-  margin: 0 !important;
+  margin: 0;
+  color: #fff;
 }
 
 .menu {
   flex: 1;
-  border: none;
-  background: transparent;
+  border-bottom: none;
 }
 
 .content {
-  padding: 0 50px;
-  margin-top: 64px;
-  max-width: 1280px;
-  margin: 64px auto 0;
+  padding: 24px;
+  min-height: calc(100vh - 134px);
 }
 
 .footer {
   text-align: center;
-  background: #f5f5f5;
-  padding: 24px 50px;
 }
 
-/* Menu item hover effect */
-.menu :global(.ant-menu-item) {
-  transition: all 0.3s;
-}
-
-.menu :global(.ant-menu-item:hover) {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Link styles */
-.menu a {
-  color: rgba(255, 255, 255, 0.65);
-  text-decoration: none;
-}
-
-.menu a:hover {
-  color: #fff;
+.themeToggle {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
 } 

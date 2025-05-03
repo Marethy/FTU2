@@ -31,7 +31,7 @@ export default function ClubList({
       title: "Tên câu lạc bộ",
       dataIndex: "name",
       key: "name",
-      width: "40%",
+      width: "30%",
       render: (text, objectData) => {
         return (
           <div style={{ fontWeight: 500 }}>
@@ -48,40 +48,37 @@ export default function ClubList({
           : null,
     },
     {
-      title: "Lĩnh vực",
-      dataIndex: "domain",
-      key: "domain",
+      title: "Sơ lược",
+      dataIndex: "summary",
+      key: "summary",
       width: "30%",
-      filters: [...new Set(data.map((item) => item.domain))].map((domain) => ({
-        text: domain,
-        value: domain,
-      })),
-      filteredValue: filters.domain ?? null,
-      onFilter: (value, record) => record.domain === value,
+      render: (text) => (
+        <div style={{ maxHeight: '100px', overflow: 'hidden' }}>
+          {text}
+        </div>
+      ),
     },
     {
-      title: "Ngày thành lập",
-      dataIndex: "deadline",
-      key: "deadline",
-      width: "30%",
-      sorter: (a, b) => new Date(a.deadline) - new Date(b.deadline),
-      sortOrder:
-        filters.sort === "deadline_asc"
-          ? "ascend"
-          : filters.sort === "deadline_desc"
-          ? "descend"
-          : null,
-      render: (date) => {
-        // Attempt ISO parse first, fallback to native Date
-        const parsed =
-          typeof date === "string" ? parseISO(date) : new Date(date);
-        const display = isValid(parsed)
-          ? format(parsed, "yyyy-MM-dd")
-          : "Unknown deadline";
-        return (
-          <Tag color={isValid(parsed) ? "blue" : "default"}>{display}</Tag>
-        );
-      },
+      title: "Cuộc thi/Chương trình",
+      dataIndex: "contests",
+      key: "contests",
+      width: "20%",
+      render: (text) => (
+        <div style={{ maxHeight: '100px', overflow: 'hidden' }}>
+          {text}
+        </div>
+      ),
+    },
+    {
+      title: "Phản hồi",
+      dataIndex: "feedback",
+      key: "feedback",
+      width: "20%",
+      render: (text) => (
+        <div style={{ maxHeight: '100px', overflow: 'hidden' }}>
+          {text}
+        </div>
+      ),
     },
   ];
 
