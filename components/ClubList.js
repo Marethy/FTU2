@@ -1,15 +1,19 @@
-import { Table, Tag, Empty } from "antd";
-import { format, parseISO, isValid } from "date-fns";
+'use client';
+
+import { Table, Empty } from "antd";
 import styles from "../styles/ListPage.module.css";
 import Link from "next/link";
+import MainLayout from '@/components/MainLayout';
 
 export default function ClubList({
   data,
-  filters,
+  filters = { search: '' },
   setSelectedDomains,
   setSelectedSortNameOrDate,
   setFilters,
 }) {
+  const { search = '' } = filters;
+
   if (!data || data.length === 0) {
     return (
       <Empty
@@ -20,10 +24,8 @@ export default function ClubList({
   }
 
   // Apply search filter
-  const searchFilteredData = data.filter(
-    (club) =>
-      !filters.search ||
-      club.name.toLowerCase().includes(filters.search.toLowerCase())
+  const filtered = data.filter(club =>
+    !search || club.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const columns = [
@@ -83,42 +85,44 @@ export default function ClubList({
   ];
 
   return (
-    <Table
-      align="center"
-      columns={columns}
-      dataSource={searchFilteredData}
-      rowKey="id"
-      rowClassName={(_, index) => (index % 2 === 0 ? styles.evenRow : "")}
-      className={styles.table}
-      pagination={{
-        pageSize: 10,
-        showSizeChanger: false,
-        showTotal: (total) => `Tổng số: ${total}`,
-      }}
-      scroll={{ x: "max-content" }}
-      locale={{
-        emptyText: "Không có câu lạc bộ phù hợp",
-      }}
-      onChange={(pagination, filterDatas, sorter) => {
-        if (filterDatas.domain !== undefined) {
-          setFilters((prev) => ({ ...prev, domain: filterDatas.domain }));
-          setSelectedDomains(filterDatas.domain);
-        }
+    <MainLayout>
+      <Table
+        align="center"
+        columns={columns}
+        dataSource={filtered}
+        rowKey="id"
+        rowClassName={(_, index) => (index % 2 === 0 ? styles.evenRow : "")}
+        className={styles.table}
+        pagination={{
+          pageSize: 10,
+          showSizeChanger: false,
+          showTotal: (total) => `Tổng số: ${total}`,
+        }}
+        scroll={{ x: "max-content" }}
+        locale={{
+          emptyText: "Không có câu lạc bộ phù hợp",
+        }}
+        onChange={(pagination, filterDatas, sorter) => {
+          if (filterDatas.domain !== undefined) {
+            setFilters((prev) => ({ ...prev, domain: filterDatas.domain }));
+            setSelectedDomains(filterDatas.domain);
+          }
 
-        if (sorter.columnKey === "deadline") {
-          var sort =
-            sorter.order === "ascend" ? "deadline_asc" : "deadline_desc";
-          setSelectedSortNameOrDate(sort);
-          setFilters((prev) => ({ ...prev, sort }));
-        } else if (sorter.columnKey === "name") {
-          var sort = sorter.order === "ascend" ? "name_asc" : "name_desc";
-          setSelectedSortNameOrDate(sort);
-          setFilters((prev) => ({ ...prev, sort }));
-        } else {
-          setSelectedSortNameOrDate(null);
-          setFilters((prev) => ({ ...prev, sort: null }));
-        }
-      }}
-    />
+          if (sorter.columnKey === "deadline") {
+            var sort =
+              sorter.order === "ascend" ? "deadline_asc" : "deadline_desc";
+            setSelectedSortNameOrDate(sort);
+            setFilters((prev) => ({ ...prev, sort }));
+          } else if (sorter.columnKey === "name") {
+            var sort = sorter.order === "ascend" ? "name_asc" : "name_desc";
+            setSelectedSortNameOrDate(sort);
+            setFilters((prev) => ({ ...prev, sort }));
+          } else {
+            setSelectedSortNameOrDate(null);
+            setFilters((prev) => ({ ...prev, sort: null }));
+          }
+        }}
+      />
+    </MainLayout>
   );
 }
