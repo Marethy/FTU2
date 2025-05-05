@@ -15,6 +15,7 @@ export default function MainLayout({ children }) {
   const { theme, toggle } = useContext(ThemeContext);
   const pathname = usePathname();
 
+<<<<<<< HEAD
   const getSelectedKey = () => {
     if (pathname?.startsWith('/clubs')) return '2';
     if (pathname?.startsWith('/contests')) return '3';
@@ -22,6 +23,45 @@ export default function MainLayout({ children }) {
     if (pathname?.startsWith('/surveys')) return '5';
     return '1'; // Default to home
   };
+=======
+  const keyMap = {
+    '/': 'home',
+    '/clubs': 'clubs',
+    '/contests': 'contests',
+    '/volunteer': 'volunteer',
+    '/surveys': 'surveys'
+  };
+
+  const selectedKey = keyMap[pathname] || 'home';
+
+  const menuItems = [
+    {
+      key: 'home',
+      icon: <HomeOutlined />,
+      label: <Link href="/">Trang chủ</Link>
+    },
+    {
+      key: 'clubs',
+      icon: <TeamOutlined />,
+      label: <Link href="/clubs">Câu lạc bộ</Link>
+    },
+    {
+      key: 'contests',
+      icon: <TrophyOutlined />,
+      label: <Link href="/contests">Cuộc thi</Link>
+    },
+    {
+      key: 'volunteer',
+      icon: <HeartOutlined />,
+      label: <Link href="/volunteer">Hoạt động tình nguyện</Link>
+    },
+    {
+      key: 'surveys',
+      icon: <FormOutlined />,
+      label: <Link href="/surveys">Khảo sát của trường</Link>
+    }
+  ];
+>>>>>>> 1ac81d451b9bfa42d51bb2b5b795ddd4d1242225
 
   return (
     <Layout className={styles.layout}>
@@ -34,26 +74,15 @@ export default function MainLayout({ children }) {
         <Menu
           theme="dark"
           mode="horizontal"
+<<<<<<< HEAD
           selectedKeys={[getSelectedKey()]}
+=======
+          selectedKeys={[selectedKey]}
+          items={menuItems}
+>>>>>>> 1ac81d451b9bfa42d51bb2b5b795ddd4d1242225
           className={styles.menu}
-        >
-          <Menu.Item key="1" icon={<HomeOutlined />}>
-            <Link href="/">Trang chủ</Link>
-          </Menu.Item>
-          <Menu.Item key="2" icon={<TeamOutlined />}>
-            <Link href="/clubs">Câu lạc bộ</Link>
-          </Menu.Item>
-          <Menu.Item key="3" icon={<TrophyOutlined />}>
-            <Link href="/contests">Cuộc thi</Link>
-          </Menu.Item>
-          <Menu.Item key="4" icon={<HeartOutlined />}>
-            <Link href="/volunteer">Hoạt động tình nguyện</Link>
-          </Menu.Item>
-          <Menu.Item key="5" icon={<FormOutlined />}>
-            <Link href="/surveys">Khảo sát của trường</Link>
-          </Menu.Item>
-        </Menu>
-        <div className={styles.themeToggle}>
+        />
+        <div className={styles.themeSwitch}>
           <Switch
             checked={theme === 'dark'}
             onChange={toggle}
