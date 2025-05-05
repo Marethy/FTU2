@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import { Empty, Card, Row, Col, Tooltip, Breadcrumb, Skeleton, Alert } from 'antd';
+import { Empty, Card, Row, Col, Tooltip, Breadcrumb, Skeleton, Alert, Button } from 'antd';
 import { QuestionCircleOutlined, HomeOutlined, TeamOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import FilterBar from '@/components/FilterBar';
@@ -65,8 +65,8 @@ export default function ClubsPage() {
         <Breadcrumb className={styles.breadcrumb} items={breadcrumbItems} />
         <Card className={styles.card}>
           <Alert
-            message="Error"
-            description={error}
+            message="Không thể tải dữ liệu"
+            description="Đã xảy ra lỗi khi tải dữ liệu câu lạc bộ. Vui lòng thử lại sau."
             type="error"
             showIcon
             action={
@@ -97,7 +97,6 @@ export default function ClubsPage() {
   return (
     <div className={styles.pageContainer}>
       <Breadcrumb className={styles.breadcrumb} items={breadcrumbItems} />
-
       <Card className={styles.card}>
         <div className={styles.filterContainer}>
           <Row gutter={[16, 16]} align="middle">

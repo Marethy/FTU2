@@ -1,23 +1,79 @@
 'use client'
 
-import { useRouter } from 'next/navigation';
-import Head from 'next/head';
+import { useState, useEffect } from 'react';
+import { Card, Typography, Space, Breadcrumb, Skeleton, Alert, Button } from 'antd';
 import Link from 'next/link';
-import { Card, Typography, Space, Breadcrumb, Divider } from 'antd';
-import { clubs } from '@/data/clubs';
+import MainLayout from '@/components/MainLayout';
 import ErrorPage from '@/components/ErrorPage';
 
 const { Title, Paragraph } = Typography;
 
 export default function ClubDetail({ params }) {
-  const club = clubs.find(c => String(c.id) === (params?.id || ''));
+  const [club, setClub] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!club) {
+  useEffect(() => {
+    const fetchClub = async () => {
+      try {
+        const res = await fetch(`/api/clubs/${params.id}`);
+        if (!res.ok) {
+          throw new Error('Failed to fetch club data');
+        }
+        const data = await res.json();
+        setClub(data);
+      } catch (error) {
+        console.error('Error fetching club:', error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClub();
+  }, [params.id]);
+
+  if (loading) {
     return (
-      <ErrorPage 
-        title="Club not found"
-        message="Sorry, the club you're looking for doesn't exist."
-      />
+      <MainLayout>
+        <div style={{ padding: '24px' }}>
+          <Breadcrumb style={{ margin: '16px 0' }} items={[
+            { title: <Link href="/">Trang chủ</Link> },
+            { title: <Link href="/clubs">Câu lạc bộ</Link> },
+            { title: 'Đang tải...' }
+          ]} />
+          <Card>
+            <Skeleton active paragraph={{ rows: 6 }} />
+          </Card>
+        </div>
+      </MainLayout>
+    );
+  }
+
+  if (error || !club) {
+    return (
+      <MainLayout>
+        <div style={{ padding: '24px' }}>
+          <Breadcrumb style={{ margin: '16px 0' }} items={[
+            { title: <Link href="/">Trang chủ</Link> },
+            { title: <Link href="/clubs">Câu lạc bộ</Link> },
+            { title: 'Không tìm thấy' }
+          ]} />
+          <Card>
+            <Alert
+              message="Không tìm thấy câu lạc bộ"
+              description="Câu lạc bộ bạn đang tìm kiếm không tồn tại hoặc đã bị xóa."
+              type="error"
+              showIcon
+              action={
+                <Button onClick={() => window.location.reload()}>
+                  Thử lại
+                </Button>
+              }
+            />
+          </Card>
+        </div>
+      </MainLayout>
     );
   }
 
@@ -28,14 +84,7 @@ export default function ClubDetail({ params }) {
   ];
 
   return (
-    <>
-      <Head>
-        <title>{club.name} - FTU2 Connect</title>
-        <meta name="description" content={club.summary} />
-        <meta property="og:title" content={`${club.name} - FTU2 Connect`} />
-        <meta property="og:description" content={club.summary} />
-      </Head>
-
+    <MainLayout>
       <div style={{ padding: '24px' }}>
         <Breadcrumb style={{ margin: '16px 0' }} items={breadcrumbItems} />
 
@@ -49,15 +98,11 @@ export default function ClubDetail({ params }) {
               <Title level={4}>Sơ lược</Title>
               <Paragraph>{club.summary}</Paragraph>
             </div>
-
-            <Divider />
             
             <div>
               <Title level={4}>Cuộc thi/Chương trình</Title>
               <Paragraph>{club.contests}</Paragraph>
             </div>
-
-            <Divider />
             
             <div>
               <Title level={4}>Phản hồi</Title>
@@ -66,6 +111,6 @@ export default function ClubDetail({ params }) {
           </Space>
         </Card>
       </div>
-    </>
+    </MainLayout>
   );
 } 

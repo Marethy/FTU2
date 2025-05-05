@@ -1,13 +1,19 @@
 import * as xlsx from 'xlsx';
 import path from 'path';
 import { NextResponse } from 'next/server';
+import fs from 'fs';
 
 export async function GET() {
   try {
     // 1. Load workbook from disk
     const filePath = path.join(process.cwd(), 'data/FTU2-data.xlsx');
-    if (!filePath) {
-      throw new Error('Data file not found');
+    
+    // Check if file exists
+    try {
+      await fs.promises.access(filePath);
+    } catch (error) {
+      console.error('Data file not found:', filePath);
+      return NextResponse.json({ error: 'Data file not found' }, { status: 404 });
     }
 
     const wb = xlsx.readFile(filePath);

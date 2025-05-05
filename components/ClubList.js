@@ -1,18 +1,16 @@
 'use client';
 
 import { Table, Empty } from "antd";
-import styles from "../styles/ListPage.module.css";
+import styles from "@/styles/ListPage.module.css";
 import Link from "next/link";
 
 export default function ClubList({
   data,
-  filters = { search: '' },
+  filters = { search: '', domain: null, sort: null },
   setSelectedDomains,
   setSelectedSortNameOrDate,
   setFilters,
 }) {
-  const { search = '' } = filters;
-
   if (!data || data.length === 0) {
     return (
       <Empty
@@ -24,7 +22,9 @@ export default function ClubList({
 
   // Apply search filter
   const filtered = data.filter(club =>
-    !search || club.name.toLowerCase().includes(search.toLowerCase())
+    !filters.search || 
+    club.name.toLowerCase().includes(filters.search.toLowerCase()) ||
+    club.summary.toLowerCase().includes(filters.search.toLowerCase())
   );
 
   const columns = [
@@ -32,14 +32,12 @@ export default function ClubList({
       title: "Tên câu lạc bộ",
       dataIndex: "name",
       key: "name",
-      width: "30%",
-      render: (text, objectData) => {
-        return (
-          <div style={{ fontWeight: 500 }}>
-            <Link href={`/clubs/${objectData.id}`}>{text}</Link>
-          </div>
-        );
-      },
+      width: "25%",
+      render: (text, record) => (
+        <Link href={`/clubs/${record.id}`} style={{ fontWeight: 500 }}>
+          {text}
+        </Link>
+      ),
       sorter: (a, b) => a.name.localeCompare(b.name),
       sortOrder:
         filters.sort === "name_asc"
@@ -52,7 +50,7 @@ export default function ClubList({
       title: "Sơ lược",
       dataIndex: "summary",
       key: "summary",
-      width: "30%",
+      width: "35%",
       render: (text) => (
         <div style={{ maxHeight: '100px', overflow: 'hidden' }}>
           {text}
@@ -85,7 +83,6 @@ export default function ClubList({
 
   return (
     <Table
-      align="center"
       columns={columns}
       dataSource={filtered}
       rowKey="id"
@@ -100,24 +97,14 @@ export default function ClubList({
       locale={{
         emptyText: "Không có câu lạc bộ phù hợp",
       }}
-      onChange={(pagination, filterDatas, sorter) => {
-        if (filterDatas.domain !== undefined) {
-          setFilters((prev) => ({ ...prev, domain: filterDatas.domain }));
-          setSelectedDomains(filterDatas.domain);
-        }
-
-        if (sorter.columnKey === "deadline") {
-          var sort =
-            sorter.order === "ascend" ? "deadline_asc" : "deadline_desc";
-          setSelectedSortNameOrDate(sort);
-          setFilters((prev) => ({ ...prev, sort }));
-        } else if (sorter.columnKey === "name") {
-          var sort = sorter.order === "ascend" ? "name_asc" : "name_desc";
-          setSelectedSortNameOrDate(sort);
-          setFilters((prev) => ({ ...prev, sort }));
+      onChange={(pagination, filterData, sorter) => {
+        if (sorter.columnKey === "name") {
+          const sort = sorter.order === "ascend" ? "name_asc" : "name_desc";
+          setSelectedSortNameOrDate?.(sort);
+          setFilters?.(prev => ({ ...prev, sort }));
         } else {
-          setSelectedSortNameOrDate(null);
-          setFilters((prev) => ({ ...prev, sort: null }));
+          setSelectedSortNameOrDate?.(null);
+          setFilters?.(prev => ({ ...prev, sort: null }));
         }
       }}
     />

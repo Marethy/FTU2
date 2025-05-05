@@ -15,15 +15,7 @@ export default function MainLayout({ children }) {
   const { theme, toggle } = useContext(ThemeContext);
   const pathname = usePathname();
 
-<<<<<<< HEAD
-  const getSelectedKey = () => {
-    if (pathname?.startsWith('/clubs')) return '2';
-    if (pathname?.startsWith('/contests')) return '3';
-    if (pathname?.startsWith('/volunteer')) return '4';
-    if (pathname?.startsWith('/surveys')) return '5';
-    return '1'; // Default to home
-  };
-=======
+
   const keyMap = {
     '/': 'home',
     '/clubs': 'clubs',
@@ -61,7 +53,6 @@ export default function MainLayout({ children }) {
       label: <Link href="/surveys">Khảo sát của trường</Link>
     }
   ];
->>>>>>> 1ac81d451b9bfa42d51bb2b5b795ddd4d1242225
 
   return (
     <Layout className={styles.layout}>
@@ -74,12 +65,9 @@ export default function MainLayout({ children }) {
         <Menu
           theme="dark"
           mode="horizontal"
-<<<<<<< HEAD
-          selectedKeys={[getSelectedKey()]}
-=======
+
           selectedKeys={[selectedKey]}
           items={menuItems}
->>>>>>> 1ac81d451b9bfa42d51bb2b5b795ddd4d1242225
           className={styles.menu}
         />
         <div className={styles.themeSwitch}>
