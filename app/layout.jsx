@@ -1,17 +1,30 @@
-import { ThemeProvider } from '../contexts/ThemeContext';
-import ThemeConfigProvider from '../components/ThemeConfigProvider';
-import '../styles/globals.css';
+'use client';
+
+import { ThemeProvider } from '@/contexts/ThemeContext';
+import { ThemeConfigProvider } from '@/components/ThemeConfigProvider';
+import { ConfigProvider } from 'antd';
+import { useContext } from 'react';
+import { ThemeContext } from '@/contexts/ThemeContext';
+import './globals.css';
+
+function RootLayoutContent({ children }) {
+  const { theme } = useContext(ThemeContext);
+  
+  return (
+    <html lang="vi">
+      <body data-theme={theme}>
+        <ThemeConfigProvider>
+          {children}
+        </ThemeConfigProvider>
+      </body>
+    </html>
+  );
+}
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="vi">
-      <body>
-        <ThemeProvider>
-          <ThemeConfigProvider>
-            {children}
-          </ThemeConfigProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <ThemeProvider>
+      <RootLayoutContent>{children}</RootLayoutContent>
+    </ThemeProvider>
   );
 } 

@@ -3,7 +3,6 @@
 import { Table, Empty } from "antd";
 import styles from "../styles/ListPage.module.css";
 import Link from "next/link";
-import MainLayout from '@/components/MainLayout';
 
 export default function ClubList({
   data,
@@ -85,44 +84,42 @@ export default function ClubList({
   ];
 
   return (
-    <MainLayout>
-      <Table
-        align="center"
-        columns={columns}
-        dataSource={filtered}
-        rowKey="id"
-        rowClassName={(_, index) => (index % 2 === 0 ? styles.evenRow : "")}
-        className={styles.table}
-        pagination={{
-          pageSize: 10,
-          showSizeChanger: false,
-          showTotal: (total) => `Tổng số: ${total}`,
-        }}
-        scroll={{ x: "max-content" }}
-        locale={{
-          emptyText: "Không có câu lạc bộ phù hợp",
-        }}
-        onChange={(pagination, filterDatas, sorter) => {
-          if (filterDatas.domain !== undefined) {
-            setFilters((prev) => ({ ...prev, domain: filterDatas.domain }));
-            setSelectedDomains(filterDatas.domain);
-          }
+    <Table
+      align="center"
+      columns={columns}
+      dataSource={filtered}
+      rowKey="id"
+      rowClassName={(_, index) => (index % 2 === 0 ? styles.evenRow : "")}
+      className={styles.table}
+      pagination={{
+        pageSize: 10,
+        showSizeChanger: false,
+        showTotal: (total) => `Tổng số: ${total}`,
+      }}
+      scroll={{ x: "max-content" }}
+      locale={{
+        emptyText: "Không có câu lạc bộ phù hợp",
+      }}
+      onChange={(pagination, filterDatas, sorter) => {
+        if (filterDatas.domain !== undefined) {
+          setFilters((prev) => ({ ...prev, domain: filterDatas.domain }));
+          setSelectedDomains(filterDatas.domain);
+        }
 
-          if (sorter.columnKey === "deadline") {
-            var sort =
-              sorter.order === "ascend" ? "deadline_asc" : "deadline_desc";
-            setSelectedSortNameOrDate(sort);
-            setFilters((prev) => ({ ...prev, sort }));
-          } else if (sorter.columnKey === "name") {
-            var sort = sorter.order === "ascend" ? "name_asc" : "name_desc";
-            setSelectedSortNameOrDate(sort);
-            setFilters((prev) => ({ ...prev, sort }));
-          } else {
-            setSelectedSortNameOrDate(null);
-            setFilters((prev) => ({ ...prev, sort: null }));
-          }
-        }}
-      />
-    </MainLayout>
+        if (sorter.columnKey === "deadline") {
+          var sort =
+            sorter.order === "ascend" ? "deadline_asc" : "deadline_desc";
+          setSelectedSortNameOrDate(sort);
+          setFilters((prev) => ({ ...prev, sort }));
+        } else if (sorter.columnKey === "name") {
+          var sort = sorter.order === "ascend" ? "name_asc" : "name_desc";
+          setSelectedSortNameOrDate(sort);
+          setFilters((prev) => ({ ...prev, sort }));
+        } else {
+          setSelectedSortNameOrDate(null);
+          setFilters((prev) => ({ ...prev, sort: null }));
+        }
+      }}
+    />
   );
 }
