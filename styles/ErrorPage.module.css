@@ -1,0 +1,25 @@
+.errorContainer {
+  padding: 24px;
+  text-align: center;
+  max-width: 600px;
+  margin: 48px auto;
+}
+
+/* Dark mode styles */
+:global([data-theme='dark']) .errorContainer {
+  color: #ffffff;
+}
+
+:global([data-theme='dark']) .errorContainer :global(.ant-typography) {
+  color: #ffffff;
+}
+
+:global([data-theme='dark']) .errorContainer :global(.ant-btn-primary) {
+  background-color: #177ddc;
+  border-color: #177ddc;
+}
+
+:global([data-theme='dark']) .errorContainer :global(.ant-btn-primary:hover) {
+  background-color: #1890ff;
+  border-color: #1890ff;
+} 

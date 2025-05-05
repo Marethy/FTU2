@@ -5,6 +5,7 @@ import { ThemeContext } from '../contexts/ThemeContext';
 import { Layout, Menu, Typography, Switch } from 'antd';
 import { HomeOutlined, TeamOutlined, TrophyOutlined, HeartOutlined, FormOutlined, BulbOutlined, BulbFilled } from '@ant-design/icons';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import styles from '../styles/MainLayout.module.css';
 
 const { Header, Content, Footer } = Layout;
@@ -12,6 +13,15 @@ const { Title } = Typography;
 
 export default function MainLayout({ children }) {
   const { theme, toggle } = useContext(ThemeContext);
+  const pathname = usePathname();
+
+  const getSelectedKey = () => {
+    if (pathname?.startsWith('/clubs')) return '2';
+    if (pathname?.startsWith('/contests')) return '3';
+    if (pathname?.startsWith('/volunteer')) return '4';
+    if (pathname?.startsWith('/surveys')) return '5';
+    return '1'; // Default to home
+  };
 
   return (
     <Layout className={styles.layout}>
@@ -24,7 +34,7 @@ export default function MainLayout({ children }) {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={['1']}
+          selectedKeys={[getSelectedKey()]}
           className={styles.menu}
         >
           <Menu.Item key="1" icon={<HomeOutlined />}>

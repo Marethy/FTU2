@@ -23,12 +23,55 @@
   width: 100%;
 }
 
-.evenRow {
+/* Light mode styles */
+:global([data-theme='light']) .evenRow {
   background-color: #fafafa;
 }
 
-.table :global(.ant-table-row:hover) {
-  background-color: #e6f7ff;
+:global([data-theme='light']) .table :global(.ant-table-row:hover) {
+  background-color: #e6f7ff !important;
+}
+
+/* Dark mode styles */
+:global([data-theme='dark']) .table {
+  background-color: #141414;
+  color: #ffffff;
+}
+
+:global([data-theme='dark']) .evenRow {
+  background-color: #1f1f1f !important;
+}
+
+:global([data-theme='dark']) .table :global(.ant-table-row:hover) {
+  background-color: #177ddc20 !important;
+}
+
+:global([data-theme='dark']) .table :global(.ant-table-thead > tr > th) {
+  background-color: #1f1f1f !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid #303030 !important;
+}
+
+:global([data-theme='dark']) .table :global(.ant-table-tbody > tr > td) {
+  border-bottom: 1px solid #303030 !important;
+  color: #ffffff !important;
+}
+
+:global([data-theme='dark']) .table :global(.ant-table-tbody > tr.ant-table-row:hover > td) {
+  background-color: #177ddc20 !important;
+}
+
+:global([data-theme='dark']) .table :global(.ant-empty-description) {
+  color: #ffffff;
+}
+
+:global([data-theme='dark']) .table :global(.ant-pagination-item-active) {
+  background-color: #177ddc !important;
+  border-color: #177ddc !important;
+}
+
+:global([data-theme='dark']) .table :global(.ant-pagination-item-active a) {
+  color: #ffffff !important;
 }
 
 .table :global(.ant-table-cell) {
@@ -39,7 +82,7 @@
 .table :global(.ant-table-row:focus),
 .table :global(.ant-select-focused .ant-select-selector),
 .table :global(.ant-input-affix-wrapper-focused) {
-  outline: 2px solid #1890ff;
+  outline: 2px solid #177ddc;
   outline-offset: 2px;
 }
 

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Card, Tag, Skeleton, Typography, Space, Breadcrumb } from 'antd';
 import { volunteers } from '@/data/volunteers';
 import MainLayout from '@/components/MainLayout';
+import ErrorPage from '@/components/ErrorPage';
 
 const { Title, Paragraph } = Typography;
 
@@ -15,10 +16,10 @@ export default function VolunteerDetail({ params }) {
   if (!volunteer) {
     return (
       <MainLayout>
-        <div style={{ padding: '24px', textAlign: 'center' }}>
-          <Title level={3}>Volunteer activity not found</Title>
-          <Paragraph>Sorry, the activity you're looking for doesn't exist.</Paragraph>
-        </div>
+        <ErrorPage 
+          title="Volunteer activity not found"
+          message="Sorry, the activity you're looking for doesn't exist."
+        />
       </MainLayout>
     );
   }

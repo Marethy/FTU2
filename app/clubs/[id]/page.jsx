@@ -5,21 +5,19 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Card, Typography, Space, Breadcrumb, Divider } from 'antd';
 import { clubs } from '@/data/clubs';
-import MainLayout from '@/components/MainLayout';
+import ErrorPage from '@/components/ErrorPage';
 
 const { Title, Paragraph } = Typography;
 
 export default function ClubDetail({ params }) {
-  const club = clubs.find(c => c.id.toString() === params.id);
+  const club = clubs.find(c => String(c.id) === (params?.id || ''));
 
   if (!club) {
     return (
-      <MainLayout>
-        <div style={{ padding: '24px', textAlign: 'center' }}>
-          <Title level={3}>Club not found</Title>
-          <Paragraph>Sorry, the club you're looking for doesn't exist.</Paragraph>
-        </div>
-      </MainLayout>
+      <ErrorPage 
+        title="Club not found"
+        message="Sorry, the club you're looking for doesn't exist."
+      />
     );
   }
 
@@ -30,7 +28,7 @@ export default function ClubDetail({ params }) {
   ];
 
   return (
-    <MainLayout>
+    <>
       <Head>
         <title>{club.name} - FTU2 Connect</title>
         <meta name="description" content={club.summary} />
@@ -68,6 +66,6 @@ export default function ClubDetail({ params }) {
           </Space>
         </Card>
       </div>
-    </MainLayout>
+    </>
   );
 } 

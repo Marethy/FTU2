@@ -13,7 +13,48 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
+[data-theme='dark'] {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+[data-theme='light'] {
+  background-color: #f0f2f5;
+  color: #000000;
+}
+
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* Dark mode overrides for Ant Design components */
+[data-theme='dark'] .ant-card,
+[data-theme='dark'] .ant-modal-content,
+[data-theme='dark'] .ant-drawer-content {
+  background-color: #141414 !important;
+  color: #ffffff !important;
+}
+
+[data-theme='dark'] .ant-card-head,
+[data-theme='dark'] .ant-modal-header,
+[data-theme='dark'] .ant-drawer-header {
+  background-color: #141414 !important;
+  color: #ffffff !important;
+}
+
+[data-theme='dark'] .ant-menu-dark {
+  background-color: #141414 !important;
+}
+
+[data-theme='dark'] .ant-menu-dark .ant-menu-item-selected {
+  background-color: #1f1f1f !important;
+}
+
+[data-theme='dark'] .ant-layout {
+  background-color: #000000 !important;
+}
+
+[data-theme='dark'] .ant-layout-header {
+  background-color: #141414 !important;
 } 
