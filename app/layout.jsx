@@ -1,6 +1,7 @@
-import { Inter } from 'next/font/google';
-import { ThemeProvider } from '@/contexts/ThemeContext';
 import ThemeConfigProvider from '@/components/ThemeConfigProvider';
+import { ThemeProvider } from '@/contexts/ThemeContext';
+import { App } from 'antd';
+import { Inter } from 'next/font/google';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -26,7 +27,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="vi">
       <body className={inter.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <App>
+            {children}
+          </App>
+        </Providers>
       </body>
     </html>
   );
