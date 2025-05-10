@@ -71,7 +71,6 @@ export default function MainLayout({ children }) {
           className={styles.themeToggle}
         />
       </Header>
-
       <Content className={styles.content}>
         {children}
       </Content>
@@ -79,6 +78,6 @@ export default function MainLayout({ children }) {
       <Footer className={styles.footer}>
         FTU2 Connect ©{new Date().getFullYear()} - Kết nối sinh viên FTU2
       </Footer>
-    </Layout>
-  );
+      </Layout>
+    );
 } 
