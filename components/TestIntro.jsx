@@ -63,7 +63,7 @@ export default function TestIntro({ onStartTest }) {
     return (
         <div className={styles.introContainer}>
             <Card className={styles.introCard}>
-                <Title level={2} className={styles.sectionTitle}>
+                <Title style={{ color: 'black' }} level={2} className={styles.sectionTitle}>
                     Về bài test này
                 </Title>
 
@@ -77,8 +77,8 @@ export default function TestIntro({ onStartTest }) {
                         <Col xs={12} sm={6} key={index}>
                             <div className={styles.featureItem}>
                                 {feature.icon}
-                                <Title level={4}>{feature.title}</Title>
-                                <Paragraph>{feature.description}</Paragraph>
+                                <Title style={{ color: 'black' }} level={4}>{feature.title}</Title>
+                                <Paragraph style={{ color: 'black' }}>{feature.description}</Paragraph>
                             </div>
                         </Col>
                     ))}
@@ -109,7 +109,7 @@ export default function TestIntro({ onStartTest }) {
 
                 <div className={styles.startSection}>
                     <Title level={3}>Sẵn sàng khám phá?</Title>
-                    <Paragraph>
+                    <Paragraph style={{ color: 'black' }}>
                         Hãy trả lời thật lòng các câu hỏi để có kết quả chính xác nhất.
                         Không có câu trả lời đúng hay sai!
                     </Paragraph>

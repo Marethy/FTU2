@@ -1,7 +1,7 @@
 'use client';
 
 import { ThemeContext } from '@/contexts/ThemeContext';
-// import '@/styles/globals.css';
+import '@/styles/globals.css';
 import { ConfigProvider, theme as antdTheme } from 'antd';
 import { useContext } from 'react';
 
