@@ -1,7 +1,6 @@
 'use client'
 
 import ErrorPage from '@/components/ErrorPage';
-import { useContest } from '@/hooks/useContests';
 import { CalendarOutlined, FormOutlined, InfoCircleOutlined, TeamOutlined, TrophyOutlined } from '@ant-design/icons';
 import { Alert, Badge, Breadcrumb, Button, Card, Col, Divider, Row, Skeleton, Space, Tag, Typography } from 'antd';
 import Image from 'next/image';
