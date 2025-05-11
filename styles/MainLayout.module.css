@@ -1,0 +1,87 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: var(--header-bg);
+}
+
+.logo {
+  float: left;
+  margin-right: 24px;
+}
+
+.logo a {
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.menu {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+}
+
+.menu :global(.ant-menu-item) {
+  padding: 0 16px;
+}
+
+.menu :global(.ant-menu-item a) {
+  color: inherit;
+}
+
+.themeToggle {
+  color: #fff;
+  margin-left: 16px;
+}
+
+.content {
+  padding: 0 50px;
+  margin-top: 24px;
+  flex: 1;
+}
+
+.footer {
+  text-align: center;
+  margin-top: auto;
+  padding: 24px;
+}
+
+/* Dark mode styles */
+:global([data-theme='dark']) .header {
+  background:
+    #141414;
+}
+
+:global([data-theme='dark']) .logo a {
+  color: #fff;
+}
+
+:global([data-theme='dark']) .menu {
+  background: transparent;
+  border-bottom-color:
+    #303030;
+}
+
+:global([data-theme='dark']) .themeToggle {
+  color: #fff;
+}
+
+:global([data-theme='dark']) .footer {
+  background:
+    #141414;
+  color: rgba(255, 255, 255, 0.85);
+}

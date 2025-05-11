@@ -1,0 +1,182 @@
+/* Focus states for all interactive elements */
+button:focus,
+[role="button"]:focus,
+a:focus,
+input:focus,
+select:focus,
+textarea:focus,
+[tabindex]:focus {
+  outline: 3px solid #0057a3;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 87, 163, 0.2);
+}
+
+/* Ant Design specific focus states */
+.ant-btn:focus,
+.ant-input:focus,
+.ant-select:focus,
+.ant-select-selector:focus,
+.ant-input-affix-wrapper:focus,
+.ant-input-search:focus,
+.ant-menu-item:focus {
+  outline: 3px solid #0057a3;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 87, 163, 0.2);
+}
+
+/* Focus states for dropdown items */
+.ant-select-item-option:focus,
+.ant-dropdown-menu-item:focus {
+  background-color: #e6f7ff;
+  outline: 2px solid #0057a3;
+  outline-offset: -2px;
+}
+
+/* Focus states for table rows */
+.ant-table-row:focus {
+  outline: 3px solid #0057a3;
+  outline-offset: -2px;
+  box-shadow: 0 0 0 4px rgba(0, 87, 163, 0.2);
+}
+
+/* Focus states for cards */
+.ant-card:focus-within {
+  outline: 3px solid #0057a3;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 87, 163, 0.2);
+}
+
+/* Focus states for list items */
+.ant-list-item:focus-within {
+  outline: 3px solid #0057a3;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 87, 163, 0.2);
+}
+
+/* Remove default focus styles that might conflict */
+.ant-btn:focus,
+.ant-input:focus,
+.ant-select:focus {
+  box-shadow: none;
+}
+
+/* Ensure proper contrast for focus indicators */
+:focus {
+  outline-color: #0057a3;
+}
+
+/* Add smooth transition for focus states */
+* {
+  transition: outline-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* High contrast mode support */
+@media (forced-colors: active) {
+  :focus {
+    outline: 3px solid CanvasText !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/* Focus visible polyfill support */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
+.js-focus-visible .focus-visible {
+  outline: 3px solid #0057a3;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 87, 163, 0.2);
+}
+
+:root[data-theme="light"] {
+  --ftu2-bg: #ffffff;
+  --ftu2-text: #1a1a2e;
+  --ftu2-card-bg: #ffffff;
+  --ftu2-table-header-bg: #f5f7fa;
+  --ftu2-table-row-hover: #edf2f7;
+  --ftu2-primary: #4361ee;
+  --ftu2-primary-hover: #3a56d4;
+  --ftu2-secondary: #4f46e5;
+  --ftu2-accent: #f72585;
+  --ftu2-border: #e2e8f0;
+  --ftu2-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+:root[data-theme="dark"] {
+  --ftu2-bg: #141414;
+  --ftu2-text: #fff;
+  --ftu2-card-bg: #1f1f1f;
+  --ftu2-table-header-bg: #1f1f1f;
+  --ftu2-table-row-hover: #262626;
+}
+
+/* Remove any hardcoded background colors */
+.ant-card,
+.ant-table,
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr,
+.container,
+.card {
+  background: var(--ftu2-bg) !important;
+  color: var(--ftu2-text) !important;
+}
+
+.ant-table-thead > tr > th {
+  background: var(--ftu2-table-header-bg) !important;
+}
+
+.ant-table-tbody > tr:hover {
+  background: var(--ftu2-table-row-hover) !important;
+}
+
+/* Ensure text colors are properly themed */
+.ant-typography,
+.ant-table-cell,
+.ant-card-head-title {
+  color: var(--ftu2-text) !important;
+}
+
+/* Ensure links are visible in dark mode */
+a {
+  color: var(--ftu2-primary);
+}
+
+a:hover {
+  color: var(--ftu2-primary-hover);
+}
+
+/* Ensure form elements are properly themed */
+.ant-input,
+.ant-select-selector,
+.ant-picker {
+  background: var(--ftu2-bg) !important;
+  color: var(--ftu2-text) !important;
+  border-color: var(--ftu2-border) !important;
+  box-shadow: var(--ftu2-shadow) !important;
+}
+
+/* Ensure modals and dropdowns are properly themed */
+.ant-modal-content,
+.ant-dropdown-menu {
+  background: var(--ftu2-bg) !important;
+  color: var(--ftu2-text) !important;
+  box-shadow: var(--ftu2-shadow) !important;
+}
+
+/* Apply primary color to buttons and links */
+.ant-btn-primary {
+  background-color: var(--ftu2-primary) !important;
+  border-color: var(--ftu2-primary) !important;
+}
+
+.ant-btn-primary:hover {
+  background-color: var(--ftu2-primary-hover) !important;
+  border-color: var(--ftu2-primary-hover) !important;
+} 

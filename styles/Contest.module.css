@@ -1,0 +1,117 @@
+/* Contest Page Styles */
+
+/* Contest Card Styles */
+.ant-card-hoverable {
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.ant-card-hoverable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Equal height cards */
+.ant-col>div {
+  height: 100%;
+}
+
+/* Card body flex layout */
+.ant-card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Button styles in card footer */
+.ant-card .ant-btn {
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.heroSection {
+  padding: 60px 0;
+  background: linear-gradient(135deg, #2451B8 0%, #084EB0 100%);
+  color: white;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.contestGrid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.contestCard {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contestCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Featured Carousel Card */
+.featured-carousel-card .ant-carousel .slick-dots {
+  bottom: 20px;
+}
+
+.featured-carousel-card .ant-carousel .slick-dots li button {
+  background: #fff;
+  opacity: 0.6;
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.featured-carousel-card .ant-carousel .slick-dots li.slick-active button {
+  opacity: 1;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Smooth transition for carousel */
+.featured-carousel-card .ant-carousel .slick-slide {
+  transition: all 0.3s ease;
+}
+
+/* Hover effect for carousel items */
+.featured-carousel-card .ant-carousel .slick-slide>div {
+  transition: transform 0.3s ease;
+}
+
+.featured-carousel-card .ant-carousel .slick-slide:hover>div {
+  transform: scale(0.98);
+}
+
+/* Badge styles */
+.statusBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+}
+
+/* Category tag styles */
+.categoryTag {
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* Filter Section */
+.filterSection {
+  background: #f5f5f5;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .heroSection {
+    padding: 40px 20px;
+  }
+
+  .contestGrid {
+    grid-template-columns: 1fr;
+  }
+}
