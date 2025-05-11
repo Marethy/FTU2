@@ -1,6 +1,6 @@
-import { Table, Tag, Empty } from "antd";
+import styles from "@/styles/Volunteer.module.css";
+import { Empty, Table, Tag } from "antd";
 import { format } from "date-fns";
-import styles from "../styles/Volunteer.module.css";
 import Link from "next/link";
 export default function VolunteerList({
   data,
@@ -44,8 +44,8 @@ export default function VolunteerList({
         filters.sort === "name_asc"
           ? "ascend"
           : filters.sort === "name_desc"
-          ? "descend"
-          : null,
+            ? "descend"
+            : null,
     },
     {
       title: "Câu lạc bộ",
@@ -69,8 +69,8 @@ export default function VolunteerList({
         filters.sort === "deadline_asc"
           ? "ascend"
           : filters.sort === "deadline_desc"
-          ? "descend"
-          : null,
+            ? "descend"
+            : null,
       render: (date) => {
         const isExpired = new Date(date) < new Date();
         return (

@@ -1,7 +1,6 @@
 'use client'
 
 import ErrorPage from '@/components/ErrorPage';
-import { useContest } from '@/hooks/useContests';
 import { CalendarOutlined, FormOutlined, InfoCircleOutlined, TeamOutlined, TrophyOutlined } from '@ant-design/icons';
 import { Alert, Badge, Breadcrumb, Button, Card, Col, Divider, Row, Skeleton, Space, Tag, Typography } from 'antd';
 import Image from 'next/image';
@@ -13,17 +12,14 @@ const { Title, Paragraph, Text } = Typography;
 // Skeleton component cho contest detail page
 const ContestDetailSkeleton = () => (
     <div style={{ padding: '24px' }}>
-        <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>
-                <Skeleton.Input style={{ width: 80 }} size="small" />
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-                <Skeleton.Input style={{ width: 80 }} size="small" />
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-                <Skeleton.Input style={{ width: 120 }} size="small" />
-            </Breadcrumb.Item>
-        </Breadcrumb>
+        <Breadcrumb
+            style={{ margin: '16px 0' }}
+            items={[
+                { title: <Skeleton.Input style={{ width: 80 }} size="small" /> },
+                { title: <Skeleton.Input style={{ width: 80 }} size="small" /> },
+                { title: <Skeleton.Input style={{ width: 120 }} size="small" /> }
+            ]}
+        />
 
         <Row gutter={[24, 24]}>
             <Col xs={24} md={16}>
@@ -104,8 +100,33 @@ const ContestDetailSkeleton = () => (
 );
 
 export default function ContestDetailClient({ id }) {
-    const { contest, loading, error } = useContest(id);
+    const [contest, setContest] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+
     const [displayLoading, setDisplayLoading] = useState(true);
+
+    useEffect(() => {
+        if (!id) return;
+
+        const fetchContest = async () => {
+            try {
+                const response = await fetch(`/api/contests/${id}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch contest');
+                }
+                const data = await response.json();
+                setContest(data.contest);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchContest();
+    }, [id]);
 
     useEffect(() => {
         // Minimum loading time for better UX

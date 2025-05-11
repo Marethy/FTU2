@@ -1,12 +1,11 @@
 'use client'
 
-import { useRouter } from 'next/navigation';
+import ErrorPage from '@/components/ErrorPage';
+import MainLayout from '@/components/MainLayout';
+import { volunteers } from '@/data/volunteers';
+import { Breadcrumb, Card, Space, Tag, Typography } from 'antd';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Card, Tag, Skeleton, Typography, Space, Breadcrumb } from 'antd';
-import { volunteers } from '@/data/volunteers';
-import MainLayout from '@/components/MainLayout';
-import ErrorPage from '@/components/ErrorPage';
 
 const { Title, Paragraph } = Typography;
 
@@ -16,7 +15,7 @@ export default function VolunteerDetail({ params }) {
   if (!volunteer) {
     return (
       <MainLayout>
-        <ErrorPage 
+        <ErrorPage
           title="Volunteer activity not found"
           message="Sorry, the activity you're looking for doesn't exist."
         />
@@ -51,9 +50,9 @@ export default function VolunteerDetail({ params }) {
                 {new Date(volunteer.deadline) > new Date() ? 'Open' : 'Closed'}
               </Tag>
             </div>
-            
+
             <Paragraph>{volunteer.description}</Paragraph>
-            
+
             <div>
               <Title level={4}>Deadline</Title>
               <Paragraph>{new Date(volunteer.deadline).toLocaleDateString()}</Paragraph>
