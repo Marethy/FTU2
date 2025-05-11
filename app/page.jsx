@@ -347,8 +347,7 @@ export default function Home() {
                   >
                     <Card
                       hoverable
-                      style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                      bodyStyle={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+                      style={{ height: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}
                       actions={[
                         <Link href={`/clubs/${club.id}`} key="view">
                           <Button type="link">Xem chi tiết</Button>

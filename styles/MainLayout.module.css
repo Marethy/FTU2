@@ -62,7 +62,8 @@
 
 /* Dark mode styles */
 :global([data-theme='dark']) .header {
-  background: #141414;
+  background:
+    #141414;
 }
 
 :global([data-theme='dark']) .logo a {
@@ -71,7 +72,8 @@
 
 :global([data-theme='dark']) .menu {
   background: transparent;
-  border-bottom-color: #303030;
+  border-bottom-color:
+    #303030;
 }
 
 :global([data-theme='dark']) .themeToggle {
@@ -79,6 +81,7 @@
 }
 
 :global([data-theme='dark']) .footer {
-  background: #141414;
+  background:
+    #141414;
   color: rgba(255, 255, 255, 0.85);
 }

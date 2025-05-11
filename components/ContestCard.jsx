@@ -58,23 +58,22 @@ export default function ContestCard({ contest }) {
         >
             <Card
                 hoverable
-                style={{ height: '37rem', display: 'flex', flexDirection: 'column' }}
-                bodyStyle={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+                style={{ height: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}
                 cover={
                     <div style={{ height: 200, position: 'relative', overflow: 'hidden' }}>
                         <Image
-                            src={contest.image || 'images/placeholder.svg'}
+                            src={contest.image || '/images/placeholder.svg'}
                             alt={contest.title}
                             fill
                             style={{ objectFit: 'cover' }}
                             onError={(e) => {
-                                e.currentTarget.src = 'images/placeholder.svg';
+                                e.currentTarget.src = '/images/placeholder.svg';
                             }}
                         />
                     </div>
                 }
             >
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1, justifyContent: 'space-between', height: '15rem' }}>
                     <Meta
                         title={<h3 style={{ marginBottom: 8, fontSize: '16px', lineHeight: '1.3', minHeight: '2.6em' }}>{contest.title}</h3>}
                         description={
