@@ -91,12 +91,7 @@ export default function MainLayout({ children }) {
       <Footer className={styles.footer}>
         FTU2 Connect ©{new Date().getFullYear()} - Kết nối sinh viên FTU2
       </Footer>
-<<<<<<< HEAD
       </Layout>
     );
 } 
-=======
-    </Layout>
-  );
-}
->>>>>>> 4f843932fc547ddf44f9421fe01daaf39a64b1b1
+
