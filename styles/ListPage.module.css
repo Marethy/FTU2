@@ -1,0 +1,130 @@
+.pageContainer {
+  padding: 24px 50px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.breadcrumb {
+  margin: 16px 0 24px 24px;
+}
+
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+}
+
+.filterContainer {
+  margin-bottom: 24px;
+}
+
+/* Table styles */
+.table {
+  width: 100%;
+}
+
+/* Light mode styles */
+:global([data-theme='light']) .evenRow {
+  background-color: #fafafa;
+}
+
+:global([data-theme='light']) .table :global(.ant-table-row:hover) {
+  background-color: #e6f7ff !important;
+}
+
+/* Dark mode styles */
+:global([data-theme='dark']) .table {
+  background-color: #141414;
+  color: #ffffff;
+}
+
+:global([data-theme='dark']) .evenRow {
+  background-color: #1f1f1f !important;
+}
+
+:global([data-theme='dark']) .table :global(.ant-table-row:hover) {
+  background-color: #177ddc20 !important;
+}
+
+:global([data-theme='dark']) .table :global(.ant-table-thead > tr > th) {
+  background-color: #1f1f1f !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid #303030 !important;
+}
+
+:global([data-theme='dark']) .table :global(.ant-table-tbody > tr > td) {
+  border-bottom: 1px solid #303030 !important;
+  color: #ffffff !important;
+}
+
+:global([data-theme='dark']) .table :global(.ant-table-tbody > tr.ant-table-row:hover > td) {
+  background-color: #177ddc20 !important;
+}
+
+:global([data-theme='dark']) .table :global(.ant-empty-description) {
+  color: #ffffff;
+}
+
+:global([data-theme='dark']) .table :global(.ant-pagination-item-active) {
+  background-color: #177ddc !important;
+  border-color: #177ddc !important;
+}
+
+:global([data-theme='dark']) .table :global(.ant-pagination-item-active a) {
+  color: #ffffff !important;
+}
+
+.table :global(.ant-table-cell) {
+  padding: 12px 16px !important;
+}
+
+/* Focus styles for accessibility */
+.table :global(.ant-table-row:focus),
+.table :global(.ant-select-focused .ant-select-selector),
+.table :global(.ant-input-affix-wrapper-focused) {
+  outline: 2px solid #177ddc;
+  outline-offset: 2px;
+}
+
+/* Hide scrollbars but keep functionality */
+.table :global(.ant-table-body::-webkit-scrollbar) {
+  display: none;
+}
+
+.table :global(.ant-table-body) {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Loading skeleton styles */
+.skeleton {
+  padding: 24px;
+}
+
+.skeleton :global(.ant-skeleton-paragraph) {
+  margin-top: 24px;
+}
+
+/* Student page specific styles */
+.pointsBanner {
+  background: linear-gradient(135deg, #1890ff 0%, #0057a3 100%);
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.pointsValue {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.activityCard {
+  margin-bottom: 24px;
+}
+
+.surveyCard {
+  margin-bottom: 24px;
+} 

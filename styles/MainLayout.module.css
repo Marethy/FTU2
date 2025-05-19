@@ -1,0 +1,96 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  background: var(--header-bg);
+}
+
+.navContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.menu {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  line-height: 64px;
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  padding: 0 24px;
+}
+
+.logoText {
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.themeSwitch {
+  color: #fff;
+  padding: 0 24px;
+}
+
+.content {
+  padding: 0 50px;
+  margin-top: 24px;
+  flex: 1;
+}
+
+.footer {
+  text-align: center;
+  margin-top: auto;
+  padding: 24px;
+}
+
+/* Ensure logo menu item doesn't show selection highlight */
+.menu :global(.ant-menu-item-selected.ant-menu-item-only-child[key="logo"]),
+.menu :global(.ant-menu-item[key="logo"]:hover) {
+  background-color: transparent !important;
+}
+
+/* Customize logo menu item */
+.menu :global(.ant-menu-item-only-child[key="logo"]) {
+  margin-right: 24px;
+}
+
+/* Dark mode styles */
+:global([data-theme='dark']) .header {
+  background: #141414;
+}
+
+:global([data-theme='dark']) .logoText {
+  color: #fff;
+}
+
+:global([data-theme='dark']) .menu {
+  background: transparent;
+  border-bottom-color: #303030;
+}
+
+:global([data-theme='dark']) .themeSwitch {
+  color: #fff;
+}
+
+:global([data-theme='dark']) .footer {
+  background: #141414;
+  color: rgba(255, 255, 255, 0.85);
+}
