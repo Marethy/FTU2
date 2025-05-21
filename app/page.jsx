@@ -1,9 +1,11 @@
 'use client'
 
 import MainLayout from '@/components/MainLayout'
+import OptimizedAvatar from '@/components/OptimizedAvatar'
 import { BookOutlined, CalendarOutlined, GlobalOutlined, HeartOutlined, RocketOutlined, SoundOutlined, StarOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons'
 import { Avatar, Button, Calendar, Card, Carousel, Col, message, Row, Skeleton, Space, Statistic, Tag, Typography } from 'antd'
 import Link from 'next/link'
+import Image from 'next/image'
 import { cloneElement, useEffect, useState } from 'react'
 
 const { Title, Text, Paragraph } = Typography
@@ -179,32 +181,39 @@ export default function Home() {
             <Col xs={24} md={12}>
               {loading ? (
                 <Skeleton.Image active style={{ width: '100%', height: 400 }} />
-              ) : (
-                <Carousel autoplay style={{ borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.15)' }}>
-                  <div>                    <img
+              ) : (                <Carousel autoplay style={{ borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.15)' }}>
+                  <div style={{ position: 'relative', width: '100%', height: 400, backgroundColor: '#001529' }}>
+                    <Image
                       src="/homepage/banner_1_cut_of_sponsors.jpg"
                       alt="Banner 1"
-                      style={{ width: '100%', height: 'auto', maxHeight: 400, objectFit: 'contain', backgroundColor: '#001529' }}
-                    />
-                  </div>
-                  <div>
-                    <img
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority
+                      style={{ objectFit: 'contain' }}
+                    />                  </div>
+                  <div style={{ position: 'relative', width: '100%', height: 400, backgroundColor: '#001529' }}>
+                    <Image
                       src="/homepage/banner_2.jpg"
                       alt="Banner 2"
-                      style={{ width: '100%', height: 'auto', maxHeight: 400, objectFit: 'contain', backgroundColor: '#001529' }}
-                    />
-                  </div>
-                  <div>
-                    <img
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
+                      style={{ objectFit: 'contain' }}
+                    />                  </div>
+                  <div style={{ position: 'relative', width: '100%', height: 400, backgroundColor: '#001529' }}>
+                    <Image
                       src="/homepage/event_1.jpg"
                       alt="Sự kiện 1"
-                      style={{ width: '100%', height: 'auto', maxHeight: 400, objectFit: 'contain', backgroundColor: '#001529' }}
-                    />
-                  </div>
-                  <div>                    <img
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      style={{ objectFit: 'contain' }}
+                    />                  </div>
+                  <div style={{ position: 'relative', width: '100%', height: 400, backgroundColor: '#001529' }}>
+                    <Image
                       src="/homepage/event_2.jpg"
-                      alt="Sự kiện 2"
-                      style={{ width: '100%', height: 'auto', maxHeight: 400, objectFit: 'contain', backgroundColor: '#001529' }}
+                      alt="Sự kiện 2" 
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      style={{ objectFit: 'contain' }}
                     />
                   </div>
                 </Carousel>
@@ -404,9 +413,8 @@ export default function Home() {
                         direction="vertical"
                         align="center"
                         style={{ width: '100%', flex: 1, justifyContent: 'space-between' }}
-                      >
-                        <div style={{ textAlign: 'center' }}>
-                          <Avatar
+                      >                        <div style={{ textAlign: 'center' }}>
+                          <OptimizedAvatar
                             size={64}
                             src={club.logo}
                             style={{ border: '2px solid #f0f0f0', marginBottom: 16 }}
