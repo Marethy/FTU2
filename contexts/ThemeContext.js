@@ -7,18 +7,27 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
-    const saved = localStorage.getItem('ftu2-theme');
+    const saved = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialTheme = saved || (prefersDark ? 'dark' : 'light');
     setTheme(initialTheme);
-    document.documentElement.setAttribute('data-theme', initialTheme);
+    setThemeClass(initialTheme);
   }, []);
 
   const toggle = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
     setTheme(next);
-    localStorage.setItem('ftu2-theme', next);
-    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    setThemeClass(next);
+  };
+
+  const setThemeClass = (theme) => {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   };
 
   return (

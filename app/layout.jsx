@@ -10,8 +10,8 @@ export const metadata = {
   title: 'FTU2 Connect',
   description: 'Kết nối sinh viên FTU2',
   icons: {
-    icon: '/icon.png',
-    shortcut: '/favicon.ico',
+    icon: '/LOGO.png',
+    shortcut: '/LOGO.png',
     apple: '/icon.png',
   },
 };
@@ -32,9 +32,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="vi">
       <head>
-        <link rel="icon" href="/icon.png" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/icon.png" />
+        <link rel="icon" href="/LOGO.png" />
+        <link rel="shortcut icon" href="/LOGO.png" />
+        <link rel="apple-touch-icon" href="/LOGO.png" />
       </head>
       <body className={inter.className}>
         <Providers>

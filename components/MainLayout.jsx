@@ -13,7 +13,6 @@ const { Header, Content, Footer } = Layout;
 export default function MainLayout({ children }) {
   const { theme, toggle } = useContext(ThemeContext);
   const pathname = usePathname();
-
   // Cải thiện logic để xử lý các path con
   const getSelectedKey = (path) => {
     if (path === '/') return 'home';
@@ -22,11 +21,11 @@ export default function MainLayout({ children }) {
     if (path.startsWith('/personality-test')) return 'personalityTest';
     if (path.startsWith('/volunteer')) return 'volunteer';
     if (path.startsWith('/surveys')) return 'surveys';
+    if (path.startsWith('/student')) return 'student';
     return 'home';
   };
 
   const selectedKey = getSelectedKey(pathname);
-
   const menuItems = [
     {
       key: 'logo',
@@ -53,6 +52,11 @@ export default function MainLayout({ children }) {
       label: <Link href="/contests">Cuộc thi</Link>
     },
     {
+      key: 'volunteer',
+      icon: <HeartOutlined />,
+      label: <Link href="/volunteer">Hoạt động tình nguyện</Link>
+    },
+    {
       key: 'personalityTest',
       icon: <BulbOutlined />,
       label: <Link href="/personality-test">Test Tính Cách</Link>
@@ -63,9 +67,12 @@ export default function MainLayout({ children }) {
       label: <Link href="/surveys">Khảo sát của trường</Link>
     },
     {
-      key: 'volunteer',
-      icon: <HeartOutlined />,
-      label: <Link href="/volunteer">Hoạt động tình nguyện</Link>
+      key: 'student',
+      icon: <TeamOutlined />,
+      label: <Link href="#" onClick={(e) => {
+        e.preventDefault();
+        alert('Bạn cần đăng nhập để thực hiện chức năng này');
+      }}>Sinh viên</Link>
     }
   ];
 

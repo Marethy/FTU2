@@ -1,6 +1,5 @@
 'use client'
 
-import ErrorPage from '@/components/ErrorPage';
 import {
     CalendarOutlined,
     ClockCircleOutlined,

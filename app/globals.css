@@ -4,6 +4,13 @@
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+    
+  /* Light Theme Colors */
+  --header-bg: #001529;
+  --logo-text-color: #ffffff;
+  --menu-text-color: #ffffff;
+  --menu-item-hover: rgba(255, 255, 255, 0.15);
+  --menu-item-active: #1890ff;
 }
 
 * {
@@ -32,4 +39,13 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+/* Dark Theme Variables */
+html.dark {
+  --header-bg: #141414;
+  --logo-text-color: #ffffff;
+  --menu-text-color: #ffffff;
+  --menu-item-hover: rgba(255, 255, 255, 0.15);
+  --menu-item-active: #1890ff;
 }

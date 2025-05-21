@@ -355,8 +355,7 @@ export default function ContestsPage() {
                     allowClear
                   />
                 </Col>
-                <Col xs={24} sm={8} md={5}>
-                  <Select
+                <Col xs={24} sm={8} md={5}>                  <Select
                     placeholder="Trạng thái"
                     style={{ width: '100%' }}
                     value={activeFilters.status}

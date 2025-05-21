@@ -85,17 +85,19 @@ export const ContestCard = ({ contest }) => {
                         )}
                     </Space>
 
-                    {/* Hiển thị đếm ngược nếu còn ≤ 5 ngày */}
+                {/* Hiển thị đếm ngược nếu còn ≤ 5 ngày */}
                     {contest.status === 'open' && daysLeft <= 5 && daysLeft > 0 && (
                         <div style={{
                             marginTop: '5px',
-                            padding: '3px 8px',
+                            padding: '5px 10px',
                             background: daysLeft <= 2 ? '#ff4d4f' : '#ff7a45',
                             color: 'white',
                             borderRadius: '12px',
-                            fontSize: '12px',
+                            fontSize: '14px',
+                            fontWeight: 'bold',
                             textAlign: 'center',
-                            animation: 'pulse 2s infinite'
+                            animation: 'pulse 2s infinite',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
                         }}>
                             <ClockCircleOutlined /> Còn {daysLeft} ngày để đăng ký!
                         </div>

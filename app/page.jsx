@@ -128,7 +128,6 @@ export default function Home() {
     acc[domain].push(club)
     return acc
   }, {})
-
   // Calculate statistics - using data from API
   const totalClubs = 35 // Tổng số clubs theo danh sách
   const totalMembers = 5000 // Approximate total members
@@ -182,32 +181,30 @@ export default function Home() {
                 <Skeleton.Image active style={{ width: '100%', height: 400 }} />
               ) : (
                 <Carousel autoplay style={{ borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.15)' }}>
-                  <div>
-                    <img
+                  <div>                    <img
                       src="/homepage/banner_1_cut_of_sponsors.jpg"
                       alt="Banner 1"
-                      style={{ width: '100%', height: 400, objectFit: 'contain', backgroundColor: '#001529' }}
+                      style={{ width: '100%', height: 'auto', maxHeight: 400, objectFit: 'contain', backgroundColor: '#001529' }}
                     />
                   </div>
                   <div>
                     <img
                       src="/homepage/banner_2.jpg"
                       alt="Banner 2"
-                      style={{ width: '100%', height: 400, objectFit: 'contain', backgroundColor: '#001529' }}
+                      style={{ width: '100%', height: 'auto', maxHeight: 400, objectFit: 'contain', backgroundColor: '#001529' }}
                     />
                   </div>
                   <div>
                     <img
                       src="/homepage/event_1.jpg"
                       alt="Sự kiện 1"
-                      style={{ width: '100%', height: 400, objectFit: 'contain', backgroundColor: '#001529' }}
+                      style={{ width: '100%', height: 'auto', maxHeight: 400, objectFit: 'contain', backgroundColor: '#001529' }}
                     />
                   </div>
-                  <div>
-                    <img
+                  <div>                    <img
                       src="/homepage/event_2.jpg"
                       alt="Sự kiện 2"
-                      style={{ width: '100%', height: 400, objectFit: 'contain', backgroundColor: '#001529' }}
+                      style={{ width: '100%', height: 'auto', maxHeight: 400, objectFit: 'contain', backgroundColor: '#001529' }}
                     />
                   </div>
                 </Carousel>
@@ -468,8 +465,7 @@ export default function Home() {
             </Col>
             <Col xs={24} lg={8}>
               <Card title="Sự kiện nổi bật">
-                <Space direction="vertical" style={{ width: '100%' }} size="large">
-                  {upcomingEvents.map((event, index) => {
+                <Space direction="vertical" style={{ width: '100%' }} size="large">                  {upcomingEvents.slice(0, 2).map((event, index) => {
                     const daysLeft = getDaysLeft(event.date);
                     const showCountdown = daysLeft > 0 && daysLeft <= 5;
 
@@ -505,6 +501,12 @@ export default function Home() {
                       </Card>
                     );
                   })}
+                  
+                  <div style={{ textAlign: 'center', marginTop: '16px' }}>
+                    <Link href="/contests">
+                      <Button type="primary">Xem tất cả</Button>
+                    </Link>
+                  </div>
                 </Space>
               </Card>
             </Col>

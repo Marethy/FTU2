@@ -1,6 +1,5 @@
 'use client'
 
-import ErrorPage from '@/components/ErrorPage';
 import MainLayout from '@/components/MainLayout';
 import { volunteers } from '@/data/volunteers';
 import { Breadcrumb, Card, Space, Tag, Typography } from 'antd';
@@ -12,16 +11,7 @@ const { Title, Paragraph } = Typography;
 export default function VolunteerDetail({ params }) {
   const volunteer = volunteers.find(v => v.id.toString() === params.id);
 
-  if (!volunteer) {
-    return (
-      <MainLayout>
-        <ErrorPage
-          title="Volunteer activity not found"
-          message="Sorry, the activity you're looking for doesn't exist."
-        />
-      </MainLayout>
-    );
-  }
+  
 
   const breadcrumbItems = [
     { title: <Link href="/">Trang chủ</Link> },

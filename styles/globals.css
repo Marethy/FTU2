@@ -210,4 +210,16 @@ div,
 [data-theme='light'] .ant-btn-primary:hover {
   background-color: #3a56d4 !important;
   border-color: #3a56d4 !important;
+}
+
+.logoText {
+  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.themeSwitch {
+  color: var(--text-primary);
+  padding: 0 24px;
 } 
