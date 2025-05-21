@@ -1,102 +1,102 @@
 export const questions = [
   {
     id: 1,
-    question: "Trong một hoạt động nhóm, bạn thích đảm nhận vai trò nào nhất?",
+    question: "Bạn có một ngày nghỉ cuối tuần không deadline. Để ngày hôm đó trở nên đáng giá và ý nghĩa, bạn sẽ lựa chọn:",
     options: [
-      { id: 'A', text: "Lên chiến lược, phân chia công việc rõ ràng", type: "hustler" },
-      { id: 'B', text: "Lắng nghe, động viên và gắn kết mọi người", type: "connector" },
-      { id: 'C', text: "Nghĩ ra ý tưởng lạ, tạo concept độc đáo", type: "creator" },
-      { id: 'D', text: "Tìm hiểu kỹ vấn đề, phân tích thông tin", type: "analyst" }
+      { id: 'A', text: "Lên kế hoạch cho tuần tiếp theo hoặc thử thách bản thân với những hoạt động mới mẻ.", type: "hustler" },
+      { id: 'B', text: "Tham gia hoạt động nhóm hoặc chill cùng bạn bè.", type: "connector" },
+      { id: 'C', text: "Cắm tai nghe, vẽ tranh, viết lách hoặc đi săn lùng các địa điểm có concept thú vị.", type: "creator" },
+      { id: 'D', text: "Ở nhà đọc sách, học ngoại ngữ hoặc tìm hiểu về một chủ đề mới.", type: "analyst" }
     ]
   },
   {
     id: 2,
-    question: "Một buổi chiều cuối tuần lý tưởng với bạn là:",
+    question: "Khi làm việc nhóm, bạn thường là người:",
     options: [
-      { id: 'A', text: "Tham gia workshop khởi nghiệp hoặc làm side project", type: "hustler" },
-      { id: 'B', text: "Đi tình nguyện, hoạt động xã hội", type: "connector" },
-      { id: 'C', text: "Xem triển lãm, vẽ tranh, nghe nhạc indie", type: "creator" },
-      { id: 'D', text: "Đọc sách, học ngoại ngữ hoặc xem tài liệu chuyên sâu", type: "analyst" }
+      { id: 'A', text: "Phân chia nhiệm vụ rõ ràng và push cả team làm việc hiệu quả, đạt được mục tiêu đề ra.", type: "hustler" },
+      { id: 'B', text: "Gắn kết mọi người, tạo không khí thoải mái và support tinh thần.", type: "connector" },
+      { id: 'C', text: "Nghĩ ra idea mới lạ để nhóm trở nên nổi bật hơn trong một tập thể.", type: "creator" },
+      { id: 'D', text: "Phân tích tình huống, tìm giải pháp và giúp nhóm giải quyết vấn đề.", type: "analyst" }
     ]
   },
   {
     id: 3,
-    question: "Trong một chương trình sự kiện, bạn thích nhất phần nào?",
+    question: "Nếu không cân nhắc đến tiêu chuẩn hay yêu cầu của xã hội hay yêu cầu, hãy chọn một kỹ năng mà bạn mong muốn sở hữu nhất:",
     options: [
-      { id: 'A', text: "Điều phối, quản lý thời gian và đội nhóm", type: "hustler" },
-      { id: 'B', text: "Giao lưu với người tham gia, tạo bầu không khí", type: "connector" },
-      { id: 'C', text: "Thiết kế poster, làm video, dựng sân khấu", type: "creator" },
-      { id: 'D', text: "Viết nội dung, lên kịch bản, kiểm tra lỗi", type: "analyst" }
+      { id: 'A', text: "Kỹ năng lãnh đạo, đàm phán và chốt deal nhanh như chớp.", type: "hustler" },
+      { id: 'B', text: "Kỹ năng nói chuyện thu hút đám đông và điều phối nhóm mượt như Sunsilk.", type: "connector" },
+      { id: 'C', text: "Kỹ năng sáng tạo vô hạn và cảm thụ nghệ thuật sâu sắc.", type: "creator" },
+      { id: 'D', text: "Kỹ năng phân tích gốc rễ mọi vấn đề và tư duy logic mạnh mẽ.", type: "analyst" }
     ]
   },
   {
     id: 4,
-    question: "Mô tả đúng nhất về bạn trong 3 từ:",
+    question: "Điều nào dưới đây sẽ khiến bạn cảm thấy sảng khoái, thỏa mãn hoặc \"được là chính mình\" nhất:",
     options: [
-      { id: 'A', text: "Dẫn dắt - Lý trí - Chủ động", type: "hustler" },
-      { id: 'B', text: "Đồng cảm - Cởi mở - Lắng nghe", type: "connector" },
-      { id: 'C', text: "Sáng tạo - Cảm hứng - Cá tính", type: "creator" },
-      { id: 'D', text: "Kiên nhẫn - Học hỏi - Tập trung", type: "analyst" }
+      { id: 'A', text: "Theo đuổi mục tiêu rõ ràng và tự chủ trong quyết định.", type: "hustler" },
+      { id: 'B', text: "Kết nối, trò chuyện với những người mới.", type: "connector" },
+      { id: 'C', text: "Được thể hiện cá tính riêng mà không bị giới hạn và hiện thực hóa các ý tưởng sáng tạo.", type: "creator" },
+      { id: 'D', text: "Có không gian để đào sâu và tìm ra lời giải cho một vấn đề.", type: "analyst" }
     ]
   },
   {
     id: 5,
-    question: "Trong số này, bạn muốn phát triển kỹ năng nào nhất?",
+    question: "Khi đối diện với thử thách trong cuộc sống, bạn sẽ thường cảm thấy:",
     options: [
-      { id: 'A', text: "Lãnh đạo, quản lý dự án", type: "hustler" },
-      { id: 'B', text: "Giao tiếp, thuyết phục", type: "connector" },
-      { id: 'C', text: "Nghệ thuật, sáng tạo nội dung", type: "creator" },
-      { id: 'D', text: "Nghiên cứu, viết phân tích", type: "analyst" }
+      { id: 'A', text: "Thích tìm ra cách giải quyết sáng tạo.", type: "creator" },
+      { id: 'B', text: "Cảm thấy hứng thú và muốn thử sức ngay.", type: "hustler" },
+      { id: 'C', text: "Đôi khi hơi lo lắng, nhưng luôn tìm cách vượt qua.", type: "connector" },
+      { id: 'D', text: "Cảm thấy cần phải suy nghĩ thật kỹ trước khi hành động.", type: "analyst" }
     ]
   },
   {
     id: 6,
-    question: "Khi phải làm việc dưới áp lực, bạn:",
+    question: "Từ trước đến giờ, điều khiến bạn cảm thấy tự hào nhất:",
     options: [
-      { id: 'A', text: "Đẩy nhanh tiến độ, kiểm soát tình hình", type: "hustler" },
-      { id: 'B', text: "Tìm cách trấn an nhóm và giữ hòa khí", type: "connector" },
-      { id: 'C', text: "Giải tỏa bằng cách vẽ, viết, hoặc chơi nhạc", type: "creator" },
-      { id: 'D', text: "Phân tích lý do và tìm hướng giải quyết logic", type: "analyst" }
+      { id: 'A', text: "Khi đạt được những thành quả nhờ sự chăm chỉ, nỗ lực của bản thân.", type: "hustler" },
+      { id: 'B', text: "Khi có thể kết nối và tạo dựng mối quan hệ tốt đẹp với người khác.", type: "connector" },
+      { id: 'C', text: "Khi tạo ra được điều gì đó mang đậm dấu ấn cá nhân.", type: "creator" },
+      { id: 'D', text: "Khi tìm ra được giải pháp hợp lý cho vấn đề nan giải đang gặp phải.", type: "analyst" }
     ]
   },
   {
     id: 7,
-    question: "Một bài đăng trên mạng bạn hay tương tác là:",
+    question: "Nếu có một chuyến đi sắp sửa xảy ra, bạn sẽ:",
     options: [
-      { id: 'A', text: "Chia sẻ kỹ năng, mẹo phát triển bản thân", type: "hustler" },
-      { id: 'B', text: "Câu chuyện ý nghĩa, truyền cảm hứng cộng đồng", type: "connector" },
-      { id: 'C', text: "Video hài hước, sáng tạo, thẩm mỹ cao", type: "creator" },
-      { id: 'D', text: "Bài viết phân tích sâu, kiến thức chuyên môn", type: "analyst" }
+      { id: 'A', text: "Chọn một chuyến đi đến nơi chưa ai từng đến, thử những trải nghiệm mới mẻ.", type: "hustler" },
+      { id: 'B', text: "Đi đâu đó cũng được, chỉ cần cùng đám bạn thân để có những khoảnh khắc khó quên.", type: "connector" },
+      { id: 'C', text: "Cắm trại ở một nơi yên tĩnh, để đầu óc được thả lỏng và rộng mở.", type: "creator" },
+      { id: 'D', text: "Phải có kế hoạch chi tiết, tìm hiểu từng góc nhỏ nơi du lịch.", type: "analyst" }
     ]
   },
   {
     id: 8,
-    question: "Nếu bạn làm một podcast, bạn sẽ:",
+    question: "Khi nhìn thấy một ý tưởng hay, bạn có xu hướng:",
     options: [
-      { id: 'A', text: "Chia sẻ hành trình startup, kỹ năng thực chiến", type: "hustler" },
-      { id: 'B', text: "Trò chuyện về cảm xúc, hành trình sống", type: "connector" },
-      { id: 'C', text: "Kể chuyện bằng chất giọng và âm thanh độc đáo", type: "creator" },
-      { id: 'D', text: "Review sách, kiến thức, tips học tập", type: "analyst" }
+      { id: 'A', text: "Đánh dấu nó để sau này thử áp dụng vào những dự án lớn.", type: "hustler" },
+      { id: 'B', text: "Chia sẻ ngay với người khác để thảo luận, xem phản ứng của họ.", type: "connector" },
+      { id: 'C', text: "Ngồi suy nghĩ và mường tượng ra cách mình có thể phát triển nó.", type: "creator" },
+      { id: 'D', text: "Đánh giá kỹ càng, phân tích xem nó hay ở các khía cạnh nào.", type: "analyst" }
     ]
   },
   {
     id: 9,
-    question: "Bạn muốn được công nhận là người:",
+    question: "Nếu phải chọn một không gian quán cà phê lý tưởng để ngồi làm việc thường xuyên, bạn sẽ chọn:",
     options: [
-      { id: 'A', text: "Tạo ảnh hưởng và dẫn dắt thay đổi", type: "hustler" },
-      { id: 'B', text: "Đồng hành và sẻ chia với người khác", type: "connector" },
-      { id: 'C', text: "Sáng tạo, mang lại cảm hứng", type: "creator" },
-      { id: 'D', text: "Có hiểu biết sâu và truyền tải được tri thức", type: "analyst" }
+      { id: 'A', text: "Một quán có nhiều người đến ngồi học tập và làm việc, không khí thúc đẩy sự hiệu quả, năng suất của bản thân.", type: "hustler" },
+      { id: 'B', text: "Một quán có không gian mở, nhiều bàn lớn để làm việc nhóm, dễ kết nối và trò chuyện cùng người khác.", type: "connector" },
+      { id: 'C', text: "Một quán có decor nghệ thuật, ánh sáng dịu và không gian riêng tư để thả mình vào dòng suy nghĩ của bản thân.", type: "creator" },
+      { id: 'D', text: "Một quán yên tĩnh, bàn ghế chắc chắn, Wi-Fi mạnh, giúp bản thân tập trung và nghiên cứu công việc.", type: "analyst" }
     ]
   },
   {
     id: 10,
-    question: "Khi đứng trước một quyết định quan trọng, bạn thường...",
+    question: "Bạn cho rằng những điều không thể đoán trước trong cuộc sống là cơ hội để:",
     options: [
-      { id: 'A', text: "Ưu tiên tính hiệu quả và hành động nhanh", type: "hustler" },
-      { id: 'B', text: "Nghĩ đến cảm xúc, tác động đến mọi người xung quanh", type: "connector" },
-      { id: 'C', text: "Nghe theo trực giác và cảm hứng lúc đó", type: "creator" },
-      { id: 'D', text: "Tìm hiểu kỹ thông tin, phân tích mọi khả năng rồi mới quyết", type: "analyst" }
+      { id: 'A', text: "Thử thách bản thân.", type: "hustler" },
+      { id: 'B', text: "Kết nối và học hỏi.", type: "connector" },
+      { id: 'C', text: "Nảy ra những ý tưởng mới mẻ, thú vị.", type: "creator" },
+      { id: 'D', text: "Phân tích và đưa ra những cách tiếp cận thông minh.", type: "analyst" }
     ]
   }
 ];
