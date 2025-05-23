@@ -6,13 +6,30 @@ import { BulbFilled, BulbOutlined, FormOutlined, HeartOutlined, HomeOutlined, Te
 import { Layout, Menu, Switch } from 'antd';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 const { Header, Content, Footer } = Layout;
 
 export default function MainLayout({ children }) {
   const { theme, toggle } = useContext(ThemeContext);
   const pathname = usePathname();
+
+  // Effect để cập nhật class và data-theme cho HTML element
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+
+    if (theme === 'dark') {
+      html.classList.add('dark');
+      html.setAttribute('data-theme', 'dark');
+      body.setAttribute('data-theme', 'dark');
+    } else {
+      html.classList.remove('dark');
+      html.setAttribute('data-theme', 'light');
+      body.setAttribute('data-theme', 'light');
+    }
+  }, [theme]);
+
   // Cải thiện logic để xử lý các path con
   const getSelectedKey = (path) => {
     if (path === '/') return 'home';
@@ -77,11 +94,11 @@ export default function MainLayout({ children }) {
   ];
 
   return (
-    <Layout className={styles.layout}>
+    <Layout className={`${styles.layout} ${theme === 'dark' ? styles.dark : ''}`}>
       <Header className={styles.header}>
         <div className={styles.navContainer}>
           <Menu
-            theme="dark"
+            theme={theme === 'dark' ? 'dark' : 'light'}
             mode="horizontal"
             selectedKeys={[selectedKey]}
             items={menuItems}

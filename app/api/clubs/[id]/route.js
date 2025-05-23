@@ -1,4 +1,4 @@
-// File 2: app/api/clubs/[id]/route.js
+// File: app/api/clubs/[id]/route.js
 import fs from 'fs';
 import { NextResponse } from 'next/server';
 import path from 'path';
@@ -8,20 +8,6 @@ import * as xlsx from 'xlsx';
 let cachedClubs = null;
 let lastFetched = null;
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-
-// Danh sách các CLB có thư mục ảnh sẵn có
-const CLUBS_WITH_IMAGES = [
-  'CLB SINH VIÊN NCKH RCS',
-  'CLB KỸ NĂNG DOANH NHÂN AC',
-  'CLB MARKETING CREATIO',
-  'CLB KINH DOANH VÀ TIẾNG ANH BEC',
-  'CLB TIẾNG NHẬT TRƯỜNG ĐH NGOẠI THƯƠNG FJC',
-  'CLB THỂ THAO FSC',
-  'CLB TỔ CHỨC SỰ KIỆN VÀ PHÁT THANH FTU ZONE',
-  'CLB TRUYỀN THÔNG FTUNEWS',
-  'ĐỘI NHẠC THE GLAM',
-  'ĐỘI CÔNG TÁC XÃ HỘI SWC'
-];
 
 // CLUB_FOLDER_MAPPING cập nhật cho tất cả CLB
 const CLUB_FOLDER_MAPPING = {
@@ -66,38 +52,10 @@ const CLUB_FOLDER_MAPPING = {
 
   'ĐỘI CÔNG TÁC XÃ HỘI SWC': 'swc_social_work_team',
   'CÔNG TÁC XÃ HỘI SWC': 'swc_social_work_team',
-  'SWC': 'swc_social_work_team',
-
-  // 25 CLB còn lại (không có thư mục ảnh riêng)
-  'CLB HỢP TÁC QUỐC TẾ ICC': 'placeholder',
-  'CLB KẾ TOÁN - KIỂM TOÁN FAC': 'placeholder',
-  'CLB LUẬT THƯƠNG MẠI QUỐC TẾ ITLC': 'placeholder',
-  'CLB LÝ LUẬN TRẺ FTU2': 'placeholder',
-  'CLB TOÁN ỨNG DỤNG VÀ KHOA HỌC DỮ LIỆU MDS': 'placeholder',
-  'CLB ĐỔI MỚI VÀ SÁNG TẠO IC': 'placeholder',
-  'CLB SÁCH VÀ HÀNH ĐỘNG BAAC': 'placeholder',
-  'CLB CÔNG NGHỆ TÀI CHÍNH FINTECH': 'placeholder',
-  'CLB LOGISTICS LSC': 'placeholder',
-  'CLB NHÀ KINH TẾ TRẺ YEC': 'placeholder',
-  'CLB PHÁT TRIỂN NGUỒN NHÂN LỰC HUC': 'placeholder',
-  'CLB QUẢN TRỊ KINH DOANH BAC': 'placeholder',
-  'CLB TÀI CHÍNH - CHỨNG KHOÁN SeSC': 'placeholder',
-  'CỘNG ĐỒNG KHỞI NGHIỆP TRẺ NGOẠI THƯƠNG EHUB': 'placeholder',
-  'ĐỘI Ý TƯỞNG KINH DOANH BIT': 'placeholder',
-  'CLB KỸ NĂNG VÀ SỰ KIỆN FTUYOURS': 'placeholder',
-  'CLB TRUYỀN THÔNG MARKETING TÍCH HỢP IMC': 'placeholder',
-  'ĐỘI KỊCH LĂNG KÍNH': 'placeholder',
-  'ĐỘI MÚA LA BELLA': 'placeholder',
-  'ĐỘI NHẢY BLACKOUT': 'placeholder',
-  'ĐỘI TUYÊN TRUYỀN CA KHÚC CÁCH MẠNG TCM': 'placeholder',
-  'CLB FTU CONNECTION': 'placeholder',
-  'CLB ĐỒNG HÀNH CÙNG SINH VIÊN SCC': 'placeholder',
-  'CLB HỖ TRỢ VÀ PHÁT TRIỂN SINH VIÊN CLC HAD': 'placeholder',
-  'CLB SHARING - MENTORING - INSPIRING SMI': 'placeholder',
-  'CỘNG ĐỒNG HƯỚNG NGHIỆP & PHÁT TRIỂN SỰ NGHIỆP CUC': 'placeholder'
+  'SWC': 'swc_social_work_team'
 };
 
-// Image files mapping based on actual folder contents from structure.md
+// Image files mapping based on actual folder contents
 const CLUB_FILES = {
   'ac_entrepreneur_skills_club': {
     logo: 'ac_logo.jpg',
@@ -169,11 +127,11 @@ const CLUB_FILES = {
     avatar: 'the_glam_collective_photo.jpg',
     coverImages: ['the_glam_collective_photo.jpg']
   },
-  // Phần placeholder cho các CLB không có folder ảnh riêng
+  // Placeholder for clubs without custom images
   'placeholder': {
-    logo: null, // Sẽ sử dụng placeholder mặc định
-    avatar: null, // Sẽ sử dụng placeholder mặc định
-    coverImages: [] // Sẽ sử dụng placeholder mặc định
+    logo: '/images/avt_placeholder.jpg',
+    avatar: '/images/placeholder.svg',
+    coverImages: []
   }
 };
 
@@ -181,15 +139,107 @@ const CLUB_FILES = {
 function normalizeClubName(name) {
   if (!name) return '';
 
-  // Xử lý các ký tự đặc biệt, xuống dòng và khoảng trắng
   return name
     .toUpperCase()
-    .replace(/\\n/g, ' ')
-    .replace(/\n/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+    .replace(/\\n/g, ' ')   // Replace newline characters with space
+    .replace(/\n/g, ' ')    // Replace actual newlines with space
+    .replace(/\s+/g, ' ')   // Replace multiple spaces with single space
+    .replace(/[^\w\sÀ-ỹ]/g, '') // Remove special characters except Vietnamese
+    .trim();                // Remove leading/trailing spaces
 }
 
+/**
+ * Parse category field from quiz data
+ * Input: "Kinh doanh - Khởi nghiệp", "Kinh doanh - Khởi nghiệp / Ngôn ngữ"
+ * Output: ["Kinh doanh - Khởi nghiệp", "Ngôn ngữ"]
+ */
+function parseCategoryField(categoryField) {
+  if (!categoryField || typeof categoryField !== 'string') {
+    return [];
+  }
+
+  // Split by "/" and clean up each category
+  const categories = categoryField
+    .split('/')
+    .map(cat => cat.trim())
+    .filter(cat => cat.length > 0);
+
+  // Standard categories for validation
+  const standardCategories = [
+    'Khoa học - Lý luận',
+    'Kinh doanh - Khởi nghiệp',
+    'Ngôn ngữ',
+    'Thể thao',
+    'Truyền thông - Sự kiện',
+    'Văn hóa - Nghệ thuật',
+    'Xã hội - Tình nguyện'
+  ];
+
+  // Validate that each category is in our standard list
+  const validCategories = categories.filter(cat =>
+    standardCategories.includes(cat)
+  );
+
+  return validCategories;
+}
+
+/**
+ * Get primary category (first one) from categories array
+ */
+function getPrimaryCategory(categories) {
+  return Array.isArray(categories) && categories.length > 0 ? categories[0] : 'Khác';
+}
+
+// Advanced club name matching function
+function findBestMatch(targetName, candidateNames) {
+  const normalizedTarget = normalizeClubName(targetName);
+
+  // Direct match first
+  for (const candidate of candidateNames) {
+    if (normalizeClubName(candidate) === normalizedTarget) {
+      return candidate;
+    }
+  }
+
+  // Partial match - check if target contains candidate or vice versa
+  for (const candidate of candidateNames) {
+    const normalizedCandidate = normalizeClubName(candidate);
+
+    // Check if either contains the other
+    if (normalizedTarget.includes(normalizedCandidate) ||
+      normalizedCandidate.includes(normalizedTarget)) {
+      return candidate;
+    }
+  }
+
+  // Keyword matching - extract main keywords
+  const targetKeywords = normalizedTarget
+    .split(' ')
+    .filter(word => word.length > 2) // Filter out short words
+    .filter(word => !['CLB', 'DOI', 'NHOM', 'TRUONG', 'DH', 'NGOAI', 'THUONG'].includes(word));
+
+  for (const candidate of candidateNames) {
+    const candidateKeywords = normalizeClubName(candidate)
+      .split(' ')
+      .filter(word => word.length > 2)
+      .filter(word => !['CLB', 'DOI', 'NHOM', 'TRUONG', 'DH', 'NGOAI', 'THUONG'].includes(word));
+
+    // Check if at least 50% of keywords match
+    const matchingKeywords = targetKeywords.filter(keyword =>
+      candidateKeywords.some(candKeyword =>
+        candKeyword.includes(keyword) || keyword.includes(candKeyword)
+      )
+    );
+
+    if (matchingKeywords.length >= Math.min(2, Math.floor(targetKeywords.length * 0.5))) {
+      return candidate;
+    }
+  }
+
+  return null;
+}
+
+// Function to get club images
 function getClubImages(clubName) {
   if (!clubName) {
     return {
@@ -201,42 +251,37 @@ function getClubImages(clubName) {
   }
 
   const normalizedName = normalizeClubName(clubName);
-  console.log(`Normalized name: "${normalizedName}"`);
 
-  const keywordFolderMapping = {
-    'SINH VIEN NCKH RCS': 'scientific_student_student_club_rcs',
-    'KY NANG DOANH NHAN AC': 'ac_entrepreneur_skills_club',
-    'MARKETING CREATIO': 'clb_marketing_ftu2_creatio',
-    'KINH DOANH VA TIENG ANH BEC': 'business_and_english_club_bec',
-    'TIENG NHAT FJC': 'japanese_foreign_trade_university_club_fjc',
-    'THE THAO FSC': 'fsc_sports_club',
-    'TO CHUC SU KIEN VA PHAT THANH FTU ZONE': 'ftu_zone_event_and_broadcasting_club',
-    'TRUYEN THONG FTUNEWS': 'media_club_ftunews',
-    'NHAC THE GLAM': 'the_glam_music_team',
-    'CONG TAC XA HOI SWC': 'swc_social_work_team'
-  };
-
+  // Find folder using mapping
   let folderName = null;
-  for (const [keyword, folder] of Object.entries(keywordFolderMapping)) {
-    const simplifiedKeyword = keyword
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
 
-    const simplifiedName = normalizedName
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
+  // Try exact match first
+  if (CLUB_FOLDER_MAPPING[normalizedName]) {
+    folderName = CLUB_FOLDER_MAPPING[normalizedName];
+  } else {
+    // Try keyword matching
+    const keywordFolderMapping = {
+      'SINH VIEN NCKH RCS': 'scientific_student_student_club_rcs',
+      'KY NANG DOANH NHAN AC': 'ac_entrepreneur_skills_club',
+      'MARKETING CREATIO': 'clb_marketing_ftu2_creatio',
+      'KINH DOANH TIENG ANH BEC': 'business_and_english_club_bec',
+      'TIENG NHAT FJC': 'japanese_foreign_trade_university_club_fjc',
+      'THE THAO FSC': 'fsc_sports_club',
+      'TO CHUC SU KIEN PHAT THANH FTU ZONE': 'ftu_zone_event_and_broadcasting_club',
+      'TRUYEN THONG FTUNEWS': 'media_club_ftunews',
+      'NHAC THE GLAM': 'the_glam_music_team',
+      'CONG TAC XA HOI SWC': 'swc_social_work_team'
+    };
 
-    if (simplifiedName.includes(simplifiedKeyword)) {
-      folderName = folder;
-      console.log(`Found folder match: ${folderName} for keyword: ${keyword}`);
-      break;
+    for (const [keyword, folder] of Object.entries(keywordFolderMapping)) {
+      if (normalizedName.includes(keyword)) {
+        folderName = folder;
+        break;
+      }
     }
   }
 
-  if (!folderName) {
-    folderName = CLUB_FOLDER_MAPPING[normalizedName];
-  }
-
+  // If no folder found or placeholder, return default images
   if (!folderName || folderName === 'placeholder') {
     return {
       image: '/images/avt_placeholder.jpg',
@@ -246,7 +291,7 @@ function getClubImages(clubName) {
     };
   }
 
-  // Lấy thông tin file từ CLUB_FILES
+  // Get file info from CLUB_FILES
   const filesInfo = CLUB_FILES[folderName];
   if (!filesInfo) {
     return {
@@ -257,7 +302,7 @@ function getClubImages(clubName) {
     };
   }
 
-  // Xây dựng đường dẫn ảnh
+  // Build image paths
   const baseDir = `/logo_club_image/${folderName}`;
   return {
     image: filesInfo.avatar ? `${baseDir}/${filesInfo.avatar}` : '/images/avt_placeholder.jpg',
@@ -267,52 +312,6 @@ function getClubImages(clubName) {
       filesInfo.coverImages.map(img => `${baseDir}/${img}`) :
       ['/images/placeholder.svg']
   };
-}
-
-// Helper function to extract domain from club name or summary
-function extractDomain(club) {
-  const text = `${club.name} ${club.summary}`.toLowerCase();
-
-  const domainKeywords = {
-    'Công nghệ': ['it', 'công nghệ', 'lập trình', 'code', 'tech', 'software', 'phần mềm', 'ai', 'machine learning'],
-    'Kinh doanh': ['kinh doanh', 'business', 'startup', 'marketing', 'doanh nghiệp', 'quản trị', 'kinh tế', 'doanh nhân'],
-    'Văn hóa': ['văn hóa', 'culture', 'ngôn ngữ', 'language', 'du lịch', 'travel', 'tiếng nhật', 'tiếng anh'],
-    'Thể thao': ['thể thao', 'sport', 'bóng', 'cầu', 'võ', 'fitness', 'gym'],
-    'Xã hội': ['xã hội', 'tình nguyện', 'volunteer', 'cộng đồng', 'community', 'charity', 'công tác xã hội'],
-    'Nghệ thuật': ['nghệ thuật', 'art', 'nhạc', 'music', 'hội họa', 'painting', 'dance', 'múa', 'âm nhạc'],
-    'Khoa học': ['khoa học', 'science', 'nghiên cứu', 'research', 'học thuật', 'academic', 'nckh']
-  };
-
-  // Special cases based on club names
-  if (club.name.includes('MARKETING') || club.name.includes('KINH DOANH') || club.name.includes('DOANH NHÂN')) {
-    return 'Kinh doanh';
-  }
-  if (club.name.includes('THỂ THAO')) {
-    return 'Thể thao';
-  }
-  if (club.name.includes('NHẠC')) {
-    return 'Nghệ thuật';
-  }
-  if (club.name.includes('CÔNG TÁC XÃ HỘI')) {
-    return 'Xã hội';
-  }
-  if (club.name.includes('NCKH')) {
-    return 'Khoa học';
-  }
-  if (club.name.includes('TIẾNG NHẬT') || club.name.includes('TIẾNG ANH')) {
-    return 'Văn hóa';
-  }
-  if (club.name.includes('TRUYỀN THÔNG')) {
-    return 'Công nghệ';
-  }
-
-  for (const [domain, keywords] of Object.entries(domainKeywords)) {
-    if (keywords.some(keyword => text.includes(keyword))) {
-      return domain;
-    }
-  }
-
-  return 'Khác';
 }
 
 // Helper function to generate activities based on club type
@@ -325,33 +324,33 @@ function generateActivities(club) {
 
   // Add domain-specific activities
   const domainActivities = {
-    'Công nghệ': [
-      { id: 4, name: 'Hackathon', frequency: 'Hàng năm', time: 'Tháng 10' },
-      { id: 5, name: 'Code review session', frequency: 'Hai tuần/lần', time: 'Thứ 4, 3:00 PM' },
+    'Khoa học - Lý luận': [
+      { id: 4, name: 'Seminar nghiên cứu', frequency: 'Hàng tháng', time: 'Thứ 6, 3:00 PM' },
+      { id: 5, name: 'Hội thảo khoa học', frequency: 'Hàng năm', time: 'Tháng 11' },
+    ],
+    'Kinh doanh - Khởi nghiệp': [
+      { id: 4, name: 'Case study workshop', frequency: 'Hàng tháng', time: 'Thứ 6, 2:00 PM' },
+      { id: 5, name: 'Startup pitching', frequency: 'Hàng quý', time: 'Cuối quý' },
+    ],
+    'Ngôn ngữ': [
+      { id: 4, name: 'Lớp học ngôn ngữ', frequency: '2 lần/tuần', time: 'Thứ 3,5, 6:00 PM' },
+      { id: 5, name: 'Giao lưu văn hóa', frequency: 'Hàng tháng', time: 'Chủ nhật cuối tháng' },
     ],
     'Thể thao': [
       { id: 4, name: 'Tập luyện', frequency: '3 lần/tuần', time: 'Thứ 2,4,6, 5:00 PM' },
       { id: 5, name: 'Giải đấu nội bộ', frequency: 'Hàng tháng', time: 'Chủ nhật đầu tháng' },
     ],
-    'Kinh doanh': [
-      { id: 4, name: 'Case study workshop', frequency: 'Hàng tháng', time: 'Thứ 6, 2:00 PM' },
-      { id: 5, name: 'Startup pitching', frequency: 'Hàng quý', time: 'Cuối quý' },
+    'Truyền thông - Sự kiện': [
+      { id: 4, name: 'Workshop truyền thông', frequency: 'Hàng tháng', time: 'Thứ 7, 2:00 PM' },
+      { id: 5, name: 'Tổ chức sự kiện', frequency: 'Hàng quý', time: 'Cuối quý' },
     ],
-    'Văn hóa': [
-      { id: 4, name: 'Lớp học ngôn ngữ', frequency: '2 lần/tuần', time: 'Thứ 3,5, 6:00 PM' },
-      { id: 5, name: 'Giao lưu văn hóa', frequency: 'Hàng tháng', time: 'Chủ nhật cuối tháng' },
-    ],
-    'Nghệ thuật': [
+    'Văn hóa - Nghệ thuật': [
       { id: 4, name: 'Buổi tập nhạc', frequency: '3 lần/tuần', time: 'Thứ 2,4,6, 7:00 PM' },
       { id: 5, name: 'Biểu diễn nghệ thuật', frequency: 'Hàng tháng', time: 'Thứ 7 đầu tháng' },
     ],
-    'Xã hội': [
+    'Xã hội - Tình nguyện': [
       { id: 4, name: 'Hoạt động tình nguyện', frequency: 'Hàng tháng', time: 'Chủ nhật thứ 2' },
       { id: 5, name: 'Chương trình từ thiện', frequency: 'Hàng quý', time: 'Theo kế hoạch' },
-    ],
-    'Khoa học': [
-      { id: 4, name: 'Seminar nghiên cứu', frequency: 'Hàng tháng', time: 'Thứ 6, 3:00 PM' },
-      { id: 5, name: 'Hội thảo khoa học', frequency: 'Hàng năm', time: 'Tháng 11' },
     ]
   };
 
@@ -366,19 +365,19 @@ function generateAchievements(club) {
   ];
 
   const domainAchievements = {
-    'Kinh doanh': [
+    'Kinh doanh - Khởi nghiệp': [
       { year: 2023, title: 'Giải nhất Business Case Competition', description: 'Vô địch cuộc thi phân tích tình huống kinh doanh' },
       { year: 2022, title: 'Top 3 Startup Idea Contest', description: 'Lọt vào top 3 cuộc thi ý tưởng khởi nghiệp cấp quốc gia' },
     ],
-    'Công nghệ': [
-      { year: 2023, title: 'Giải nhì Hackathon FTU', description: 'Đạt giải nhì cuộc thi lập trình Hackathon FTU' },
-      { year: 2022, title: 'Best Tech Project Award', description: 'Giải thưởng dự án công nghệ xuất sắc nhất' },
+    'Truyền thông - Sự kiện': [
+      { year: 2023, title: 'Giải nhì Media Contest', description: 'Đạt giải nhì cuộc thi sáng tạo nội dung truyền thông' },
+      { year: 2022, title: 'Best Event Award', description: 'Giải thưởng sự kiện xuất sắc nhất' },
     ],
-    'Xã hội': [
+    'Xã hội - Tình nguyện': [
       { year: 2023, title: 'Chứng nhận cống hiến cộng đồng', description: 'Nhận chứng nhận vì các hoạt động tình nguyện xuất sắc' },
       { year: 2022, title: 'Giải thưởng Tình nguyện viên của năm', description: 'Được trao giải thưởng tình nguyện viên tiêu biểu' },
     ],
-    'Văn hóa': [
+    'Ngôn ngữ': [
       { year: 2023, title: 'Giải nhất cuộc thi hùng biện', description: 'Vô địch cuộc thi hùng biện tiếng Anh cấp trường' },
       { year: 2022, title: 'Top 5 Culture Exchange Program', description: 'Lọt top 5 chương trình trao đổi văn hóa quốc tế' },
     ],
@@ -386,11 +385,11 @@ function generateAchievements(club) {
       { year: 2023, title: 'Vô địch giải thể thao sinh viên', description: 'Đạt chức vô địch giải thể thao sinh viên toàn quốc' },
       { year: 2022, title: 'Giải nhì cúp bóng đá FTU', description: 'Á quân giải bóng đá sinh viên FTU' },
     ],
-    'Nghệ thuật': [
+    'Văn hóa - Nghệ thuật': [
       { year: 2023, title: 'Giải nhất FTU Got Talent', description: 'Quán quân cuộc thi tài năng FTU Got Talent' },
       { year: 2022, title: 'Best Performance Award', description: 'Giải thưởng tiết mục biểu diễn xuất sắc nhất' },
     ],
-    'Khoa học': [
+    'Khoa học - Lý luận': [
       { year: 2023, title: 'Giải nhất nghiên cứu khoa học', description: 'Đạt giải nhất hội nghị nghiên cứu khoa học sinh viên' },
       { year: 2022, title: 'Best Research Paper Award', description: 'Giải thưởng bài nghiên cứu xuất sắc nhất' },
     ]
@@ -399,69 +398,125 @@ function generateAchievements(club) {
   return [...baseAchievements, ...(domainAchievements[club.domain] || [])];
 }
 
-// Đọc dữ liệu từ file FTU2-data.xlsx (bỏ dòng đầu tiên)
-async function fetchClubsData() {
+// Function to read synthesis data
+async function readSynthesisData() {
   try {
-    const filePath = path.join(process.cwd(), 'data/FTU2-data.xlsx');
-
-    try {
-      await fs.promises.access(filePath);
-    } catch (error) {
-      console.error('Data file not found:', filePath);
-      return [];
-    }
+    const filePath = path.join(process.cwd(), 'data/synthesis.xlsx');
+    await fs.promises.access(filePath);
 
     const fileBuffer = fs.readFileSync(filePath);
     const wb = xlsx.read(fileBuffer, { type: 'buffer' });
-
-    if (!wb || !wb.SheetNames.length) {
-      throw new Error('Invalid workbook format');
-    }
-
     const sheet = wb.Sheets[wb.SheetNames[0]];
-    if (!sheet) {
-      throw new Error('Sheet not found');
-    }
 
-    // Đọc toàn bộ dữ liệu từ file Excel
     const rawData = xlsx.utils.sheet_to_json(sheet, {
       defval: '',
-      header: ['STT', 'CLB - ĐỘI - NHÓM', 'SƠ LƯỢC', 'CUỘC THI/CHƯƠNG TRÌNH', 'PHẢN HỒI']
+      header: ['STT', 'CLB - ĐỘI - NHÓM', 'SƠ LƯỢC', 'KỲ TUYỂN THÀNH VIÊN', 'HOẠT ĐỘNG TÌNH NGUYỆN', 'GHI CHÚ']
     });
 
-    // Bỏ dòng đầu tiên (dòng tiêu đề)
-    const clubData = rawData.slice(1);
+    // Skip header row
+    return rawData.slice(1);
+  } catch (error) {
+    console.error('Error reading synthesis data:', error);
+    return [];
+  }
+}
 
-    // Format dữ liệu CLB
-    return clubData.map((r, index) => {
-      const clubName = r['CLB - ĐỘI - NHÓM'] || '';
+// Function to read quiz data
+async function readQuizData() {
+  try {
+    const filePath = path.join(process.cwd(), 'data/quiz.xlsx');
+    await fs.promises.access(filePath);
+
+    const fileBuffer = fs.readFileSync(filePath);
+    const wb = xlsx.read(fileBuffer, { type: 'buffer' });
+    const sheet = wb.Sheets[wb.SheetNames[0]];
+
+    const rawData = xlsx.utils.sheet_to_json(sheet, {
+      defval: '',
+      header: ['Tên CLB', 'Nhóm lĩnh vực', 'Nhóm tính cách']
+    });
+
+    // Skip header row
+    return rawData.slice(1);
+  } catch (error) {
+    console.error('Error reading quiz data:', error);
+    return [];
+  }
+}
+
+// Main function to fetch and combine club data
+async function fetchClubsData() {
+  try {
+    const [synthesisData, quizData] = await Promise.all([
+      readSynthesisData(),
+      readQuizData()
+    ]);
+
+    if (synthesisData.length === 0) {
+      return [];
+    }
+
+    // Get all quiz club names for matching
+    const quizClubNames = quizData.map(q => q['Tên CLB']).filter(name => name);
+
+    return synthesisData.map((row, index) => {
+      const clubName = row['CLB - ĐỘI - NHÓM'] || '';
+
+      if (!clubName.trim()) {
+        return null; // Skip empty club names
+      }
+
+      // Find matching quiz data
+      const matchedQuizClub = findBestMatch(clubName, quizClubNames);
+      const quizInfo = matchedQuizClub
+        ? quizData.find(q => q['Tên CLB'] === matchedQuizClub)
+        : null;
+
+      // Parse categories from quiz data
+      let categories = [];
+      let primaryDomain = 'Khác';
+
+      if (quizInfo && quizInfo['Nhóm lĩnh vực']) {
+        categories = parseCategoryField(quizInfo['Nhóm lĩnh vực']);
+        primaryDomain = getPrimaryCategory(categories);
+      }
+
+      // Get images
       const images = getClubImages(clubName);
 
-      // Đảm bảo ID duy nhất
-      const id = r['STT'] ? String(r['STT']) : `club-${index + 1}`;
+      // Create ID
+      const id = row['STT'] ? String(row['STT']) : `club-${index + 1}`;
 
       const club = {
         id: id,
         name: clubName,
-        summary: r['SƠ LƯỢC'] || '',
-        contests: r['CUỘC THI/CHƯƠNG TRÌNH'] || '',
-        feedback: r['PHẢN HỒI'] || '',
-        // Thêm các trường bổ sung
+        summary: row['SƠ LƯỢC'] || '',
+        recruitmentPeriod: row['KỲ TUYỂN THÀNH VIÊN'] || '',
+        volunteerActivities: row['HOẠT ĐỘNG TÌNH NGUYỆN'] || '',
+        notes: row['GHI CHÚ'] || '',
+
+        // From quiz data - categories handling
+        domain: primaryDomain, // Primary category for filtering
+        categories: categories, // All categories for detailed view
+        personalityType: quizInfo ? (quizInfo['Nhóm tính cách'] || null) : null,
+
+        // Generated data
         memberCount: Math.floor(Math.random() * 100) + 20,
         isActive: Math.random() > 0.2,
         rating: (Math.random() * 2 + 3).toFixed(1),
-        image: images.image,
-        coverImage: images.coverImage,
-        logo: images.logo,
-        images: images.images,
         foundedYear: 2015 + Math.floor(Math.random() * 8),
         email: `club${id}@ftu.edu.vn`,
         phone: `+84${Math.floor(Math.random() * 900000000 + 100000000)}`,
         location: 'Phòng CLB, Tầng 3, Nhà A',
+
+        // Images
+        image: images.image,
+        coverImage: images.coverImage,
+        logo: images.logo,
+        images: images.images
       };
 
-      // Thêm domain và dữ liệu liên quan
-      club.domain = extractDomain(club);
+      // Generate activities and achievements using primary domain
       club.activities = generateActivities(club);
       club.achievements = generateAchievements(club);
       club.socialLinks = {
@@ -471,9 +526,10 @@ async function fetchClubsData() {
       };
 
       return club;
-    });
+    }).filter(club => club !== null); // Remove null entries
+
   } catch (error) {
-    console.error('Error reading club data:', error);
+    console.error('Error processing clubs data:', error);
     return [];
   }
 }
@@ -491,7 +547,7 @@ export async function GET(request, { params }) {
       }
     }
 
-    // Fetch all clubs (with support for all 35 CLB and skipping first row)
+    // Fetch all clubs
     const clubs = await fetchClubsData();
 
     // Update cache

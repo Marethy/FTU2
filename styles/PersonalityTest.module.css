@@ -80,6 +80,8 @@
 
 .featureItem {
     text-align: center;
+    height: 200px;
+    cursor: pointer;
     padding: 1.5rem;
     background: #f8f9fa;
     border-radius: 12px;
@@ -115,6 +117,7 @@
 
 .typeCard {
     text-align: center;
+    height: 250px;
     border-radius: 12px;
     transition: all 0.3s ease;
     cursor: pointer;

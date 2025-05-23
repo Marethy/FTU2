@@ -1,8 +1,8 @@
-import ClubDetailClient from "@/app/clubs/[id]/ClubDetailClient";
+import ClubDetailClient from './ClubDetailClient';
 
-export default async function ClubDetail({ params }) {
-  // Await params before using its properties
-  const { id } = await params;
+export default async function ClubDetailPage({ searchParams }) {
+  // Await searchParams to handle the async nature of Next.js 15+
+  const params = await searchParams;
 
-  return <ClubDetailClient id={id} />;
+  return <ClubDetailClient searchParams={params} />;
 }

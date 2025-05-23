@@ -63,14 +63,14 @@ export default function TestIntro({ onStartTest }) {
     return (
         <div className={styles.introContainer}>
             <Card className={styles.introCard}>
-                <Title style={{ color: 'black' }} level={2} className={styles.sectionTitle}>
-                FTU2 Club Match: Your Next Adventure Awaits!
+                <Title level={2} className={styles.sectionTitle}>
+                    FTU2 Club Match: Your Next Adventure Awaits!
                 </Title>
 
                 <Paragraph className={styles.description}>
-                Trước khi bắt đầu, hãy lưu ý rằng bài quiz này đóng vai trò như một công cụ hỗ trợ bạn trong việc khám phá các CLB, Đội, Nhóm phù hợp ở FTU2. 
-                Kết quả quiz chỉ mang tính chất tham khảo, nhằm đưa ra một số đề xuất giúp bạn tự tin hơn trong hành trình tìm kiếm “gia đình nhỏ” cho riêng mình. 
-                Tuy nhiên, quyết định cuối cùng vẫn nằm ở bạn. Hãy tham gia quiz với tinh thần thoải mái và cởi mở, đồng thời đừng ngần ngại khám phá những điều mới mẻ đang chờ phía trước, bạn nhé!
+                    Trước khi bắt đầu, hãy lưu ý rằng bài quiz này đóng vai trò như một công cụ hỗ trợ bạn trong việc khám phá các CLB, Đội, Nhóm phù hợp ở FTU2.
+                    Kết quả quiz chỉ mang tính chất tham khảo, nhằm đưa ra một số đề xuất giúp bạn tự tin hơn trong hành trình tìm kiếm “gia đình nhỏ” cho riêng mình.
+                    Tuy nhiên, quyết định cuối cùng vẫn nằm ở bạn. Hãy tham gia quiz với tinh thần thoải mái và cởi mở, đồng thời đừng ngần ngại khám phá những điều mới mẻ đang chờ phía trước, bạn nhé!
                 </Paragraph>
 
                 <Row gutter={[24, 24]} className={styles.featuresRow}>
@@ -78,8 +78,8 @@ export default function TestIntro({ onStartTest }) {
                         <Col xs={12} sm={6} key={index}>
                             <div className={styles.featureItem}>
                                 {feature.icon}
-                                <Title style={{ color: 'black' }} level={4}>{feature.title}</Title>
-                                <Paragraph style={{ color: 'black' }}>{feature.description}</Paragraph>
+                                <Title level={4}>{feature.title}</Title>
+                                <Paragraph>{feature.description}</Paragraph>
                             </div>
                         </Col>
                     ))}
@@ -110,8 +110,8 @@ export default function TestIntro({ onStartTest }) {
 
                 <div className={styles.startSection}>
                     <Title level={3}>Sẵn sàng khám phá?</Title>
-                    <Paragraph style={{ color: 'black' }}>
-                    Còn bây giờ, chúc bạn có trải nghiệm thú vị và hài lòng cùng với “FTU2 Club Match”!
+                    <Paragraph>
+                        Còn bây giờ, chúc bạn có trải nghiệm thú vị và hài lòng cùng với “FTU2 Club Match”!
                     </Paragraph>
                     <Button
                         type="primary"
@@ -119,7 +119,7 @@ export default function TestIntro({ onStartTest }) {
                         onClick={onStartTest}
                         className={styles.startButton}
                     >
-                        Bắt đầu ngay    
+                        Bắt đầu ngay
                     </Button>
                 </div>
             </Card>

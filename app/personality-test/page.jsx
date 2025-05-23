@@ -20,10 +20,10 @@ export default function PersonalityTestPage() {
             <div className={styles.container}>
                 <div className={styles.heroSection}>
                     <Title level={1} className={styles.mainTitle}>
-                        Khám phá CLB phù hợp với bạn
+                        Khám phá CLB, Đội, Nhóm phù hợp với bạn
                     </Title>
-                    <p className={styles.subtitle} style={{ color: '#495057' }}>
-                        Bài test tính cách này sẽ giúp bạn tìm ra những CLB phù hợp nhất với sở thích và tính cách của mình tại FTU2
+                    <p className={styles.subtitle}>
+                        Bài test tính cách này sẽ giúp bạn tìm ra những CLB, Đội, Nhóm phù hợp nhất với sở thích và tính cách của mình tại FTU2
                     </p>
                 </div>
                 <TestIntro onStartTest={handleStartTest} />

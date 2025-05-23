@@ -1,14 +1,307 @@
 'use client'
 
 import MainLayout from '@/components/MainLayout'
-import OptimizedAvatar from '@/components/OptimizedAvatar'
-import { BookOutlined, CalendarOutlined, GlobalOutlined, HeartOutlined, RocketOutlined, SoundOutlined, StarOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons'
-import { Avatar, Button, Calendar, Card, Carousel, Col, message, Row, Skeleton, Space, Statistic, Tag, Typography } from 'antd'
+import { BookOutlined, CalendarOutlined, GlobalOutlined, HeartOutlined, LeftOutlined, RightOutlined, RocketOutlined, SoundOutlined, StarOutlined, TeamOutlined, TrophyOutlined } from '@ant-design/icons'
+import { Button, Card, Col, message, Row, Skeleton, Space, Statistic, Tag, Typography } from 'antd'
 import Link from 'next/link'
-import Image from 'next/image'
 import { cloneElement, useEffect, useState } from 'react'
 
 const { Title, Text, Paragraph } = Typography
+
+// Component hiển thị 2 ảnh cùng lúc với thiết kế chuyên nghiệp cho câu lạc bộ học thuật
+const DualImageCarousel = () => {
+  const [currentPair, setCurrentPair] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [fadeClass, setFadeClass] = useState('fade-in');
+
+  // Danh sách ảnh với metadata cho câu lạc bộ học thuật
+  const imageData = [
+    {
+      src: "/homepage/banner_1.jpg",
+      title: "MARKETING AREA 2025: Beyond the toughest reside unbroken spirits",
+      subtitle: "MARKETING ARENA là cuộc thi về Marketing do CLB Creatio tổ chức nhằm tìm kiếm chân dung của các Marketers bền bỉ và vững vàng trước những chuyển động không ngừng của thị trường hiện đại. Xuyên suốt các vòng thi, các thí sinh sẽ đối diện với những đề bài dựa trên tình hình kinh doanh thực tiễn của doanh nghiệp, đồng thời đương đầu với những yêu cầu chuyên môn sâu rộng những chặng cuối cùng. \nĐể kinh qua những thử thách khắc nghiệt nhất, kẻ viễn du nào cũng cần một tinh thần bất khuất hòng đương đầu với những điều tưởng chừng bất khả. Trước trận tuyến khốc liệt của thời cuộc, người thủ lĩnh phải vững vàng chèo lái con tàu thép xuyên thủng sức nén dữ dội của thời không. \nNhằm đánh thức những ý chí quả cảm, MARKETING ARENA 2025 đã chính thức quay trở lại và mở ra một sân chơi khốc liệt chưa từng có! Tôi luyện bản lĩnh sắt đá và tinh thần chiến đấu không ngừng nghỉ, Đấu trường Thực chiến sẽ xướng danh kẻ dám vượt qua thách thức thời đại để mở lối cho một kỷ nguyên Marketing rực rỡ.",
+      category: "Academic Conference"
+    },
+    {
+      src: "/homepage/banner_2.png",
+      title: "B-LEAD 2025: SHIFTNARIO",
+      category: "Research Competition"
+    },
+    {
+      src: "/homepage/banner_3.jpg",
+      title: "Doanh nhân tập sự 2025: In dấu thành tựu cùng thập niên bản lĩnh",
+      category: "Academic Conference"
+    },
+    {
+      src: "/homepage/banner_4.png",
+      title: "IN YOUR EYES 2025: SPOTL'EYE",
+      category: "Academic Conference"
+    }
+  ];
+
+  // Chia thành các cặp
+  const imagePairs = [];
+  for (let i = 0; i < imageData.length; i += 2) {
+    imagePairs.push(imageData.slice(i, i + 2));
+  }
+
+  useEffect(() => {
+    if (!isHovered) {
+      const interval = setInterval(() => {
+        setFadeClass('fade-out');
+        setTimeout(() => {
+          setCurrentPair((prev) => (prev + 1) % imagePairs.length);
+          setFadeClass('fade-in');
+        }, 300);
+      }, 4000); // Tăng thời gian lên 4s để có cảm giác chuyên nghiệp hơn
+
+      return () => clearInterval(interval);
+    }
+  }, [imagePairs.length, isHovered]);
+
+  const handleManualChange = (direction) => {
+    setFadeClass('fade-out');
+    setTimeout(() => {
+      if (direction === 'next') {
+        setCurrentPair((prev) => (prev + 1) % imagePairs.length);
+      } else {
+        setCurrentPair((prev) => (prev - 1 + imagePairs.length) % imagePairs.length);
+      }
+      setFadeClass('fade-in');
+    }, 300);
+  };
+
+  return (
+    <div
+      className="academic-carousel-container"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        position: 'relative',
+        borderRadius: 20,
+        overflow: 'hidden',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.15), 0 8px 25px rgba(0,0,0,0.1)',
+      }}
+    >
+      {/* Navigation Controls */}
+      <div style={{
+        position: 'absolute',
+        top: 30,
+        right: 30,
+        zIndex: 10,
+        display: 'flex',
+        gap: 8
+      }}>
+        <Button
+          shape="circle"
+          onClick={() => handleManualChange('prev')}
+          style={{
+            background: 'rgba(255,255,255,0.9)',
+            color: 'black',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255,255,255,0.2)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.1)'
+          }}
+          icon={<LeftOutlined />}
+        />
+        <Button
+          shape="circle"
+          onClick={() => handleManualChange('next')}
+          style={{
+            background: 'rgba(255,255,255,0.9)',
+            color: 'black',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255,255,255,0.2)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.1)'
+          }}
+          icon={<RightOutlined />}
+        />
+      </div>
+
+      {/* Main Content */}
+      <div className={fadeClass} style={{ transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)' }}>
+        <Row gutter={[24, 24]} style={{ margin: 0 }}>
+          {imagePairs[currentPair]?.map((item, index) => (
+            <Col xs={24} sm={12} key={`${currentPair}-${index}`}>
+              <div style={{
+                position: 'relative',
+                borderRadius: 16,
+                overflow: 'hidden',
+                height: 420,
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                boxShadow: '0 15px 35px rgba(30,30,30,0.1), 0 5px 15px rgba(0,0,0,0.05)',
+                transform: isHovered ? 'translateY(-5px)' : 'translateY(0)',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}>
+                {/* Background Image */}
+                <img
+                  src={item.src}
+                  alt={item.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    transition: 'transform 0.6s ease'
+                  }}
+                />
+
+                {/* Gradient Overlay */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.7) 100%)',
+                }} />
+
+                {/* Category Badge */}
+                <div style={{
+                  position: 'absolute',
+                  top: 20,
+                  left: 20,
+                  background: 'rgba(24, 144, 255, 0.9)',
+                  backdropFilter: 'blur(10px)',
+                  padding: '6px 16px',
+                  borderRadius: 20,
+                  border: '1px solid rgba(255,255,255,0.2)'
+                }}>
+                  <Text style={{
+                    color: 'white',
+                    fontSize: 12,
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  }}>
+                    {item.category}
+                  </Text>
+                </div>
+
+                {/* Content Overlay */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  padding: '30px 25px',
+                  background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%)'
+                }}>
+                  <Space direction="vertical" size={8} style={{ width: '100%' }}>
+                    <Title
+                      level={4}
+                      style={{
+                        color: 'white',
+                        margin: 0,
+                        fontSize: 20,
+                        fontWeight: 600,
+                        lineHeight: '1.3',
+                        textShadow: '0 2px 8px rgba(0,0,0,0.3)'
+                      }}
+                    >
+                      {item.title}
+                    </Title>
+                    {/* Action Button */}
+                    <Button
+                      type="primary"
+                      ghost
+                      size="small"
+                      style={{
+                        marginTop: 12,
+                        borderColor: 'rgba(255,255,255,0.8)',
+                        color: 'white',
+                        borderRadius: 20,
+                        fontWeight: 500,
+                        backdropFilter: 'blur(10px)',
+                        background: 'rgba(255,255,255,0.1)'
+                      }}
+                    >
+                      Xem chi tiết
+                    </Button>
+                  </Space>
+                </div>
+
+                {/* Decorative Elements */}
+                <div style={{
+                  position: 'absolute',
+                  top: -50,
+                  right: -50,
+                  width: 100,
+                  height: 100,
+                  borderRadius: '50%',
+                  background: 'linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
+                  backdropFilter: 'blur(20px)'
+                }} />
+              </div>
+            </Col>
+          ))}
+        </Row>
+      </div>
+
+      {/* Progress Indicators */}
+      <div style={{
+        position: 'absolute',
+        bottom: 30,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        display: 'flex',
+        gap: 12,
+        background: 'rgba(255,255,255,0.9)',
+        backdropFilter: 'blur(10px)',
+        padding: '8px 16px',
+        borderRadius: 20,
+        border: '1px solid rgba(255,255,255,0.2)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
+      }}>
+        {imagePairs.map((_, index) => (
+          <div
+            key={index}
+            onClick={() => {
+              setFadeClass('fade-out');
+              setTimeout(() => {
+                setCurrentPair(index);
+                setFadeClass('fade-in');
+              }, 300);
+            }}
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: '50%',
+              background: index === currentPair
+                ? 'linear-gradient(45deg, #1890ff, #722ed1)'
+                : 'rgba(0,0,0,0.2)',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              boxShadow: index === currentPair ? '0 2px 8px rgba(24,144,255,0.4)' : 'none'
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Custom Styles */}
+      <style jsx>{`
+        .academic-carousel-container .fade-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .academic-carousel-container .fade-out {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        
+        .academic-carousel-container:hover img {
+          transform: scale(1.05);
+        }
+        
+        @media (max-width: 768px) {
+          .academic-carousel-container {
+            margin: 0 -12px;
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
 
 // Domain icons mapping với 7 domains mới
 const domainIcons = {
@@ -54,17 +347,37 @@ const domainColors = {
 
 // Upcoming events
 const upcomingEvents = [
-  { title: "Gala Night SCMission", date: "2024-12-15", type: "Cuộc thi", image: "/homepage/event_4_text_gala_night_scmission_analysis_of_analysis_answers_business_analysis.jpg" },
-  { title: "Marketing Arena 2025", date: "2025-01-20", type: "Cuộc thi", image: "/homepage/event_1.jpg" },
-  { title: "B-LEAD 2025", date: "2025-02-10", type: "Hội thảo", image: "/homepage/event_2.jpg" },
-  { title: "Club Fair 2025", date: "2025-03-05", type: "Sự kiện", image: "/homepage/event_3.jpg" }
+  {
+    image: "/homepage/banner_1.jpg",
+    title: "MARKETING AREA 2025: Beyond the toughest reside unbroken spirits",
+    date: "05/23/2025",
+    type: "Cuộc thi"
+  },
+  {
+    image: "/homepage/banner_2.png",
+    title: "B-LEAD 2025: SHIFTNARIO",
+    date: "04/27/2025",
+    type: "Nghiên cứu"
+  },
+  {
+    image: "/homepage/banner_3.jpg",
+    title: "Doanh nhân tập sự 2025: In dấu thành tựu cùng thập niên bản lĩnh",
+    date: "05/03/2025",
+    type: "Cuộc thi"
+  },
+  {
+    image: "/homepage/banner_4.png",
+    title: "IN YOUR EYES 2025: SPOTL'EYE",
+    date: "05/04/2025",
+    type: "Cuộc thi"
+  },
 ]
 
 export default function Home() {
   const [clubs, setClubs] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [domains, setDomains] = useState([])
+  const [_, setDomains] = useState([])
 
   // Add custom CSS for 5 columns on XL screens
   useEffect(() => {
@@ -130,9 +443,9 @@ export default function Home() {
     acc[domain].push(club)
     return acc
   }, {})
+
   // Calculate statistics - using data from API
-  const totalClubs = 35 // Tổng số clubs theo danh sách
-  const totalMembers = 5000 // Approximate total members
+  const totalClubs = 36 // Tổng số clubs theo danh sách
   const totalEvents = 50
   const domainCount = 7 // 7 domains mới
 
@@ -149,77 +462,22 @@ export default function Home() {
       <div style={{ padding: '24px' }}>
         {/* Hero Section */}
         <div style={{
-          background: 'linear-gradient(135deg, #1890ff 0%, #096dd9 100%)',
           borderRadius: 16,
-          padding: '48px 24px',
           marginBottom: 48,
           color: 'white'
         }}>
-          <Row gutter={[32, 32]} align="middle">
-            <Col xs={24} md={12}>
-              <Space direction="vertical" size="large" style={{ width: '100%' }}>
-                <Title level={1} style={{ color: 'white', margin: 0 }}>
-                  Kết nối Cộng đồng Sinh viên FTU2
-                </Title>
-                <Paragraph style={{ fontSize: 18, color: 'rgba(255,255,255,0.9)', margin: 0 }}>
-                  Khám phá các câu lạc bộ, tham gia sự kiện và kết nối với cộng đồng sinh viên năng động
-                </Paragraph>
-                <Space wrap>
-                  <Link href="/clubs">
-                    <Button type="primary" size="large" style={{ background: 'white', color: '#1890ff', border: 'none' }}>
-                      Khám phá CLB
-                    </Button>
-                  </Link>
-                  <Link href="/contests">
-                    <Button size="large" ghost style={{ borderColor: 'white', color: 'white' }}>
-                      Sự kiện sắp tới
-                    </Button>
-                  </Link>
-                </Space>
-              </Space>
-            </Col>
-            <Col xs={24} md={12}>
-              {loading ? (
+          {loading ? (
+            <Row gutter={[16, 16]}>
+              <Col xs={24} sm={12}>
                 <Skeleton.Image active style={{ width: '100%', height: 400 }} />
-              ) : (                <Carousel autoplay style={{ borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.15)' }}>
-                  <div style={{ position: 'relative', width: '100%', height: 400, backgroundColor: '#001529' }}>
-                    <Image
-                      src="/homepage/banner_1_cut_of_sponsors.jpg"
-                      alt="Banner 1"
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      priority
-                      style={{ objectFit: 'contain' }}
-                    />                  </div>
-                  <div style={{ position: 'relative', width: '100%', height: 400, backgroundColor: '#001529' }}>
-                    <Image
-                      src="/homepage/banner_2.jpg"
-                      alt="Banner 2"
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
-                      style={{ objectFit: 'contain' }}
-                    />                  </div>
-                  <div style={{ position: 'relative', width: '100%', height: 400, backgroundColor: '#001529' }}>
-                    <Image
-                      src="/homepage/event_1.jpg"
-                      alt="Sự kiện 1"
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      style={{ objectFit: 'contain' }}
-                    />                  </div>
-                  <div style={{ position: 'relative', width: '100%', height: 400, backgroundColor: '#001529' }}>
-                    <Image
-                      src="/homepage/event_2.jpg"
-                      alt="Sự kiện 2" 
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      style={{ objectFit: 'contain' }}
-                    />
-                  </div>
-                </Carousel>
-              )}
-            </Col>
-          </Row>
+              </Col>
+              <Col xs={24} sm={12}>
+                <Skeleton.Image active style={{ width: '100%', height: 400 }} />
+              </Col>
+            </Row>
+          ) : (
+            <DualImageCarousel />
+          )}
         </div>
 
         {/* Stats Section */}
@@ -228,8 +486,8 @@ export default function Home() {
             {loading ? (
               // Skeleton loading for stats
               <>
-                {[1, 2, 3, 4].map((item) => (
-                  <Col xs={12} sm={6} key={item}>
+                {[1, 2, 3].map((item) => (
+                  <Col xs={8} sm={8} md={8} lg={8} xl={8} key={item}>
                     <Card>
                       <Skeleton active paragraph={false} />
                     </Card>
@@ -238,7 +496,7 @@ export default function Home() {
               </>
             ) : (
               <>
-                <Col xs={12} sm={6}>
+                <Col xs={8} sm={8} md={8} lg={8} xl={8}>
                   <Card>
                     <Statistic
                       title="Câu lạc bộ"
@@ -248,7 +506,7 @@ export default function Home() {
                     />
                   </Card>
                 </Col>
-                <Col xs={12} sm={6}>
+                <Col xs={8} sm={8} md={8} lg={8} xl={8}>
                   <Card>
                     <Statistic
                       title="Sự kiện/năm"
@@ -259,18 +517,7 @@ export default function Home() {
                     />
                   </Card>
                 </Col>
-                <Col xs={12} sm={6}>
-                  <Card>
-                    <Statistic
-                      title="Thành viên"
-                      value={totalMembers}
-                      suffix="+"
-                      prefix={<UserOutlined />}
-                      valueStyle={{ color: '#fa8c16' }}
-                    />
-                  </Card>
-                </Col>
-                <Col xs={12} sm={6}>
+                <Col xs={8} sm={8} md={8} lg={8} xl={8}>
                   <Card>
                     <Statistic
                       title="Lĩnh vực"
@@ -290,37 +537,63 @@ export default function Home() {
           <Title level={2} style={{ textAlign: 'center', marginBottom: 32 }}>Lĩnh vực hoạt động</Title>
           {loading ? (
             // Skeleton loading for categories
-            <Row gutter={[16, 16]}>
-              {[1, 2, 3, 4, 5, 6, 7].map((item) => (
-                <Col xs={24} sm={12} md={8} lg={6} xl={6} key={item}>
-                  <Card>
-                    <Skeleton active>
-                      <Skeleton.Image active style={{ width: '100%', height: 200, marginBottom: 16 }} />
-                    </Skeleton>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
+            <>
+              {/* Row 1: 4 items */}
+              <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+                {[1, 2, 3, 4].map((item) => (
+                  <Col xs={24} sm={12} md={6} lg={6} xl={6} key={item}>
+                    <Card>
+                      <Skeleton active>
+                        <Skeleton.Image active style={{ width: '100%', height: 200, marginBottom: 16 }} />
+                      </Skeleton>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+              {/* Row 2: 3 items centered */}
+              <Row gutter={[16, 16]} justify="center">
+                {[5, 6, 7].map((item) => (
+                  <Col xs={24} sm={12} md={6} lg={6} xl={6} key={item}>
+                    <Card>
+                      <Skeleton active>
+                        <Skeleton.Image active style={{ width: '100%', height: 200, marginBottom: 16 }} />
+                      </Skeleton>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            </>
           ) : !error && (
-            <Row gutter={[16, 16]}>
-              {/* Hiển thị 7 domain cố định thay vì từ dữ liệu */}
-              {[
-                'Khoa học - Lý luận',
-                'Kinh doanh - Khởi nghiệp',
-                'Ngôn ngữ',
-                'Thể thao',
-                'Truyền thông - Sự kiện',
-                'Văn hóa - Nghệ thuật',
-                'Xã hội - Tình nguyện'
-              ].map((domain) => {
-                // Đếm số CLB thuộc domain này (hoặc chứa domain này do có thể có domain kép như "x / y")
-                const domainClubCount = clubs.filter(club =>
-                  club.domain === domain ||
-                  (club.domain && club.domain.includes(domain))
-                ).length;
+            <>
+              {/* Danh sách 7 domains */}
+              {(() => {
+                const domains = [
+                  'Khoa học - Lý luận',
+                  'Kinh doanh - Khởi nghiệp',
+                  'Ngôn ngữ',
+                  'Thể thao',
+                  'Truyền thông - Sự kiện',
+                  'Văn hóa - Nghệ thuật',
+                  'Xã hội - Tình nguyện'
+                ];
 
-                return (
-                  <Col xs={24} sm={12} md={8} lg={6} xl={6} key={domain}>
+                const domainUrlMapping = {
+                  'Khoa học - Lý luận': 'khoa-hoc-ly-luan',
+                  'Kinh doanh - Khởi nghiệp': 'kinh-doanh-khoi-nghiep',
+                  'Ngôn ngữ': 'ngon-ngu',
+                  'Thể thao': 'the-thao',
+                  'Truyền thông - Sự kiện': 'truyen-thong-su-kien',
+                  'Văn hóa - Nghệ thuật': 'van-hoa-nghe-thuat',
+                  'Xã hội - Tình nguyện': 'xa-hoi-tinh-nguyen'
+                };
+
+                const renderDomainCard = (domain) => {
+                  const domainClubCount = clubs.filter(club =>
+                    club.domain === domain ||
+                    (club.domain && club.domain.includes(domain))
+                  ).length;
+
+                  return (
                     <Card
                       hoverable
                       style={{ textAlign: 'center', height: '100%' }}
@@ -343,112 +616,38 @@ export default function Home() {
                         description={
                           <Space direction="vertical" style={{ width: '100%' }}>
                             <Text>{domainClubCount || 'Nhiều'} CLB & tổ chức</Text>
-                            <Link href={`/clubs?domain=${domain.toLowerCase().replace(/\s+/g, '-')}`}>
+                            <Link href={`/clubs?domain=${domainUrlMapping[domain] || domain.toLowerCase().replace(/\s+/g, '-')}`}>
                               <Button type="primary" block>Xem chi tiết</Button>
                             </Link>
                           </Space>
                         }
                       />
                     </Card>
-                  </Col>
+                  );
+                };
+
+                return (
+                  <>
+                    {/* Row 1: 4 items đầu tiên */}
+                    <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+                      {domains.slice(0, 4).map((domain) => (
+                        <Col xs={24} sm={12} md={6} lg={6} xl={6} key={domain}>
+                          {renderDomainCard(domain)}
+                        </Col>
+                      ))}
+                    </Row>
+
+                    {/* Row 2: 3 items cuối, centered */}
+                    <Row gutter={[16, 16]} justify="center">
+                      {domains.slice(4, 7).map((domain) => (
+                        <Col xs={24} sm={12} md={6} lg={6} xl={6} key={domain}>
+                          {renderDomainCard(domain)}
+                        </Col>
+                      ))}
+                    </Row>
+                  </>
                 );
-              })}
-            </Row>
-          )}
-        </div>
-
-        {/* Featured Clubs Section */}
-        <div style={{ marginBottom: 48 }}>
-          <Title level={2} style={{ textAlign: 'center', marginBottom: 32 }}>Câu lạc bộ nổi bật</Title>
-
-          {loading ? (
-            // Skeleton loading for clubs
-            <Row gutter={[16, 16]} className="clubs-grid">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-                <Col
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={6}
-                  xl={6}
-                  key={item}
-                >
-                  <Card style={{ height: '100%' }}>
-                    <Skeleton active>
-                      <Skeleton.Avatar active size={64} shape="circle" style={{ margin: '0 auto 16px', display: 'block' }} />
-                      <Skeleton active paragraph={{ rows: 2 }} />
-                    </Skeleton>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          ) : error ? (
-            <div style={{ textAlign: 'center', padding: '40px 0' }}>
-              <Text type="danger">Đã xảy ra lỗi: {error}</Text>
-              <br />
-              <Button onClick={fetchClubs} style={{ marginTop: 16 }}>Thử lại</Button>
-            </div>
-          ) : (
-            <>
-              <Row gutter={[16, 16]} className="clubs-grid">
-                {clubs.map(club => (
-                  <Col
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={6}
-                    xl={6}
-                    key={club.id}
-                  >
-                    <Card
-                      hoverable
-                      style={{ height: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}
-                      actions={[
-                        <Link href={`/clubs/${club.id}`} key="view">
-                          <Button type="link">Xem chi tiết</Button>
-                        </Link>
-                      ]}
-                    >
-                      <Space
-                        direction="vertical"
-                        align="center"
-                        style={{ width: '100%', flex: 1, justifyContent: 'space-between' }}
-                      >                        <div style={{ textAlign: 'center' }}>
-                          <OptimizedAvatar
-                            size={64}
-                            src={club.logo}
-                            style={{ border: '2px solid #f0f0f0', marginBottom: 16 }}
-                          />
-                          <Title level={5} style={{ margin: '0 0 8px 0', textAlign: 'center', minHeight: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            {club.name}
-                          </Title>
-                          {/* Xử lý domain có dấu / */}
-                          {club.domain && club.domain.includes('/') ? (
-                            // Nếu có nhiều domain, hiển thị domain đầu tiên
-                            <Tag color={domainColors[club.domain.split('/')[0].trim()] || 'blue'}>
-                              {club.domain.split('/')[0].trim()}
-                            </Tag>
-                          ) : (
-                            <Tag color={domainColors[club.domain] || 'blue'}>{club.domain}</Tag>
-                          )}
-                        </div>
-                        <Space style={{ marginTop: 'auto', paddingTop: 8 }}>
-                          <StarOutlined style={{ color: '#faad14' }} />
-                          <Text>{club.rating || 0.0}</Text>
-                        </Space>
-                      </Space>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-
-              <div style={{ textAlign: 'center', marginTop: 32 }}>
-                <Link href="/clubs">
-                  <Button type="primary" size="large">
-                    Xem tất cả câu lạc bộ
-                  </Button>
-                </Link>
-              </div>
+              })()}
             </>
           )}
         </div>
@@ -464,16 +663,18 @@ export default function Home() {
 
         {/* Events Section */}
         <div style={{ marginBottom: 48 }}>
-          <Title level={2} style={{ textAlign: 'center', marginBottom: 32 }}>Sự kiện sắp tới</Title>
-          <Row gutter={[32, 32]}>
-            <Col xs={24} lg={16}>
-              <Card title="Lịch sự kiện">
-                <Calendar />
-              </Card>
-            </Col>
-            <Col xs={24} lg={8}>
-              <Card title="Sự kiện nổi bật">
-                <Space direction="vertical" style={{ width: '100%' }} size="large">                  {upcomingEvents.slice(0, 2).map((event, index) => {
+          <Title level={2} style={{ textAlign: 'center', marginBottom: 32 }}>Sự kiện nổi bật</Title>
+          <Row gutter={[16, 16]} justify="center">
+            <Col xs={24} sm={22} md={18} lg={16} xl={14}>
+              <Card
+                title="Sự kiện sắp tới"
+                style={{
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
+                  borderRadius: '12px'
+                }}
+              >
+                <Space direction="vertical" style={{ width: '100%' }} size="large">
+                  {upcomingEvents.map((event, index) => {
                     const daysLeft = getDaysLeft(event.date);
                     const showCountdown = daysLeft > 0 && daysLeft <= 5;
 
@@ -481,9 +682,12 @@ export default function Home() {
                       <Card
                         key={index}
                         size="small"
+                        hoverable
                         style={{
                           borderLeft: showCountdown ? '4px solid #f5222d' : '4px solid #1890ff',
-                          backgroundColor: showCountdown && daysLeft <= 2 ? '#fff1f0' : undefined
+                          backgroundColor: showCountdown && daysLeft <= 2 ? '#fff1f0' : undefined,
+                          borderRadius: '8px',
+                          transition: 'all 0.3s ease'
                         }}
                       >
                         <Space direction="vertical" style={{ width: '100%' }}>
@@ -509,12 +713,6 @@ export default function Home() {
                       </Card>
                     );
                   })}
-                  
-                  <div style={{ textAlign: 'center', marginTop: '16px' }}>
-                    <Link href="/contests">
-                      <Button type="primary">Xem tất cả</Button>
-                    </Link>
-                  </div>
                 </Space>
               </Card>
             </Col>

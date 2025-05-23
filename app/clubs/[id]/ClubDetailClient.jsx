@@ -1,18 +1,22 @@
 'use client';
 
 import {
+    ArrowLeftOutlined,
     CalendarOutlined,
     ClockCircleOutlined,
     EnvironmentOutlined,
     FacebookOutlined,
     GlobalOutlined,
+    HeartOutlined,
     HomeOutlined,
+    InfoCircleOutlined,
     InstagramOutlined,
     LinkOutlined,
     MailOutlined,
     PhoneOutlined,
     TeamOutlined,
-    TrophyOutlined
+    TrophyOutlined,
+    UserOutlined
 } from '@ant-design/icons';
 import {
     Alert,
@@ -22,7 +26,6 @@ import {
     Button,
     Card,
     Col,
-    Collapse,
     Descriptions,
     Divider,
     Empty,
@@ -38,10 +41,10 @@ import {
     Typography
 } from 'antd';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const { Title, Paragraph, Text } = Typography;
-const { Panel } = Collapse;
 
 // Custom hook để fetch dữ liệu club
 const useClub = (id) => {
@@ -108,7 +111,6 @@ const ClubDetailSkeleton = () => (
             <Col xs={24} md={16}>
                 <Card>
                     <Space direction="vertical" size="large" style={{ width: '100%' }}>
-                        {/* Header Skeleton */}
                         <div>
                             <Space align="center">
                                 <Skeleton.Avatar size={64} />
@@ -122,7 +124,6 @@ const ClubDetailSkeleton = () => (
 
                         <Divider />
 
-                        {/* Description Skeleton */}
                         <div>
                             <Skeleton.Input style={{ width: 150, marginBottom: 16 }} />
                             <Skeleton paragraph={{ rows: 4 }} />
@@ -130,20 +131,17 @@ const ClubDetailSkeleton = () => (
 
                         <Divider />
 
-                        {/* Activities Skeleton */}
                         <Skeleton.Input style={{ width: 200, marginBottom: 16 }} />
                         <Skeleton active paragraph={{ rows: 4 }} />
 
                         <Divider />
 
-                        {/* Achievements Skeleton */}
                         <Skeleton.Input style={{ width: 200, marginBottom: 16 }} />
                         <Skeleton active paragraph={{ rows: 4 }} />
                     </Space>
                 </Card>
             </Col>
 
-            {/* Sidebar Skeleton */}
             <Col xs={24} md={8}>
                 <Card style={{ marginBottom: 24 }}>
                     <Skeleton.Input style={{ width: 150, marginBottom: 16 }} />
@@ -170,44 +168,23 @@ const ErrorPage = ({ title, message }) => (
     </div>
 );
 
-// Icon function for domain
-const getDomainIcon = (domain) => {
-    const domainLower = domain.toLowerCase();
+// Function to get personality type color
+const getPersonalityColor = (personalityType) => {
+    if (!personalityType) return '#8c8c8c';
 
-    if (domainLower.includes('khoa học') || domainLower.includes('lý luận')) return '🔬';
-    if (domainLower.includes('kinh doanh') || domainLower.includes('khởi nghiệp')) return '💼';
-    if (domainLower.includes('ngôn ngữ')) return '🗣️';
-    if (domainLower.includes('thể thao')) return '⚽';
-    if (domainLower.includes('truyền thông') || domainLower.includes('sự kiện')) return '📢';
-    if (domainLower.includes('văn hóa') || domainLower.includes('nghệ thuật')) return '🎭';
-    if (domainLower.includes('xã hội') || domainLower.includes('tình nguyện')) return '🤝';
+    const type = personalityType.toLowerCase();
+    if (type.includes('leader') || type.includes('lãnh đạo')) return '#ff4d4f';
+    if (type.includes('creative') || type.includes('sáng tạo')) return '#722ed1';
+    if (type.includes('social') || type.includes('xã hội')) return '#52c41a';
+    if (type.includes('analytical') || type.includes('phân tích')) return '#1890ff';
+    if (type.includes('practical') || type.includes('thực tế')) return '#faad14';
 
-    // Legacy domains
-    if (domainLower.includes('công nghệ')) return '💻';
-
-    return '📚'; // Default
-};
-
-// Function to get color by domain
-const getDomainColor = (domain) => {
-    const domainLower = domain.toLowerCase();
-
-    if (domainLower.includes('khoa học') || domainLower.includes('lý luận')) return '#722ed1'; // Purple
-    if (domainLower.includes('kinh doanh') || domainLower.includes('khởi nghiệp')) return '#faad14'; // Gold
-    if (domainLower.includes('ngôn ngữ')) return '#13c2c2'; // Cyan
-    if (domainLower.includes('thể thao')) return '#a0d911'; // Lime
-    if (domainLower.includes('truyền thông') || domainLower.includes('sự kiện')) return '#1890ff'; // Blue
-    if (domainLower.includes('văn hóa') || domainLower.includes('nghệ thuật')) return '#eb2f96'; // Magenta
-    if (domainLower.includes('xã hội') || domainLower.includes('tình nguyện')) return '#52c41a'; // Green
-
-    // Legacy domains
-    if (domainLower.includes('công nghệ')) return '#2f54eb'; // Geekblue
-
-    return '#262626'; // Default
+    return '#13c2c2'; // Default cyan
 };
 
 // Main component
 export default function ClubDetailClient({ id }) {
+    const router = useRouter();
     const { club, loading, error } = useClub(id);
     const [displayLoading, setDisplayLoading] = useState(true);
 
@@ -246,22 +223,42 @@ export default function ClubDetailClient({ id }) {
         );
     }
 
-    const breadcrumbItems = [
-        { title: <Link href="/"><HomeOutlined /> Trang chủ</Link> },
-        { title: <Link href="/clubs">Câu lạc bộ</Link> },
-        { title: club.name }
-    ];
-
     // Get domain icon and color
     const domainIcon = getDomainIcon(club.domain);
     const domainColor = getDomainColor(club.domain);
+    const personalityColor = getPersonalityColor(club.personalityType);
 
     // Use background image or fallback
     const backgroundImage = club.coverImage || '/images/avt_placeholder.jpg';
 
+    // Generate URL to clubs list with domain filter
+    const clubsListUrl = getClubsUrlWithDomain(club.domain);
+
+    const breadcrumbItems = [
+        { title: <Link href="/"><HomeOutlined /> Trang chủ</Link> },
+        { title: <Link href="/clubs">Câu lạc bộ</Link> },
+        {
+            title: <Link href={clubsListUrl}>
+                <span>{domainIcon}</span> {club.domain}
+            </Link>
+        },
+        { title: club.name }
+    ];
+
     return (
         <div style={{ padding: '24px' }}>
             <Breadcrumb style={{ margin: '16px 0' }} items={breadcrumbItems} />
+
+            {/* Back button */}
+            <div style={{ marginBottom: 16 }}>
+                <Button
+                    icon={<ArrowLeftOutlined />}
+                    onClick={() => router.push(clubsListUrl)}
+                    style={{ borderColor: domainColor, color: domainColor }}
+                >
+                    Quay lại danh sách {club.domain}
+                </Button>
+            </div>
 
             {/* Hero Section with Logo and Background */}
             <div
@@ -363,6 +360,7 @@ export default function ClubDetailClient({ id }) {
                         </Badge.Ribbon>
 
                         <Space size={[8, 8]} wrap style={{ marginTop: '16px' }}>
+                            {/* Display primary domain */}
                             <Tag
                                 color="blue"
                                 icon={<span>{domainIcon}</span>}
@@ -371,9 +369,26 @@ export default function ClubDetailClient({ id }) {
                                 {club.domain}
                             </Tag>
 
+                            {/* Display additional categories if available */}
+                            {club.categories && club.categories.length > 1 && (
+                                club.categories.slice(1).map((category, index) => (
+                                    <Tag
+                                        key={index}
+                                        color="cyan"
+                                        icon={<span>{getDomainIcon(category)}</span>}
+                                        style={{ padding: '4px 10px', fontSize: '14px' }}
+                                        onClick={() => router.push(getClubsUrlWithDomain(category))}
+                                        className="clickable-tag"
+                                    >
+                                        {category}
+                                    </Tag>
+                                ))
+                            )}
+
                             {club.personalityType && (
                                 <Tag
                                     color="purple"
+                                    icon={<UserOutlined />}
                                     style={{ padding: '4px 10px', fontSize: '14px' }}
                                 >
                                     {club.personalityType}
@@ -414,6 +429,50 @@ export default function ClubDetailClient({ id }) {
                             </div>
 
                             <Divider />
+
+                            {/* Recruitment Period */}
+                            {club.recruitmentPeriod && (
+                                <>
+                                    <div>
+                                        <Title level={4}>
+                                            <CalendarOutlined /> Kỳ tuyển thành viên
+                                        </Title>
+                                        <Card
+                                            style={{
+                                                backgroundColor: '#e6f7ff',
+                                                borderColor: '#91d5ff'
+                                            }}
+                                        >
+                                            <Paragraph style={{ color: 'black', fontWeight: 'bold', margin: 0 }}>
+                                                {club.recruitmentPeriod}
+                                            </Paragraph>
+                                        </Card>
+                                    </div>
+                                    <Divider />
+                                </>
+                            )}
+
+                            {/* Volunteer Activities */}
+                            {club.volunteerActivities && (
+                                <>
+                                    <div>
+                                        <Title level={4}>
+                                            <HeartOutlined /> Hoạt động tình nguyện
+                                        </Title>
+                                        <Card
+                                            style={{
+                                                backgroundColor: '#f6ffed',
+                                                borderColor: '#b7eb8f'
+                                            }}
+                                        >
+                                            <Paragraph style={{ color: 'black', fontWeight: 'bold', margin: 0 }}>
+                                                {club.volunteerActivities}
+                                            </Paragraph>
+                                        </Card>
+                                    </div>
+                                    <Divider />
+                                </>
+                            )}
 
                             {/* Club Activities */}
                             <div>
@@ -472,44 +531,22 @@ export default function ClubDetailClient({ id }) {
                                 )}
                             </div>
 
-                            {/* Club Contests */}
-                            {club.contests && (
+                            {/* Additional Notes */}
+                            {club.notes && (
                                 <>
                                     <Divider />
                                     <div>
                                         <Title level={4}>
-                                            <TrophyOutlined /> Cuộc thi và chương trình
+                                            <InfoCircleOutlined /> Ghi chú
                                         </Title>
                                         <Card
                                             style={{
-                                                backgroundColor: '#fffbe6',
-                                                borderColor: '#ffe58f'
+                                                backgroundColor: '#fff7e6',
+                                                borderColor: '#ffd591'
                                             }}
                                         >
-                                            <Paragraph style={{ color: 'black', fontWeight: 'bold' }}>
-                                                {club.contests}
-                                            </Paragraph>
-                                        </Card>
-                                    </div>
-                                </>
-                            )}
-
-                            {/* Club Feedback */}
-                            {club.feedback && (
-                                <>
-                                    <Divider />
-                                    <div>
-                                        <Title level={4}>
-                                            <TeamOutlined /> Phản hồi từ thành viên
-                                        </Title>
-                                        <Card
-                                            style={{
-                                                backgroundColor: '#f6ffed',
-                                                borderColor: '#b7eb8f'
-                                            }}
-                                        >
-                                            <Paragraph style={{ color: 'black', fontWeight: 'bold' }}>
-                                                {club.feedback}
+                                            <Paragraph style={{ color: 'black', fontWeight: 'bold', margin: 0 }}>
+                                                {club.notes}
                                             </Paragraph>
                                         </Card>
                                     </div>
@@ -573,8 +610,66 @@ export default function ClubDetailClient({ id }) {
                             <Descriptions.Item label={<><CalendarOutlined /> Thành lập</>}>
                                 {club.foundedYear || 'Không rõ'}
                             </Descriptions.Item>
+                            {club.personalityType && (
+                                <Descriptions.Item label={<><UserOutlined /> Nhóm tính cách</>}>
+                                    <Tag color={personalityColor} style={{ margin: 0 }}>
+                                        {club.personalityType}
+                                    </Tag>
+                                </Descriptions.Item>
+                            )}
+                            {club.categories && club.categories.length > 0 && (
+                                <Descriptions.Item label={<><TeamOutlined /> Tất cả lĩnh vực</>}>
+                                    <Space wrap size={[4, 4]}>
+                                        {club.categories.map((category, index) => (
+                                            <Tag
+                                                key={index}
+                                                color={index === 0 ? getDomainColor(category) : 'cyan'}
+                                                style={{ margin: 0, cursor: 'pointer' }}
+                                                onClick={() => router.push(getClubsUrlWithDomain(category))}
+                                                className="clickable-tag"
+                                            >
+                                                <span>{getDomainIcon(category)}</span> {category}
+                                            </Tag>
+                                        ))}
+                                    </Space>
+                                </Descriptions.Item>
+                            )}
                         </Descriptions>
                     </Card>
+
+                    {/* Recruitment and Volunteer Info Card */}
+                    {(club.recruitmentPeriod || club.volunteerActivities) && (
+                        <Card
+                            style={{
+                                marginBottom: 24,
+                                borderTop: `3px solid ${domainColor}`
+                            }}
+                        >
+                            <Title level={4} style={{ marginTop: 0 }}>
+                                <CalendarOutlined /> Thông tin tuyển dụng & TN
+                            </Title>
+
+                            {club.recruitmentPeriod && (
+                                <div style={{ marginBottom: 16 }}>
+                                    <Text strong style={{ color: domainColor }}>
+                                        <CalendarOutlined /> Kỳ tuyển thành viên:
+                                    </Text>
+                                    <br />
+                                    <Text>{club.recruitmentPeriod}</Text>
+                                </div>
+                            )}
+
+                            {club.volunteerActivities && (
+                                <div>
+                                    <Text strong style={{ color: domainColor }}>
+                                        <HeartOutlined /> Hoạt động tình nguyện:
+                                    </Text>
+                                    <br />
+                                    <Text>{club.volunteerActivities}</Text>
+                                </div>
+                            )}
+                        </Card>
+                    )}
 
                     {/* Social Links */}
                     <Card
@@ -652,11 +747,8 @@ export default function ClubDetailClient({ id }) {
                                             transition: 'all 0.3s ease',
                                             cursor: 'pointer',
                                             border: '2px solid transparent',
-                                            ":hover": {
-                                                transform: 'scale(1.05)',
-                                                border: `2px solid ${domainColor}`
-                                            }
                                         }}
+                                        className="club-gallery-item"
                                     >
                                         <Image
                                             src={img}
@@ -672,26 +764,24 @@ export default function ClubDetailClient({ id }) {
                 </Col>
             </Row>
 
-            {/* Add styles for pulse animation */}
+            {/* Add styles for interactions */}
             <style jsx global>{`
-        @keyframes pulse {
-          0% { opacity: 1; }
-          50% { opacity: 0.6; }
-          100% { opacity: 1; }
-        }
-        
-        .club-logo-hover:hover {
-          transform: scale(1.05);
-          box-shadow: 0 0 15px rgba(255,255,255,0.5);
-          transition: all 0.3s ease;
-        }
-        
-        .club-gallery-item:hover {
-          transform: scale(1.05);
-          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-          transition: all 0.3s ease;
-        }
-      `}</style>
+                .clickable-tag {
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                }
+                
+                .clickable-tag:hover {
+                    transform: scale(1.05);
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+                }
+                
+                .club-gallery-item:hover {
+                    transform: scale(1.05);
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                    border-color: ${domainColor} !important;
+                }
+            `}</style>
         </div>
     );
 }

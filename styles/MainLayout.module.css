@@ -2,6 +2,12 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #f0f2f5;
+  transition: background-color 0.3s ease;
+}
+
+.layout.dark {
+  background: #000;
 }
 
 .header {
@@ -14,6 +20,7 @@
   justify-content: space-between;
   padding: 0;
   background: var(--header-bg);
+  transition: all 0.3s ease;
 }
 
 .navContainer {
@@ -38,7 +45,7 @@
 }
 
 .logoText {
-  color: #fff;
+  color: var(--logo-text-color);
   font-size: 18px;
   font-weight: bold;
   white-space: nowrap;
@@ -47,18 +54,28 @@
 .themeSwitch {
   color: #fff;
   padding: 0 24px;
+  transition: color 0.3s ease;
 }
 
 .content {
   padding: 0 50px;
   margin-top: 24px;
   flex: 1;
+  transition: background-color 0.3s ease;
 }
 
 .footer {
   text-align: center;
   margin-top: auto;
   padding: 24px;
+  background: #fff;
+  color: rgba(0, 0, 0, 0.85);
+  transition: all 0.3s ease;
+}
+
+.dark .footer {
+  background: #141414;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 /* Ensure logo menu item doesn't show selection highlight */
@@ -67,12 +84,43 @@
   background-color: transparent !important;
 }
 
+/* Logo hover effect */
+.logoLink {
+  transition: opacity 0.3s ease;
+}
+
+.logoLink:hover {
+  opacity: 0.8;
+}
+
 /* Customize logo menu item */
 .menu :global(.ant-menu-item-only-child[key="logo"]) {
   margin-right: 24px;
 }
 
-/* Dark mode styles */
+/* Dark mode specific styles using parent class */
+.dark .header {
+  background: #141414;
+}
+
+.dark .logoText {
+  color: #fff;
+}
+
+.dark .menu {
+  background: transparent;
+  border-bottom-color: #303030;
+}
+
+.dark .themeSwitch {
+  color: #fff;
+}
+
+/* Alternative dark mode styles using data attribute */
+:global([data-theme='dark']) .layout {
+  background: #000;
+}
+
 :global([data-theme='dark']) .header {
   background: #141414;
 }
@@ -93,4 +141,116 @@
 :global([data-theme='dark']) .footer {
   background: #141414;
   color: rgba(255, 255, 255, 0.85);
+}
+
+/* Light mode specific overrides */
+:global([data-theme='light']) .layout {
+  background: #f0f2f5;
+}
+
+:global([data-theme='light']) .header {
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid #e8e8e8;
+}
+
+:global([data-theme='light']) .logoText {
+  color: #000;
+}
+
+:global([data-theme='light']) .menu {
+  background: transparent;
+}
+
+:global([data-theme='light']) .themeSwitch {
+  color: #000;
+}
+
+:global([data-theme='light']) .footer {
+  background: #fff;
+  color: rgba(0, 0, 0, 0.85);
+  border-top: 1px solid #f0f0f0;
+}
+
+/* Dark mode menu items */
+:global([data-theme='dark']) .menu :global(.ant-menu-item) {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+:global([data-theme='dark']) .menu :global(.ant-menu-item:hover),
+:global([data-theme='dark']) .menu :global(.ant-menu-item-active) {
+  color: #fff;
+}
+
+:global([data-theme='dark']) .menu :global(.ant-menu-item-selected) {
+  color: #1890ff;
+}
+
+/* Customize menu items in light mode */
+:global([data-theme='light']) .menu :global(.ant-menu-item) {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+:global([data-theme='light']) .menu :global(.ant-menu-item:hover),
+:global([data-theme='light']) .menu :global(.ant-menu-item-active) {
+  color: #1890ff;
+}
+
+:global([data-theme='light']) .menu :global(.ant-menu-item-selected) {
+  color: #1890ff;
+}
+
+:global([data-theme='light']) .menu :global(.ant-menu-item-selected::after) {
+  border-bottom-color: #1890ff;
+}
+
+/* Remove default underline in light mode */
+:global([data-theme='light']) .menu :global(.ant-menu-horizontal) {
+  border-bottom: none;
+}
+
+/* Switch styles */
+.themeSwitch :global(.ant-switch) {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.themeSwitch :global(.ant-switch-checked) {
+  background-color: #1890ff;
+}
+
+:global([data-theme='light']) .themeSwitch :global(.ant-switch) {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+:global([data-theme='dark']) .themeSwitch :global(.ant-switch) {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .content {
+    padding: 0 24px;
+  }
+
+  .logoText {
+    font-size: 16px;
+  }
+
+  .menu :global(.ant-menu-item) {
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .content {
+    padding: 0 16px;
+  }
+
+  .logoText {
+    font-size: 14px;
+  }
+
+  .themeSwitch {
+    padding: 0 16px;
+  }
 }

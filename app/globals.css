@@ -4,13 +4,17 @@
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
-    
+
   /* Light Theme Colors */
-  --header-bg: #001529;
-  --logo-text-color: #ffffff;
-  --menu-text-color: #ffffff;
+  --header-bg: #ffffff;
+  --logo-text-color: #000000;
+  --menu-text-color: #000000;
   --menu-item-hover: rgba(255, 255, 255, 0.15);
   --menu-item-active: #1890ff;
+  --body-bg: #f0f2f5;
+  --body-color: rgba(0, 0, 0, 0.85);
+  --footer-bg: #ffffff;
+  --footer-color: rgba(0, 0, 0, 0.85);
 }
 
 * {
@@ -26,8 +30,9 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: #f0f2f5;
+  color: var(--body-color);
+  background: var(--body-bg);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {
@@ -36,8 +41,16 @@ a {
 }
 
 @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+  :root {
+    --header-bg: #141414;
+    --logo-text-color: #ffffff;
+    --menu-text-color: #ffffff;
+    --menu-item-hover: rgba(255, 255, 255, 0.15);
+    --menu-item-active: #1890ff;
+    --body-bg: #000000;
+    --body-color: rgba(255, 255, 255, 0.85);
+    --footer-bg: #141414;
+    --footer-color: rgba(255, 255, 255, 0.85);
   }
 }
 
@@ -48,4 +61,47 @@ html.dark {
   --menu-text-color: #ffffff;
   --menu-item-hover: rgba(255, 255, 255, 0.15);
   --menu-item-active: #1890ff;
+  --body-bg: #000000;
+  --body-color: rgba(255, 255, 255, 0.85);
+  --footer-bg: #141414;
+  --footer-color: rgba(255, 255, 255, 0.85);
+}
+
+/* Data attribute dark theme */
+[data-theme="dark"] {
+  --header-bg: #141414;
+  --logo-text-color: #ffffff;
+  --menu-text-color: #ffffff;
+  --menu-item-hover: rgba(255, 255, 255, 0.15);
+  --menu-item-active: #1890ff;
+  --body-bg: #000000;
+  --body-color: rgba(255, 255, 255, 0.85);
+  --footer-bg: #141414;
+  --footer-color: rgba(255, 255, 255, 0.85);
+}
+
+/* Force light theme */
+[data-theme="light"] {
+  --header-bg: #ffffff;
+  --logo-text-color: #000000;
+  --menu-text-color: #000000;
+  --menu-item-hover: rgba(0, 0, 0, 0.04);
+  --menu-item-active: #1890ff;
+  --body-bg: #f0f2f5;
+  --body-color: rgba(0, 0, 0, 0.85);
+  --footer-bg: #ffffff;
+  --footer-color: rgba(0, 0, 0, 0.85);
+}
+
+/* Dark theme body styles */
+html.dark body,
+[data-theme="dark"] body {
+  background: #000000;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Light theme body styles */
+[data-theme="light"] body {
+  background: #f0f2f5;
+  color: rgba(0, 0, 0, 0.85);
 }

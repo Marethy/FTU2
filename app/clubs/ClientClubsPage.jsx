@@ -1,779 +1,842 @@
 'use client';
 
-import ClubAvatar from '@/components/ClubAvatar';
-import { useMessage } from '@/hooks/useMessage';
-import styles from '@/styles/ClubsPage.module.css';
 import {
   AppstoreOutlined,
   BarsOutlined,
   BookOutlined,
-  CalendarOutlined,
+  ClockCircleOutlined,
+  HeartOutlined,
   HomeOutlined,
   SearchOutlined,
   SortAscendingOutlined,
-  StarOutlined,
+  SortDescendingOutlined,
   TeamOutlined,
-  ThunderboltOutlined,
-  TrophyOutlined
+  UserOutlined
 } from '@ant-design/icons';
 import {
-  Badge,
+  Alert,
   Breadcrumb,
   Button,
   Card,
   Col,
   Empty,
-  Image,
   Input,
+  Pagination,
   Rate,
   Row,
-  Segmented,
   Select,
   Skeleton,
   Space,
-  Statistic,
+  Spin,
   Tag,
   Typography
 } from 'antd';
-import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 
-const { Option } = Select;
-const { Title, Text, Paragraph } = Typography;
+const { Title, Paragraph, Text } = Typography;
 const { Meta } = Card;
+const { Option } = Select;
 
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.08
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      type: "spring",
-      damping: 12,
-      stiffness: 100
-    }
-  }
-};
-
-export default function ClientClubsPage({ searchParams }) {
-  const router = useRouter();
-  const domainParam = searchParams?.domain;
-  const message = useMessage();
-
+// Custom hook để fetch clubs
+const useClubs = (filters) => {
   const [clubs, setClubs] = useState([]);
-  const [filteredClubs, setFilteredClubs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState('');
-  const [selectedDomain, setSelectedDomain] = useState(null);
-  const [sortBy, setSortBy] = useState('name');
-  const [viewMode, setViewMode] = useState('grid');
+  const [error, setError] = useState(null);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        setLoading(true);
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        if (filters.domain) params.append('domain', filters.domain);
+        if (filters.search) params.append('search', filters.search);
+        if (filters.limit) params.append('limit', filters.limit.toString());
+        if (filters.offset) params.append('offset', filters.offset.toString());
+
+        const url = `/api/clubs${params.toString() ? `?${params.toString()}` : ''}`;
+        console.log('Fetching clubs from:', url);
+
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Không thể tải danh sách câu lạc bộ');
+        }
+
+        const data = await response.json();
+        console.log('Fetched clubs data:', data);
+
+        setClubs(data.clubs || []);
+        setTotal(data.total || 0);
+      } catch (err) {
+        console.error("Error fetching clubs:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClubs();
+  }, [filters.domain, filters.search, filters.limit, filters.offset]);
+
+  return { clubs, loading, error, total };
+};
+
+// Club Card Component (for grid view)
+const ClubCard = ({ club }) => {
+  const domainIcon = getDomainIcon(club.domain);
+  const domainColor = getDomainColor(club.domain);
+
+  return (
+    <Card
+      hoverable
+      style={{
+        height: 580, // Fixed height
+        marginBottom: 16,
+        borderLeft: `4px solid ${domainColor}`,
+        transition: 'all 0.3s ease',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+      bodyStyle={{
+        padding: '16px',
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        paddingBottom: 60, // Space for action button
+      }}
+      cover={
+        <div style={{ height: 200, overflow: 'hidden', position: 'relative' }}>
+          <img
+            alt={club.name}
+            src={club.coverImage || club.image}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+            onError={(e) => {
+              e.target.src = '/images/avt_placeholder.jpg';
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+              background: 'rgba(255,255,255,0.9)',
+              borderRadius: '16px',
+              padding: '4px 8px',
+            }}
+          >
+            <Rate disabled defaultValue={parseFloat(club.rating)} allowHalf size="small" />
+            <Text style={{ marginLeft: 4, fontSize: '12px' }}>{club.rating}</Text>
+          </div>
+        </div>
+      }
+    >
+      {/* Card Content */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        {/* Header with Avatar and Title */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', marginBottom: 12 }}>
+          <img
+            src={club.logo || club.image}
+            alt={club.name}
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: '50%',
+              objectFit: 'cover',
+              border: `2px solid ${domainColor}`,
+              marginRight: 12,
+              flexShrink: 0
+            }}
+            onError={(e) => {
+              e.target.src = '/images/avt_placeholder.jpg';
+            }}
+          />
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <Title level={5} style={{ margin: 0, fontSize: '16px', lineHeight: '1.3' }} ellipsis={{ rows: 2 }}>
+              {club.name}
+            </Title>
+            <Space wrap size={[4, 4]} style={{ marginTop: 4 }}>
+              <Tag color={domainColor} style={{ margin: 0, fontSize: '11px' }}>
+                <span>{domainIcon}</span> {club.domain}
+              </Tag>
+              {club.personalityType && (
+                <Tag icon={<UserOutlined />} style={{ margin: 0, fontSize: '11px' }}>
+                  {club.personalityType}
+                </Tag>
+              )}
+            </Space>
+          </div>
+        </div>
+
+        {/* Description */}
+        <div style={{ flex: 1 }}>
+          <Paragraph
+            ellipsis={{ rows: 3 }}
+            style={{ margin: '0 0 12px 0', color: '#666', fontSize: '14px', lineHeight: '1.4' }}
+          >
+            {club.summary}
+          </Paragraph>
+
+          {/* Stats */}
+          <div style={{ marginBottom: 12 }}>
+            <Space size={12} wrap>
+              <span style={{ fontSize: '12px', color: '#999' }}>
+                <TeamOutlined /> {club.memberCount} TV
+              </span>
+              <span style={{ fontSize: '12px', color: '#999' }}>
+                <ClockCircleOutlined /> {club.foundedYear || 'N/A'}
+              </span>
+              {club.isActive && (
+                <Tag color="green" size="small">Hoạt động</Tag>
+              )}
+            </Space>
+          </div>
+
+          {/* Recruitment and Volunteer Info */}
+          {(club.recruitmentPeriod || club.volunteerActivities) && (
+            <div style={{
+              padding: '8px',
+              backgroundColor: '#f5f5f5',
+              borderRadius: '4px',
+              fontSize: '11px'
+            }}>
+              {club.recruitmentPeriod && (
+                <div style={{ color: '#666', marginBottom: club.volunteerActivities ? '4px' : 0 }}>
+                  <BookOutlined /> <strong>Tuyển:</strong>
+                  <Text ellipsis style={{ marginLeft: 4 }}>
+                    {club.recruitmentPeriod}
+                  </Text>
+                </div>
+              )}
+              {club.volunteerActivities && (
+                <div style={{ color: '#666' }}>
+                  <HeartOutlined /> <strong>TN:</strong>
+                  <Text ellipsis style={{ marginLeft: 4 }}>
+                    {club.volunteerActivities}
+                  </Text>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Action Button - Fixed at bottom */}
+      <div style={{
+        position: 'absolute',
+        bottom: 20,
+        left: 16,
+        right: 16,
+      }}>
+        <Link href={`/clubs/${club.id}`}>
+          <Button
+            type="primary"
+            block
+            style={{
+              backgroundColor: domainColor,
+              borderColor: domainColor,
+              height: 36
+            }}
+          >
+            Xem chi tiết
+          </Button>
+        </Link>
+      </div>
+    </Card>
+  );
+};
+
+// Custom hook để fetch domains
+const useDomains = () => {
   const [domains, setDomains] = useState([]);
   const [domainSlugs, setDomainSlugs] = useState({});
   const [slugToName, setSlugToName] = useState({});
-  const [domainIcons, setDomainIcons] = useState({});
-  const [stats, setStats] = useState({
-    totalClubs: 0,
-    activeClubs: 0,
-    avgRating: 0,
-    totalMembers: 0
-  });
+  const [loading, setLoading] = useState(true);
 
-  // Function to fetch domains from the API
-  const fetchDomains = async () => {
-    try {
-      const res = await fetch('/api/domains', { cache: 'no-store' });
-      const data = await res.json();
+  useEffect(() => {
+    const fetchDomains = async () => {
+      try {
+        const response = await fetch('/api/domains');
+        if (!response.ok) throw new Error('Failed to fetch domains');
 
-      if (res.ok) {
+        const data = await response.json();
+        console.log('Fetched domains data:', data);
+
         setDomains(data.domains || []);
         setDomainSlugs(data.domainSlugs || {});
         setSlugToName(data.slugToName || {});
-
-        // Generate domain icons based on domains
-        generateDomainIcons(data.domains || []);
+      } catch (error) {
+        console.error('Error fetching domains:', error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error fetching domains:', error);
-      message.error('Không thể tải dữ liệu về các lĩnh vực');
-    }
-  };
-
-  // Generate domain icons programmatically
-  const generateDomainIcons = (domainsList) => {
-    const icons = {};
-
-    // Helper function to get emoji for domain based on keywords
-    const getEmojiForDomain = (domain) => {
-      const domainLower = domain.toLowerCase();
-
-      if (domainLower.includes('khoa học') || domainLower.includes('lý luận')) return '🔬';
-      if (domainLower.includes('kinh doanh') || domainLower.includes('khởi nghiệp')) return '💼';
-      if (domainLower.includes('ngôn ngữ')) return '🗣️';
-      if (domainLower.includes('thể thao')) return '⚽';
-      if (domainLower.includes('truyền thông') || domainLower.includes('sự kiện')) return '📢';
-      if (domainLower.includes('văn hóa') || domainLower.includes('nghệ thuật')) return '🎭';
-      if (domainLower.includes('xã hội') || domainLower.includes('tình nguyện')) return '🤝';
-
-      // Legacy domain icons for backward compatibility
-      if (domainLower.includes('công nghệ')) return '💻';
-      if (domainLower.includes('nghệ thuật')) return '🎨';
-
-      return '📚'; // Default icon
     };
 
-    // Assign an emoji to each domain
-    domainsList.forEach(domain => {
-      icons[domain] = getEmojiForDomain(domain);
-    });
-
-    // Add default for 'Khác' category
-    icons['Khác'] = '📚';
-
-    setDomainIcons(icons);
-  };
-
-  useEffect(() => {
-    // Check if we have a domain parameter in the URL
-    if (domainParam && slugToName[domainParam]) {
-      setSelectedDomain(slugToName[domainParam]);
-    }
-  }, [domainParam, slugToName]);
-
-  useEffect(() => {
-    // Fetch domains first, then clubs
-    const loadData = async () => {
-      await fetchDomains();
-      await fetchClubs();
-    };
-
-    loadData();
+    fetchDomains();
   }, []);
 
-  useEffect(() => {
-    filterAndSortClubs();
-  }, [clubs, searchText, selectedDomain, sortBy]);
+  return { domains, domainSlugs, slugToName, loading };
+};
 
-  useEffect(() => {
-    // Calculate statistics
-    if (clubs.length > 0) {
-      const activeClubs = clubs.filter(club => club.isActive).length;
-      const avgRating = (clubs.reduce((sum, club) => sum + parseFloat(club.rating), 0) / clubs.length).toFixed(1);
-      const totalMembers = clubs.reduce((sum, club) => sum + club.memberCount, 0);
+// Icon function for domain
+const getDomainIcon = (domain) => {
+  const domainLower = domain.toLowerCase();
 
-      setStats({
-        totalClubs: clubs.length,
-        activeClubs,
-        avgRating,
-        totalMembers
-      });
-    }
-  }, [clubs]);
+  if (domainLower.includes('khoa học') || domainLower.includes('lý luận')) return '🔬';
+  if (domainLower.includes('kinh doanh') || domainLower.includes('khởi nghiệp')) return '💼';
+  if (domainLower.includes('ngôn ngữ')) return '🗣️';
+  if (domainLower.includes('thể thao')) return '⚽';
+  if (domainLower.includes('truyền thông') || domainLower.includes('sự kiện')) return '📢';
+  if (domainLower.includes('văn hóa') || domainLower.includes('nghệ thuật')) return '🎭';
+  if (domainLower.includes('xã hội') || domainLower.includes('tình nguyện')) return '🤝';
 
-  const fetchClubs = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch('/api/clubs', { cache: 'no-store' });
-      const data = await res.json();
+  return '📚'; // Default
+};
 
-      if (res.ok && data.clubs) {
-        setClubs(data.clubs);
-        setFilteredClubs(data.clubs);
-      }
-    } catch (error) {
-      console.error('Error fetching clubs:', error);
-      message.error('Không thể tải dữ liệu câu lạc bộ');
-    } finally {
-      setLoading(false);
-    }
+// Function to get color by domain
+const getDomainColor = (domain) => {
+  const domainLower = domain.toLowerCase();
+
+  if (domainLower.includes('khoa học') || domainLower.includes('lý luận')) return '#722ed1';
+  if (domainLower.includes('kinh doanh') || domainLower.includes('khởi nghiệp')) return '#faad14';
+  if (domainLower.includes('ngôn ngữ')) return '#13c2c2';
+  if (domainLower.includes('thể thao')) return '#a0d911';
+  if (domainLower.includes('truyền thông') || domainLower.includes('sự kiện')) return '#1890ff';
+  if (domainLower.includes('văn hóa') || domainLower.includes('nghệ thuật')) return '#eb2f96';
+  if (domainLower.includes('xã hội') || domainLower.includes('tình nguyện')) return '#52c41a';
+
+  return '#262626'; // Default
+};
+
+// Skeleton component for club cards
+const ClubCardSkeleton = () => (
+  <Card style={{ marginBottom: 16 }}>
+    <Skeleton loading={true} avatar active>
+      <Meta
+        avatar={<Skeleton.Avatar size="large" />}
+        title={<Skeleton.Input style={{ width: 200 }} />}
+        description={<Skeleton.Input style={{ width: 300 }} />}
+      />
+    </Skeleton>
+  </Card>
+);
+
+// Club List Item Component (for list view)
+const ClubListItem = ({ club }) => {
+  const domainIcon = getDomainIcon(club.domain);
+  const domainColor = getDomainColor(club.domain);
+
+  return (
+    <Card
+      hoverable
+      style={{
+        marginBottom: 16,
+        borderLeft: `4px solid ${domainColor}`,
+      }}
+    >
+      <Row gutter={[16, 16]} align="middle">
+        {/* Club Logo */}
+        <Col xs={24} sm={4} md={3}>
+          <div style={{ textAlign: 'center' }}>
+            <img
+              src={club.logo || club.image}
+              alt={club.name}
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: '50%',
+                objectFit: 'cover',
+                border: `2px solid ${domainColor}`
+              }}
+              onError={(e) => {
+                e.target.src = '/images/avt_placeholder.jpg';
+              }}
+            />
+          </div>
+        </Col>
+
+        {/* Club Info */}
+        <Col xs={24} sm={20} md={16}>
+          <div>
+            <Space direction="vertical" size={4} style={{ width: '100%' }}>
+              <Title level={4} style={{ margin: 0 }}>
+                {club.name}
+              </Title>
+
+              <Space wrap size={[4, 4]}>
+                <Tag color={domainColor} style={{ margin: 0, fontSize: '12px' }}>
+                  <span>{domainIcon}</span> {club.domain}
+                </Tag>
+                {club.personalityType && (
+                  <Tag icon={<UserOutlined />} style={{ margin: 0, fontSize: '12px' }}>
+                    {club.personalityType}
+                  </Tag>
+                )}
+                {club.isActive && (
+                  <Tag color="green" size="small">Đang hoạt động</Tag>
+                )}
+              </Space>
+
+              <Paragraph
+                ellipsis={{ rows: 2 }}
+                style={{ margin: '8px 0', color: '#666' }}
+              >
+                {club.summary}
+              </Paragraph>
+
+              <Space size={16} wrap>
+                <span style={{ fontSize: '14px', color: '#999' }}>
+                  <TeamOutlined /> {club.memberCount} thành viên
+                </span>
+                <span style={{ fontSize: '14px', color: '#999' }}>
+                  <Rate disabled defaultValue={parseFloat(club.rating)} allowHalf size="small" />
+                  <Text style={{ marginLeft: 4 }}>{club.rating}</Text>
+                </span>
+                <span style={{ fontSize: '14px', color: '#999' }}>
+                  <ClockCircleOutlined /> {club.foundedYear || 'N/A'}
+                </span>
+              </Space>
+            </Space>
+          </div>
+        </Col>
+
+        {/* Additional Info & Actions */}
+        <Col xs={24} sm={24} md={5}>
+          <div style={{ textAlign: 'right' }}>
+            {(club.recruitmentPeriod || club.volunteerActivities) && (
+              <div style={{ marginBottom: 12, padding: '8px', backgroundColor: '#f5f5f5', borderRadius: '4px' }}>
+                {club.recruitmentPeriod && (
+                  <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>
+                    <BookOutlined /> <strong>Tuyển:</strong> {club.recruitmentPeriod}
+                  </div>
+                )}
+                {club.volunteerActivities && (
+                  <div style={{ fontSize: '12px', color: '#666' }}>
+                    <HeartOutlined /> <strong>TN:</strong> {club.volunteerActivities}
+                  </div>
+                )}
+              </div>
+            )}
+
+            <Link href={`/clubs/${club.id}`}>
+              <Button
+                type="primary"
+                block
+                style={{ backgroundColor: domainColor, borderColor: domainColor }}
+              >
+                Xem chi tiết
+              </Button>
+            </Link>
+          </div>
+        </Col>
+      </Row>
+    </Card>
+  );
+};
+
+export default function ClientClubsPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Get current filters from URL
+  const currentDomainSlug = searchParams.get('domain') || '';
+  const currentSearch = searchParams.get('search') || '';
+  const currentPage = parseInt(searchParams.get('page')) || 1;
+
+  // State
+  const [localSearch, setLocalSearch] = useState(currentSearch);
+  const [pageSize] = useState(12);
+  const [sortBy, setSortBy] = useState('name'); // name, rating, status
+  const [sortOrder, setSortOrder] = useState('asc'); // asc, desc
+  const [viewMode, setViewMode] = useState('grid'); // grid, list
+
+  // Calculate offset for pagination
+  const offset = (currentPage - 1) * pageSize;
+
+  // Fetch data
+  const { domains, domainSlugs, slugToName, loading: domainsLoading } = useDomains();
+  const { clubs, loading: clubsLoading, error, total } = useClubs({
+    domain: currentDomainSlug,
+    search: currentSearch,
+    limit: pageSize,
+    offset: offset
+  });
+
+  // Get current domain name from slug
+  const currentDomainName = currentDomainSlug ? slugToName[currentDomainSlug] : '';
+
+  // Update URL with new filters
+  const updateFilters = useCallback((newFilters) => {
+    const params = new URLSearchParams();
+
+    if (newFilters.domain) params.set('domain', newFilters.domain);
+    if (newFilters.search) params.set('search', newFilters.search);
+    if (newFilters.page && newFilters.page > 1) params.set('page', newFilters.page.toString());
+
+    const newUrl = `/clubs${params.toString() ? `?${params.toString()}` : ''}`;
+    router.push(newUrl);
+  }, [router]);
+
+  // Handle domain filter change
+  const handleDomainChange = (domainSlug) => {
+    updateFilters({
+      domain: domainSlug,
+      search: currentSearch,
+      page: 1 // Reset to first page when changing domain
+    });
   };
 
-  const filterAndSortClubs = () => {
-    let filtered = [...clubs];
+  // Handle search
+  const handleSearch = (searchValue) => {
+    updateFilters({
+      domain: currentDomainSlug,
+      search: searchValue,
+      page: 1 // Reset to first page when searching
+    });
+  };
 
-    // Search filter
-    if (searchText) {
-      filtered = filtered.filter(club =>
-        club.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        club.summary.toLowerCase().includes(searchText.toLowerCase())
-      );
-    }
+  // Handle pagination
+  const handlePageChange = (page) => {
+    updateFilters({
+      domain: currentDomainSlug,
+      search: currentSearch,
+      page: page
+    });
+  };
 
-    // Domain filter
-    if (selectedDomain && selectedDomain !== null) {
-      filtered = filtered.filter(club => {
-        // Handle clubs with multiple domains (separated by /)
-        if (club.domain.includes('/')) {
-          const clubDomains = club.domain.split('/').map(d => d.trim());
-          return clubDomains.includes(selectedDomain);
-        }
-        return club.domain === selectedDomain;
-      });
-    }
+  // Sort clubs based on current sorting options
+  const sortClubs = (clubs) => {
+    if (!clubs || clubs.length === 0) return clubs;
 
-    // Sorting
-    filtered.sort((a, b) => {
+    const sorted = [...clubs].sort((a, b) => {
+      let compareValue = 0;
+
       switch (sortBy) {
         case 'name':
-          return a.name.localeCompare(b.name);
+          compareValue = a.name.localeCompare(b.name, 'vi');
+          break;
         case 'rating':
-          return parseFloat(b.rating) - parseFloat(a.rating);
+          compareValue = parseFloat(b.rating) - parseFloat(a.rating); // Default desc for rating
+          break;
+        case 'status':
+          compareValue = (b.isActive ? 1 : 0) - (a.isActive ? 1 : 0); // Active first
+          break;
         case 'members':
-          return b.memberCount - a.memberCount;
-        case 'active':
-          return (b.isActive ? 1 : 0) - (a.isActive ? 1 : 0);
+          compareValue = b.memberCount - a.memberCount; // Default desc for members
+          break;
         default:
           return 0;
       }
+
+      // Apply sort order
+      if (sortBy === 'rating' || sortBy === 'members' || sortBy === 'status') {
+        // For numeric and status, reverse if asc is requested
+        return sortOrder === 'asc' ? -compareValue : compareValue;
+      } else {
+        // For name, normal order
+        return sortOrder === 'asc' ? compareValue : -compareValue;
+      }
     });
 
-    console.log('Filtered clubs:', filtered.length); // Debug log
-    setFilteredClubs(filtered);
+    return sorted;
   };
 
-  const handleDomainSelect = (domain) => {
-    const params = new URLSearchParams(searchParams || "");
+  // Apply sorting to clubs
+  const sortedClubs = sortClubs(clubs);
 
-    if (domain === null) {
-      params.delete('domain');
-      setSelectedDomain(null);
-    } else {
-      const slug = domainSlugs[domain];
-      if (slug) {
-        params.set('domain', slug);
-      }
-      setSelectedDomain(domain);
-    }
-
-    router.push(`/clubs?${params.toString()}`);
-  };
-
-  // Function to get days left until event (for activities that have deadlines)
-  const getDaysLeft = (club) => {
-    if (!club.activities || !Array.isArray(club.activities)) return null;
-
-    // Find activities with upcoming deadlines
-    const now = new Date();
-    const upcomingActivities = club.activities
-      .filter(activity => {
-        if (!activity.date) return false;
-        const activityDate = new Date(activity.date);
-        const daysLeft = Math.ceil((activityDate - now) / (1000 * 60 * 60 * 24));
-        return daysLeft > 0 && daysLeft <= 5; // Only show countdown for events within 5 days
-      })
-      .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-    if (upcomingActivities.length === 0) return null;
-
-    // Return the most urgent activity
-    const nextActivity = upcomingActivities[0];
-    const activityDate = new Date(nextActivity.date);
-    const daysLeft = Math.ceil((activityDate - now) / (1000 * 60 * 60 * 24));
-
-    return {
-      name: nextActivity.name,
-      daysLeft: daysLeft
-    };
-  };
-
-  const ClubCard = ({ club, index }) => {
-    const upcomingActivity = getDaysLeft(club);
-
-    return (
-      <motion.div
-        variants={itemVariants}
-        initial="hidden"
-        animate="visible"
-        layout
-        className={styles.cardWrapper}
-      >
-        <Link href={`/clubs/${club.id}`}>
-          <Card
-            hoverable
-            className={styles.clubCard}
-            cover={
-              <div className={styles.cardCover}>
-                {club.coverImage || club.image ? (
-                  <Image
-                    alt={club.name}
-                    src={club.coverImage || club.image}
-                    className={styles.coverImage}
-                    fallback="/images/avt_placeholder.jpg"
-                    height={200}
-                    width="100%"
-                    style={{ objectFit: 'cover' }}
-                    preview={false}
-                  />
-                ) : (
-                  <div className={styles.placeholderCover}>
-                    <ClubAvatar
-                      name={club.name}
-                      image={club.logo}
-                      domain={club.domain}
-                      size={80}
-                    />
-                    <Text className={styles.clubNameOverlay}>{club.name}</Text>
-                  </div>
-                )}
-                <div className={styles.cardOverlay}>
-                  {club.isActive && (
-                    <Badge
-                      status="success"
-                      text={<span style={{ color: '#52c41a', fontWeight: 500 }}>Đang hoạt động</span>}
-                      className={styles.activeBadge}
-                    />
-                  )}
-                  <Tag
-                    color="blue"
-                    className={styles.domainTag}
-                    icon={<span>{domainIcons[club.domain] || domainIcons['Khác']}</span>}
-                  >
-                    {club.domain}
-                  </Tag>
-
-                  {/* Add countdown for upcoming activity */}
-                  {upcomingActivity && (
-                    <Tag
-                      color={upcomingActivity.daysLeft <= 2 ? "red" : "orange"}
-                      className={styles.countdownTag}
-                      icon={<CalendarOutlined />}
-                      style={{
-                        animation: upcomingActivity.daysLeft <= 2 ? 'pulse 2s infinite' : 'none',
-                        fontWeight: 'bold'
-                      }}
-                    >
-                      {upcomingActivity.name}: còn {upcomingActivity.daysLeft} ngày
-                    </Tag>
-                  )}
-                </div>
-              </div>
-            }
-          >
-            <Meta
-              avatar={
-                <ClubAvatar
-                  name={club.name}
-                  image={club.logo || club.image}
-                  domain={club.domain}
-                  size={40}
-                />
-              }
-              title={
-                <div className={styles.clubTitleWrapper}>
-                  <Text strong className={styles.clubTitle} title={club.name}>
-                    {club.name}
-                  </Text>
-                </div>
-              }
-              description={
-                <Paragraph
-                  ellipsis={{ rows: 2 }}
-                  className={styles.clubSummary}
-                  title={club.summary}
-                >
-                  {club.summary}
-                </Paragraph>
-              }
-            />
-
-            <div className={styles.cardStats}>
-              <div className={styles.statItem}>
-                <TeamOutlined />
-                <Text className={styles.statText}>{club.memberCount} <span style={{ fontSize: '0.8rem' }}>thành viên</span></Text>
-              </div>
-              <div className={styles.statItem}>
-                <Rate
-                  disabled
-                  defaultValue={parseFloat(club.rating)}
-                  allowHalf
-                  className={styles.rateSmall}
-                />
-                <Text className={styles.statText}>{club.rating}</Text>
-              </div>
-            </div>
-
-            {club.contests && (
-              <div className={styles.cardExtra}>
-                <TrophyOutlined />
-                <Text className={styles.extraText} ellipsis>
-                  {club.contests.split(',')[0]}...
-                </Text>
-              </div>
-            )}
-          </Card>
-        </Link>
-      </motion.div>
-    )
-  };
-
-  const ClubListItem = ({ club }) => {
-    const upcomingActivity = getDaysLeft(club);
-
-    return (
-      <motion.div
-        variants={itemVariants}
-        initial="hidden"
-        animate="visible"
-        layout
-        className={styles.listItemWrapper}
-      >
-        <Link href={`/clubs/${club.id}`}>
-          <Card className={styles.listCard}>
-            <Row gutter={16} align="middle">
-              <Col xs={24} sm={6} md={4}>
-                {club.coverImage || club.image ? (
-                  <Image
-                    alt={club.name}
-                    src={club.coverImage || club.image}
-                    className={styles.listImage}
-                    fallback="/images/avt_placeholder.jpg"
-                    width="100%"
-                    height={120}
-                    style={{ objectFit: 'cover' }}
-                    preview={false}
-                  />
-                ) : (
-                  <div className={styles.listPlaceholder}>
-                    <ClubAvatar
-                      name={club.name}
-                      image={club.logo}
-                      domain={club.domain}
-                      size={60}
-                    />
-                  </div>
-                )}
-              </Col>
-              <Col xs={24} sm={18} md={20}>
-                <div className={styles.listContent}>
-                  <div className={styles.listHeader}>
-                    <Space align="center">
-                      <ClubAvatar
-                        name={club.name}
-                        image={club.logo || club.image}
-                        domain={club.domain}
-                        size={32}
-                      />
-                      <Title level={4} className={styles.listTitle}>
-                        {club.name}
-                      </Title>
-                    </Space>
-                    <Space>
-                      <Tag
-                        color="blue"
-                        icon={<span>{domainIcons[club.domain] || domainIcons['Khác']}</span>}
-                      >
-                        {club.domain}
-                      </Tag>
-                      {club.isActive && (
-                        <Badge
-                          status="success"
-                          text={<span style={{ color: '#52c41a', fontWeight: 500 }}>Đang hoạt động</span>}
-                        />
-                      )}
-
-                      {/* Add countdown tag in list view */}
-                      {upcomingActivity && (
-                        <Tag
-                          color={upcomingActivity.daysLeft <= 2 ? "red" : "orange"}
-                          icon={<CalendarOutlined />}
-                          style={{
-                            animation: upcomingActivity.daysLeft <= 2 ? 'pulse 2s infinite' : 'none',
-                            fontWeight: 'bold'
-                          }}
-                        >
-                          {upcomingActivity.name}: còn {upcomingActivity.daysLeft} ngày
-                        </Tag>
-                      )}
-                    </Space>
-                  </div>
-                  <Paragraph ellipsis={{ rows: 2 }} className={styles.listSummary}>
-                    {club.summary}
-                  </Paragraph>
-                  <div className={styles.listStats}>
-                    <div className={styles.listStatItem}>
-                      <TeamOutlined />
-                      <Text>{club.memberCount} thành viên</Text>
-                    </div>
-                    <div className={styles.listStatItem}>
-                      <Rate disabled defaultValue={parseFloat(club.rating)} allowHalf className={styles.rateSmall} />
-                      <Text>{club.rating}</Text>
-                    </div>
-                    {club.contests && (
-                      <div className={styles.listStatItem}>
-                        <TrophyOutlined />
-                        <Text ellipsis className={styles.contestText}>{club.contests.split(',')[0]}</Text>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </Col>
-            </Row>
-          </Card>
-        </Link>
-      </motion.div>
-    )
+  // Clear all filters
+  const clearFilters = () => {
+    setLocalSearch('');
+    updateFilters({});
   };
 
   const breadcrumbItems = [
     { title: <Link href="/"><HomeOutlined /> Trang chủ</Link> },
-    { title: selectedDomain ? `Câu lạc bộ - ${selectedDomain}` : 'Câu lạc bộ' }
+    { title: 'Câu lạc bộ' }
   ];
 
-  if (loading) {
+  if (domainsLoading) {
     return (
-      <div className={styles.pageContainer}>
-        <Breadcrumb className={styles.breadcrumb} items={breadcrumbItems} />
-
-        {/* Page Header Skeleton */}
-        <div className={styles.pageHeader}>
-          <Skeleton.Input active style={{ width: 200, height: 40 }} />
-          <Skeleton active paragraph={{ rows: 1, width: '60%' }} style={{ marginTop: 16 }} />
-        </div>
-
-        {/* Statistics Skeleton */}
-        <Row gutter={[16, 16]} className={styles.statsSection}>
-          {[...Array(4)].map((_, index) => (
-            <Col key={index} xs={12} sm={6}>
-              <Card className={styles.statCard}>
-                <Skeleton active paragraph={{ rows: 2 }} />
-              </Card>
-            </Col>
-          ))}
-        </Row>
-
-        {/* Domain Filter Skeleton */}
-        <Card className={styles.domainFilter}>
-          <Space wrap size={[8, 8]}>
-            {[...Array(8)].map((_, index) => (
-              <Skeleton.Button key={index} active style={{ width: 100 }} />
-            ))}
-          </Space>
-        </Card>
-
-        {/* Filter Card Skeleton */}
-        <Card className={styles.filterCard}>
-          <Row gutter={[16, 16]} align="middle">
-            <Col xs={24} md={12}>
-              <Skeleton.Input active style={{ width: '100%' }} size="large" />
-            </Col>
-            <Col xs={12} md={6}>
-              <Skeleton.Input active style={{ width: '100%' }} size="large" />
-            </Col>
-            <Col xs={12} md={6}>
-              <Skeleton.Button active style={{ width: '100%' }} size="large" />
-            </Col>
-          </Row>
-        </Card>
-
-        {/* Clubs List Skeleton */}
-        <Row gutter={[16, 16]} className={styles.clubsContainer}>
-          {[...Array(8)].map((_, index) => (
-            <Col key={index} xs={24} sm={12} md={8} lg={6}>
-              <Card className={styles.clubCard}>
-                <Skeleton.Image active style={{ width: '100%', height: 200 }} />
-                <Skeleton
-                  active
-                  avatar
-                  paragraph={{ rows: 3 }}
-                  className={styles.cardSkeleton}
-                />
-              </Card>
-            </Col>
-          ))}
-        </Row>
+      <div style={{ padding: '24px' }}>
+        <Spin size="large" style={{ display: 'block', textAlign: 'center', marginTop: '100px' }} />
       </div>
     );
   }
 
   return (
-    <div className={styles.pageContainer}>
-      <Breadcrumb className={styles.breadcrumb} items={breadcrumbItems} />
+    <div style={{ padding: '24px' }}>
+      <Breadcrumb style={{ margin: '16px 0' }} items={breadcrumbItems} />
 
-      {/* Page Header */}
-      <div className={styles.pageHeader}>
-        <Title level={2} className={styles.pageTitle}>
-          <TeamOutlined /> Câu lạc bộ FTU
+      {/* Header */}
+      <div style={{ marginBottom: 32 }}>
+        <Title level={2}>
+          Câu lạc bộ FTU
+          {currentDomainName && (
+            <span style={{ color: getDomainColor(currentDomainName), marginLeft: 8 }}>
+              - {currentDomainName}
+            </span>
+          )}
         </Title>
-        <Paragraph className={styles.pageDescription}>
-          Khám phá các câu lạc bộ đa dạng tại trường, nơi bạn có thể phát triển kỹ năng và kết nối với bạn bè cùng sở thích
+        <Paragraph>
+          Khám phá các câu lạc bộ đa dạng tại FTU, nơi bạn có thể phát triển kỹ năng và kết nối với bạn bè cùng sở thích.
         </Paragraph>
       </div>
 
-      {/* Statistics */}
-      <Row gutter={[16, 16]} className={styles.statsSection}>
-        <Col xs={12} sm={6}>
-          <Card className={styles.statCard}>
-            <Statistic
-              title="Tổng số CLB"
-              value={stats.totalClubs}
-              prefix={<AppstoreOutlined />}
-              valueStyle={{ color: '#1890ff' }}
-            />
-          </Card>
-        </Col>
-        <Col xs={12} sm={6}>
-          <Card className={`${styles.statCard} ${styles.activeClubsCard}`}>
-            <Statistic
-              title="Đang hoạt động"
-              value={stats.activeClubs}
-              prefix={<ThunderboltOutlined />}
-              valueStyle={{ color: '#52c41a' }}
-              className={styles.activeClubsStat}
-            />
-          </Card>
-        </Col>
-        <Col xs={12} sm={6}>
-          <Card className={styles.statCard}>
-            <Statistic
-              title="Tổng thành viên"
-              value={stats.totalMembers}
-              prefix={<TeamOutlined />}
-              valueStyle={{ color: '#fa8c16' }}
-            />
-          </Card>
-        </Col>
-        <Col xs={12} sm={6}>
-          <Card className={styles.statCard}>
-            <Statistic
-              title="Đánh giá TB"
-              value={stats.avgRating}
-              prefix={<StarOutlined />}
-              suffix="/ 5"
-              valueStyle={{ color: '#faad14' }}
-            />
-          </Card>
-        </Col>
-      </Row>
-
-      {/* Domain Quick Filter - với URL update */}
-      <Card className={styles.domainFilter}>
-        <Space wrap size={[8, 8]}>
-          <Button
-            type={selectedDomain === null ? 'primary' : 'default'}
-            onClick={() => handleDomainSelect(null)}
-            icon={<BookOutlined />}
-          >
-            Tất cả
-          </Button>
-          {domains.map(domain => (
-            <Button
-              key={domain}
-              type={selectedDomain === domain ? 'primary' : 'default'}
-              onClick={() => handleDomainSelect(domain)}
-              icon={<span>{domainIcons[domain] || domainIcons['Khác']}</span>}
-            >
-              {domain}
-            </Button>
-          ))}
-        </Space>
-      </Card>
-
-      {/* Filters and Search */}
-      <Card className={styles.filterCard}>
+      {/* Filters */}
+      <Card style={{ marginBottom: 24 }}>
         <Row gutter={[16, 16]} align="middle">
-          <Col xs={24} md={12}>
-            <Input
-              placeholder="Tìm kiếm câu lạc bộ..."
-              prefix={<SearchOutlined />}
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              size="large"
-              allowClear
-            />
+          <Col xs={24} sm={12} md={6}>
+            <div>
+              <Text strong>Lĩnh vực:</Text>
+              <Select
+                style={{ width: '100%', marginTop: 4 }}
+                placeholder="Chọn lĩnh vực"
+                value={currentDomainSlug || undefined}
+                onChange={handleDomainChange}
+                allowClear
+              >
+                {domains.map(domain => (
+                  <Option key={domainSlugs[domain]} value={domainSlugs[domain]}>
+                    <span>{getDomainIcon(domain)}</span> {domain}
+                  </Option>
+                ))}
+              </Select>
+            </div>
           </Col>
-          <Col xs={12} md={6}>
-            <Select
-              placeholder="Sắp xếp theo"
-              style={{ width: '100%' }}
-              value={sortBy}
-              onChange={setSortBy}
-              size="large"
-              suffixIcon={<SortAscendingOutlined />}
-            >
-              <Option value="name">Tên CLB</Option>
-              <Option value="rating">Đánh giá</Option>
-              <Option value="members">Số thành viên</Option>
-              <Option value="active">Trạng thái</Option>
-            </Select>
+
+          <Col xs={24} sm={12} md={6}>
+            <div>
+              <Text strong>Tìm kiếm:</Text>
+              <Input.Search
+                style={{ width: '100%', marginTop: 4 }}
+                placeholder="Tìm kiếm câu lạc bộ..."
+                value={localSearch}
+                onChange={(e) => setLocalSearch(e.target.value)}
+                onSearch={handleSearch}
+                allowClear
+              />
+            </div>
           </Col>
-          <Col xs={12} md={6}>
-            <Segmented
-              options={[
-                { label: <AppstoreOutlined />, value: 'grid' },
-                { label: <BarsOutlined />, value: 'list' },
-              ]}
-              value={viewMode}
-              onChange={setViewMode}
-              size="large"
-              block
-            />
+
+          <Col xs={24} sm={12} md={4}>
+            <div>
+              <Text strong>Sắp xếp:</Text>
+              <Select
+                style={{ width: '100%', marginTop: 4 }}
+                value={sortBy}
+                onChange={setSortBy}
+              >
+                <Option value="name">Tên CLB</Option>
+                <Option value="rating">Đánh giá</Option>
+                <Option value="members">Thành viên</Option>
+                <Option value="status">Trạng thái</Option>
+              </Select>
+            </div>
+          </Col>
+
+          <Col xs={24} sm={12} md={3}>
+            <div>
+              <Text strong>Thứ tự:</Text>
+              <Select
+                style={{ width: '100%', marginTop: 4 }}
+                value={sortOrder}
+                onChange={setSortOrder}
+              >
+                <Option value="asc">
+                  <SortAscendingOutlined /> {sortBy === 'name' ? 'A-Z' : 'Tăng dần'}
+                </Option>
+                <Option value="desc">
+                  <SortDescendingOutlined /> {sortBy === 'name' ? 'Z-A' : 'Giảm dần'}
+                </Option>
+              </Select>
+            </div>
+          </Col>
+
+          <Col xs={24} sm={12} md={3}>
+            <div>
+              <Text strong>Hiển thị:</Text>
+              <div style={{ marginTop: 4 }}>
+                <Space.Compact style={{ width: '100%' }}>
+                  <Button
+                    type={viewMode === 'grid' ? 'primary' : 'default'}
+                    icon={<AppstoreOutlined />}
+                    onClick={() => setViewMode('grid')}
+                    style={{ width: '50%' }}
+                  />
+                  <Button
+                    type={viewMode === 'list' ? 'primary' : 'default'}
+                    icon={<BarsOutlined />}
+                    onClick={() => setViewMode('list')}
+                    style={{ width: '50%' }}
+                  />
+                </Space.Compact>
+              </div>
+            </div>
+          </Col>
+
+          <Col xs={24} sm={12} md={2}>
+            <div style={{ textAlign: 'right' }}>
+              {(currentDomainSlug || currentSearch) && (
+                <Button onClick={clearFilters} style={{ marginTop: 20 }}>
+                  Xóa bộ lọc
+                </Button>
+              )}
+            </div>
           </Col>
         </Row>
+
+        {/* Active filters display */}
+        {(currentDomainName || currentSearch) && (
+          <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid #f0f0f0' }}>
+            <Text type="secondary">Bộ lọc đang áp dụng: </Text>
+            <Space wrap size={[8, 8]}>
+              {currentDomainName && (
+                <Tag
+                  color={getDomainColor(currentDomainName)}
+                  closable
+                  onClose={() => handleDomainChange('')}
+                >
+                  <span>{getDomainIcon(currentDomainName)}</span> {currentDomainName}
+                </Tag>
+              )}
+              {currentSearch && (
+                <Tag
+                  color="blue"
+                  closable
+                  onClose={() => handleSearch('')}
+                >
+                  <SearchOutlined /> "{currentSearch}"
+                </Tag>
+              )}
+            </Space>
+          </div>
+        )}
       </Card>
 
-      {/* Clubs List */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className={styles.clubsContainer}
-      >
-        {filteredClubs.length === 0 ? (
-          <Empty
-            description="Không tìm thấy câu lạc bộ nào"
-            className={styles.emptyState}
-          />
-        ) : (
-          <AnimatePresence mode="wait">
-            {viewMode === 'grid' ? (
-              <Row gutter={[16, 16]}>
-                {filteredClubs.map((club, index) => (
-                  <Col
-                    key={`${club.id}-${index}`}
-                    xs={24}
-                    sm={12}
-                    md={8}
-                    lg={6}
-                  >
-                    <ClubCard club={club} index={index} />
-                  </Col>
-                ))}
-              </Row>
-            ) : (
-              <Space direction="vertical" style={{ width: '100%' }} size="large">
-                {filteredClubs.map((club, index) => (
-                  <ClubListItem key={`${club.id}-${index}`} club={club} />
-                ))}
-              </Space>
-            )}
-          </AnimatePresence>
-        )}
-      </motion.div>
+      {/* Quick domain filter buttons */}
+      {!currentDomainSlug && (
+        <div style={{ marginBottom: 24 }}>
+          <Title level={4}>Lọc theo lĩnh vực:</Title>
+          <Space wrap size={[8, 8]}>
+            {domains.map(domain => (
+              <Button
+                key={domain}
+                type="default"
+                style={{
+                  borderColor: getDomainColor(domain),
+                  color: getDomainColor(domain),
+                }}
+                onClick={() => handleDomainChange(domainSlugs[domain])}
+              >
+                <span>{getDomainIcon(domain)}</span> {domain}
+              </Button>
+            ))}
+          </Space>
+        </div>
+      )}
 
-      {/* Add styles for pulse animation */}
-      <style jsx global>{`
-          @keyframes pulse {
-              0% { opacity: 1; }
-              50% { opacity: 0.6; }
-              100% { opacity: 1; }
+      {/* Error handling */}
+      {error && (
+        <Alert
+          message="Lỗi"
+          description={error}
+          type="error"
+          showIcon
+          style={{ marginBottom: 24 }}
+        />
+      )}
+
+      {/* Results info */}
+      <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <Text type="secondary">
+            {clubsLoading ? 'Đang tải...' : `Tìm thấy ${clubs.length} câu lạc bộ`}
+            {currentDomainName && ` trong lĩnh vực "${currentDomainName}"`}
+            {currentSearch && ` với từ khóa "${currentSearch}"`}
+          </Text>
+          {!clubsLoading && clubs.length > 0 && (
+            <Text type="secondary" style={{ marginLeft: 16 }}>
+              • Sắp xếp theo {sortBy === 'name' ? 'tên' : sortBy === 'rating' ? 'đánh giá' : sortBy === 'members' ? 'số thành viên' : 'trạng thái'}
+              ({sortOrder === 'asc' ? 'tăng dần' : 'giảm dần'})
+            </Text>
+          )}
+        </div>
+
+        {!clubsLoading && clubs.length > 0 && (
+          <Text type="secondary">
+            Trang {currentPage} / {Math.ceil(total / pageSize)} • Hiển thị {viewMode === 'grid' ? 'lưới' : 'danh sách'}
+          </Text>
+        )}
+      </div>
+
+      {/* Clubs Display */}
+      {clubsLoading ? (
+        <Row gutter={[16, 16]}>
+          {[...Array(6)].map((_, index) => (
+            <Col xs={24} sm={12} lg={8} xl={6} key={index}>
+              <ClubCardSkeleton />
+            </Col>
+          ))}
+        </Row>
+      ) : sortedClubs.length > 0 ? (
+        <>
+          {viewMode === 'grid' ? (
+            <Row gutter={[16, 16]}>
+              {sortedClubs.map(club => (
+                <Col xs={24} sm={12} lg={8} xl={6} key={club.id}>
+                  <ClubCard club={club} />
+                </Col>
+              ))}
+            </Row>
+          ) : (
+            <div>
+              {sortedClubs.map(club => (
+                <ClubListItem key={club.id} club={club} />
+              ))}
+            </div>
+          )}
+
+          {/* Pagination */}
+          {total > pageSize && (
+            <div style={{ textAlign: 'center', marginTop: 32 }}>
+              <Pagination
+                current={currentPage}
+                total={total}
+                pageSize={pageSize}
+                onChange={handlePageChange}
+                showSizeChanger={false}
+                showQuickJumper
+                showTotal={(total, range) =>
+                  `${range[0]}-${range[1]} của ${total} câu lạc bộ`
+                }
+              />
+            </div>
+          )}
+        </>
+      ) : (
+        <Empty
+          description={
+            <div>
+              <Text>Không tìm thấy câu lạc bộ nào</Text>
+              {(currentDomainName || currentSearch) && (
+                <div style={{ marginTop: 8 }}>
+                  <Button type="primary" onClick={clearFilters}>
+                    Xóa bộ lọc
+                  </Button>
+                </div>
+              )}
+            </div>
           }
-          
-          .countdownTag {
-              margin-top: 8px;
-          }
-      `}</style>
+          style={{ marginTop: 48 }}
+        />
+      )}
     </div>
   );
 }
