@@ -13,7 +13,8 @@ export const ContestCard = ({ contest }) => {
     const today = new Date();
     const daysLeft = Math.ceil((deadlineDate - today) / (1000 * 60 * 60 * 24));
 
-    // Xác định trạng thái và màu sắc    const getStatusInfo = (status) => {
+    // Xác định trạng thái và màu sắc    
+     const getStatusInfo = (status) => {
         switch (status) {
             case 'open':
                 return { text: 'Đang mở', color: 'green' };
