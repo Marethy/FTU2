@@ -1,5 +1,5 @@
 import styles from '@/styles/PersonalityTest.module.css';
-import { Card, Tag, Typography } from 'antd';
+import { Card, Tag, Typography, Divider } from 'antd';
 
 const { Title, Paragraph } = Typography;
 
@@ -12,11 +12,13 @@ export default function ResultCard({ personalityType }) {
                     <Title level={2} style={{ color: personalityType.color, margin: 0 }}>
                         {personalityType.title}
                     </Title>
-                    <Paragraph className={styles.resultDescription} style={{ color: '#495057' }}>
+                    <Paragraph className={styles.resultDescription} style={{ color: '#495057', whiteSpace: 'pre-line', marginTop: '10px' }}>
                         {personalityType.description}
                     </Paragraph>
                 </div>
             </div>
+
+            <Divider />
 
             <div className={styles.traitsSection}>
                 <Title level={4} style={{ color: '#1a1a1a' }}>Đặc điểm nổi bật</Title>
@@ -27,6 +29,15 @@ export default function ResultCard({ personalityType }) {
                         </Tag>
                     ))}
                 </div>
+            </div>
+
+            <Divider />
+            
+            <div className={styles.clubRecommendation}>
+                <Title level={4} style={{ color: '#1a1a1a' }}>Gợi ý CLB phù hợp</Title>
+                <Paragraph style={{ whiteSpace: 'pre-line', fontSize: '16px', lineHeight: '1.8' }}>
+                    {personalityType.result}
+                </Paragraph>
             </div>
         </Card>
     );

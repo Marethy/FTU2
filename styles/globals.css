@@ -1,29 +1,71 @@
 :root {
-  --primary-color: #4ECDC4;
-  --secondary-color: #FF6B6B;
-  --text-primary: #1a1a1a;
+  /* Primary Color Palette */
+  --primary-color: #138eff;
+  --primary-light: #e3f2ff;
+  --primary-dark: #002eff;
+  
+  /* Complementary Color */
+  --accent-color: #ff8f13;
+  --accent-light: #ffb96b;
+  --accent-dark: #e67300;
+  
+  /* Analogous Colors */
+  --analogous-cyan: #13cfff;
+  --analogous-blue: #002eff;
+  
+  /* Neutral Colors */
+  --neutral-light-gray: #d3d3d3;
+  --neutral-athens-gray: #efeff0;
+  --neutral-white-smoke: #ececec;
+  
+  /* Text Colors */
+  --text-primary: #1e1e1e;
   --text-secondary: #495057;
   --text-light: #6c757d;
+  --text-on-primary: #ffffff;
+  
+  /* Background Colors */
   --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --bg-tertiary: #f0f4ff;
-  --border-color: #e8e8e8;
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+  --bg-secondary: #efeff0;
+  --bg-tertiary: #e3f2ff;
+  --bg-surface: #ffffff;
+  
+  /* Functional Colors */
+  --error-color: #b00020;
+  --success-color: #52c41a;
+  --warning-color: #faad14;
+  --info-color: #13cfff;
+  
+  /* Border and Shadow */
+  --border-color: #ececec;
+  --shadow-sm: 0 4px 12px rgba(19, 142, 255, 0.1);
+  --shadow-md: 0 8px 24px rgba(19, 142, 255, 0.15);
+  --shadow-lg: 0 12px 40px rgba(19, 142, 255, 0.2);
 }
 
 .dark {
+  /* Text Colors in Dark Mode */
   --text-primary: #e8e8e8;
   --text-secondary: #b8b8b8;
   --text-light: #d0d0d0;
+  --text-on-primary: #ffffff;
+  
+  /* Background Colors in Dark Mode */
   --bg-primary: #1a1a1a;
   --bg-secondary: #2a2a2a;
-  --bg-tertiary: #333333;
+  --bg-tertiary: #1d3557;
+  --bg-surface: #1f1f1f;
+  
+  /* Border and Shadow in Dark Mode */
   --border-color: #3a3a3a;
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 4px 12px rgba(19, 142, 255, 0.2);
+  --shadow-md: 0 8px 24px rgba(19, 142, 255, 0.3);
+  --shadow-lg: 0 12px 40px rgba(19, 142, 255, 0.4);
+  
+  /* Primary Color Adjustments for Dark Mode */
+  --primary-color: #3a9fff;
+  --primary-light: #1c4b8f;
+  --accent-color: #ff9f33;
 }
 
 html,

@@ -1,7 +1,6 @@
+# activeU
 
-# FTU2 Connect
-
-A platform for connecting students with clubs, activities, and volunteer opportunities at FTU2.
+A platform for connecting students with clubs, activities, and volunteer opportunities at activeU.
 
 ## Frontend Setup
 

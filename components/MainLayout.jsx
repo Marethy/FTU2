@@ -48,7 +48,7 @@ export default function MainLayout({ children }) {
       key: 'logo',
       label: (
         <Link href="/" className={styles.logoLink}>
-          <span className={styles.logoText}>FTU2 Connect</span>
+          <span className={styles.logoText}>activeU</span>
         </Link>
       ),
       style: { marginRight: '40px' }
@@ -76,12 +76,12 @@ export default function MainLayout({ children }) {
     {
       key: 'personalityTest',
       icon: <BulbOutlined />,
-      label: <Link href="/personality-test">Test Tính Cách</Link>
+      label: <Link href="/personality-test">Quiz Định Hướng</Link>
     },
     {
       key: 'surveys',
       icon: <FormOutlined />,
-      label: <Link href="/surveys">Khảo sát của trường</Link>
+      label: <Link href="/surveys">Khảo sát chéo</Link>
     },
     {
       key: 'student',
@@ -119,7 +119,7 @@ export default function MainLayout({ children }) {
         {children}
       </Content>
       <Footer className={styles.footer}>
-        FTU2 Connect ©{new Date().getFullYear()} - Kết nối sinh viên FTU2
+        activeU ©{new Date().getFullYear()} - Kết nối sinh viên FTU2
       </Footer>
     </Layout>
   );

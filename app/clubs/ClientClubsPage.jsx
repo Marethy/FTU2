@@ -22,7 +22,6 @@ import {
   Empty,
   Input,
   Pagination,
-  Rate,
   Row,
   Select,
   Skeleton,
@@ -107,10 +106,8 @@ const ClubCard = ({ club }) => {
         display: 'flex',
         flexDirection: 'column',
         paddingBottom: 60, // Space for action button
-      }}
-      cover={
-        <div style={{ height: 200, overflow: 'hidden', position: 'relative' }}>
-          <img
+      }}      cover={
+        <div style={{ height: 200, overflow: 'hidden', position: 'relative' }}>          <img
             alt={club.name}
             src={club.coverImage || club.image}
             style={{
@@ -122,19 +119,6 @@ const ClubCard = ({ club }) => {
               e.target.src = '/images/avt_placeholder.jpg';
             }}
           />
-          <div
-            style={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-              background: 'rgba(255,255,255,0.9)',
-              borderRadius: '16px',
-              padding: '4px 8px',
-            }}
-          >
-            <Rate disabled defaultValue={parseFloat(club.rating)} allowHalf size="small" />
-            <Text style={{ marginLeft: 4, fontSize: '12px' }}>{club.rating}</Text>
-          </div>
         </div>
       }
     >
@@ -389,15 +373,9 @@ const ClubListItem = ({ club }) => {
                 style={{ margin: '8px 0', color: '#666' }}
               >
                 {club.summary}
-              </Paragraph>
-
-              <Space size={16} wrap>
+              </Paragraph>              <Space size={16} wrap>
                 <span style={{ fontSize: '14px', color: '#999' }}>
                   <TeamOutlined /> {club.memberCount} thành viên
-                </span>
-                <span style={{ fontSize: '14px', color: '#999' }}>
-                  <Rate disabled defaultValue={parseFloat(club.rating)} allowHalf size="small" />
-                  <Text style={{ marginLeft: 4 }}>{club.rating}</Text>
                 </span>
                 <span style={{ fontSize: '14px', color: '#999' }}>
                   <ClockCircleOutlined /> {club.foundedYear || 'N/A'}
@@ -449,11 +427,10 @@ export default function ClientClubsPage() {
   const currentDomainSlug = searchParams.get('domain') || '';
   const currentSearch = searchParams.get('search') || '';
   const currentPage = parseInt(searchParams.get('page')) || 1;
-
   // State
   const [localSearch, setLocalSearch] = useState(currentSearch);
   const [pageSize] = useState(12);
-  const [sortBy, setSortBy] = useState('name'); // name, rating, status
+  const [sortBy, setSortBy] = useState('name'); // name, status
   const [sortOrder, setSortOrder] = useState('asc'); // asc, desc
   const [viewMode, setViewMode] = useState('grid'); // grid, list
 
@@ -516,14 +493,9 @@ export default function ClientClubsPage() {
     if (!clubs || clubs.length === 0) return clubs;
 
     const sorted = [...clubs].sort((a, b) => {
-      let compareValue = 0;
-
-      switch (sortBy) {
+      let compareValue = 0;      switch (sortBy) {
         case 'name':
           compareValue = a.name.localeCompare(b.name, 'vi');
-          break;
-        case 'rating':
-          compareValue = parseFloat(b.rating) - parseFloat(a.rating); // Default desc for rating
           break;
         case 'status':
           compareValue = (b.isActive ? 1 : 0) - (a.isActive ? 1 : 0); // Active first
@@ -533,10 +505,8 @@ export default function ClientClubsPage() {
           break;
         default:
           return 0;
-      }
-
-      // Apply sort order
-      if (sortBy === 'rating' || sortBy === 'members' || sortBy === 'status') {
+      }      // Apply sort order
+      if (sortBy === 'members' || sortBy === 'status') {
         // For numeric and status, reverse if asc is requested
         return sortOrder === 'asc' ? -compareValue : compareValue;
       } else {
@@ -627,17 +597,15 @@ export default function ClientClubsPage() {
 
           <Col xs={24} sm={12} md={4}>
             <div>
-              <Text strong>Sắp xếp:</Text>
-              <Select
-                style={{ width: '100%', marginTop: 4 }}
-                value={sortBy}
-                onChange={setSortBy}
-              >
-                <Option value="name">Tên CLB</Option>
-                <Option value="rating">Đánh giá</Option>
-                <Option value="members">Thành viên</Option>
-                <Option value="status">Trạng thái</Option>
-              </Select>
+              <Text strong>Sắp xếp:</Text>                <Select
+                  style={{ width: '100%', marginTop: 4 }}
+                  value={sortBy}
+                  onChange={setSortBy}
+                >
+                  <Option value="name">Tên CLB</Option>
+                  <Option value="members">Thành viên</Option>
+                  <Option value="status">Trạng thái</Option>
+                </Select>
             </div>
           </Col>
 
@@ -760,10 +728,9 @@ export default function ClientClubsPage() {
             {clubsLoading ? 'Đang tải...' : `Tìm thấy ${clubs.length} câu lạc bộ`}
             {currentDomainName && ` trong lĩnh vực "${currentDomainName}"`}
             {currentSearch && ` với từ khóa "${currentSearch}"`}
-          </Text>
-          {!clubsLoading && clubs.length > 0 && (
+          </Text>          {!clubsLoading && clubs.length > 0 && (
             <Text type="secondary" style={{ marginLeft: 16 }}>
-              • Sắp xếp theo {sortBy === 'name' ? 'tên' : sortBy === 'rating' ? 'đánh giá' : sortBy === 'members' ? 'số thành viên' : 'trạng thái'}
+              • Sắp xếp theo {sortBy === 'name' ? 'tên' : sortBy === 'members' ? 'số thành viên' : 'trạng thái'}
               ({sortOrder === 'asc' ? 'tăng dần' : 'giảm dần'})
             </Text>
           )}

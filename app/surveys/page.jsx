@@ -105,13 +105,13 @@ export default function SurveysPage() {
         <Breadcrumb
           items={[
             { title: <Link href="/">Trang chủ</Link> },
-            { title: 'Khảo sát của trường' }
+            { title: 'Khảo sát chéo' }
           ]}
           className={styles.breadcrumb}
         />
 
         <div className={styles.header}>
-          <Title level={2}>Khảo sát của trường</Title>
+          <Title level={2}>Khảo sát chéo</Title>
           <Text className={styles.subtitle}>
             Tham gia khảo sát để đóng góp ý kiến và cải thiện chất lượng học tập
           </Text>

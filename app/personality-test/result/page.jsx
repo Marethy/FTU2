@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
 export default function ResultPage() {
     const router = useRouter();
@@ -27,11 +27,9 @@ export default function ResultPage() {
 
     if (!result) return null;
 
-    const personalityType = personalityTypes[result.type];
-
-    // Prepare data for chart
+    const personalityType = personalityTypes[result.type];    // Prepare data for chart
     const chartData = Object.entries(result.scores).map(([type, score]) => ({
-        name: personalityTypes[type].title.split(' - ')[1],
+        name: personalityTypes[type].title,
         score: score,
         color: personalityTypes[type].color
     }));
@@ -42,10 +40,9 @@ export default function ResultPage() {
     };
 
     return (
-        <MainLayout>
-            <div className={styles.resultContainer}>
+        <MainLayout>            <div className={styles.resultContainer}>
                 <Title level={1} className={styles.resultTitle}>
-                    Kết quả của bạn
+                    Chúc mừng bạn đã hoàn thành quiz! Cùng khám phá kết quả nhé!
                 </Title>
 
                 <ResultCard personalityType={personalityType} />
@@ -70,6 +67,16 @@ export default function ResultPage() {
                 </div>
 
                 <ClubRecommendation clubs={personalityType.clubs} />
+
+                <div className={styles.closingMessage}>
+                    <Title level={4}>Lời kết</Title>
+                    <Paragraph className={styles.closingText}>
+                        Cảm ơn bạn đã dành thời gian tham gia quiz. Có thể đâu đó trong những gợi ý hôm nay
+                        sẽ là cánh cửa đưa bạn đến với "gia đình nhỏ" - nơi sẵn sàng đồng hành, lắng nghe
+                        và phát triển cùng bạn tại FTU2 thì sao? Cuối cùng, chúc bạn sẽ có một hành trình
+                        khám phá bản thân đáng nhớ tại Ngoại thương nhé!
+                    </Paragraph>
+                </div>
 
                 <div className={styles.actionButtons}>
                     <Button size="large" onClick={handleRetake}>

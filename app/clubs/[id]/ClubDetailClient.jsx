@@ -31,7 +31,6 @@ import {
     Empty,
     Image,
     List,
-    Rate,
     Row,
     Skeleton,
     Space,
@@ -393,20 +392,12 @@ export default function ClubDetailClient({ id }) {
                                 >
                                     {club.personalityType}
                                 </Tag>
-                            )}
-
-                            <Tag
+                            )}                            <Tag
                                 icon={<TeamOutlined />}
                                 color="gold"
                                 style={{ padding: '4px 10px', fontSize: '14px' }}
                             >
                                 {club.memberCount} thành viên
-                            </Tag>
-
-                            <Tag
-                                style={{ padding: '4px 10px', fontSize: '14px' }}
-                            >
-                                <Rate disabled defaultValue={parseFloat(club.rating)} allowHalf style={{ fontSize: '14px' }} /> {club.rating}/5
                             </Tag>
                         </Space>
                     </div>
@@ -567,22 +558,12 @@ export default function ClubDetailClient({ id }) {
                     >
                         <Title level={4} style={{ marginTop: 0 }}>
                             <TeamOutlined /> Thông tin nhanh
-                        </Title>
-
-                        <Row gutter={[16, 16]}>
+                        </Title>                        <Row gutter={[16, 16]}>
                             <Col span={12}>
                                 <Statistic
                                     title="Thành viên"
                                     value={club.memberCount}
                                     prefix={<TeamOutlined style={{ color: domainColor }} />}
-                                />
-                            </Col>
-                            <Col span={12}>
-                                <Statistic
-                                    title="Đánh giá"
-                                    value={club.rating}
-                                    prefix={<Rate disabled defaultValue={parseFloat(club.rating)} allowHalf count={1} style={{ color: domainColor }} />}
-                                    suffix="/ 5"
                                 />
                             </Col>
                         </Row>

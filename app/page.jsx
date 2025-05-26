@@ -719,31 +719,7 @@ export default function Home() {
           </Row>
         </div>
 
-        {/* Call to Action */}
-        <div style={{
-          background: 'linear-gradient(135deg, #722ed1 0%, #531dab 100%)',
-          borderRadius: 16,
-          padding: '48px 24px',
-          textAlign: 'center',
-          color: 'white'
-        }}>
-          <Title level={2} style={{ color: 'white', marginBottom: 16 }}>
-            Tham gia cộng đồng FTU2 ngay hôm nay
-          </Title>
-          <Paragraph style={{ fontSize: 18, color: 'rgba(255,255,255,0.9)', marginBottom: 32, maxWidth: 600, margin: '0 auto 32px' }}>
-            Khám phá cơ hội phát triển kỹ năng, kết nối bạn bè và xây dựng tương lai tươi sáng
-          </Paragraph>
-          <Space size="large" wrap>
-            <Link href="/clubs">
-              <Button size="large" type="primary" style={{ background: 'white', color: '#722ed1', border: 'none' }}>
-                Đăng ký tham gia
-              </Button>
-            </Link>
-            <Button size="large" ghost style={{ borderColor: 'white', color: 'white' }}>
-              Liên hệ với chúng tôi
-            </Button>
-          </Space>
-        </div>
+ 
 
         {/* Add styles for pulse animation */}
         <style jsx global>{`

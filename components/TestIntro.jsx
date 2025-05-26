@@ -37,25 +37,25 @@ export default function TestIntro({ onStartTest }) {
         {
             type: "Hustler",
             icon: "🚀",
-            description: "Thủ lĩnh - Người hành động",
+            description: "Người chơi hệ nỗ lực là chính",
             color: "#FF6B6B"
         },
         {
             type: "Connector",
             icon: "💫",
-            description: "Người truyền lửa - Kết nối",
+            description: "Người chơi hệ thở thôi cũng truyền cảm hứng",
             color: "#4ECDC4"
         },
         {
             type: "Creator",
             icon: "🎨",
-            description: "Người kiến tạo - Sáng tạo",
+            description: "Người chơi hệ não phải hoạt động hết công suất",
             color: "#FFE66D"
         },
         {
             type: "Analyst",
             icon: "🧠",
-            description: "Học giả - Phân tích",
+            description: "Người chơi hệ được cấp chứng chỉ mổ xẻ vấn đề",
             color: "#A8E6CF"
         }
     ];
@@ -68,8 +68,10 @@ export default function TestIntro({ onStartTest }) {
                 </Title>
 
                 <Paragraph className={styles.description}>
+                    Chào mừng bạn đến với bài quiz "FTU2 Club Match"!
+                    <br /><br />
                     Trước khi bắt đầu, hãy lưu ý rằng bài quiz này đóng vai trò như một công cụ hỗ trợ bạn trong việc khám phá các CLB, Đội, Nhóm phù hợp ở FTU2.
-                    Kết quả quiz chỉ mang tính chất tham khảo, nhằm đưa ra một số đề xuất giúp bạn tự tin hơn trong hành trình tìm kiếm “gia đình nhỏ” cho riêng mình.
+                    Kết quả quiz chỉ mang tính chất tham khảo, nhằm đưa ra một số đề xuất giúp bạn tự tin hơn trong hành trình tìm kiếm "gia đình nhỏ" cho riêng mình.
                     Tuy nhiên, quyết định cuối cùng vẫn nằm ở bạn. Hãy tham gia quiz với tinh thần thoải mái và cởi mở, đồng thời đừng ngần ngại khám phá những điều mới mẻ đang chờ phía trước, bạn nhé!
                 </Paragraph>
 
@@ -111,7 +113,7 @@ export default function TestIntro({ onStartTest }) {
                 <div className={styles.startSection}>
                     <Title level={3}>Sẵn sàng khám phá?</Title>
                     <Paragraph>
-                        Còn bây giờ, chúc bạn có trải nghiệm thú vị và hài lòng cùng với “FTU2 Club Match”!
+                        Còn bây giờ, chúc bạn có trải nghiệm thú vị và hài lòng cùng với "FTU2 Club Match"!
                     </Paragraph>
                     <Button
                         type="primary"
@@ -119,7 +121,7 @@ export default function TestIntro({ onStartTest }) {
                         onClick={onStartTest}
                         className={styles.startButton}
                     >
-                        Bắt đầu ngay
+                        Sẵn sàng tham gia quiz
                     </Button>
                 </div>
             </Card>

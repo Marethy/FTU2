@@ -1,7 +1,7 @@
 export const personalityTypes = {
     hustler: {
-        title: "Thủ lĩnh - The Hustler",
-        description: "Bạn là người quyết đoán, định hướng mục tiêu và thích giải quyết vấn đề thực tiễn. Bạn có khả năng lãnh đạo tự nhiên và luôn tìm cách đạt được kết quả tốt nhất.",
+        title: "THE HUSTLER",
+        description: "Người chơi hệ nỗ lực là chính, thành công là \"mười\"! Bạn có xu hướng cảm thấy yên tâm nhất khi biết mình đang hướng đến đâu. Bạn thích lên kế hoạch và không ngại sẵn sàng xắn tay áo để hiện thực hóa các dự định. Những hoạt động mang tính thực tiễn, cạnh tranh lành mạnh và đem đến kết quả rõ ràng thường khiến bạn thấy hứng thú hơn hẳn. Bạn đích thị là đại diện của câu nói: \"FTU2 có bao nhiêu deadline, hãy đến với tôi hết đi!\".",
         traits: ["Quyết đoán", "Định hướng mục tiêu", "Thích thử thách", "Kiểm soát tốt", "Hành động nhanh"],
         color: "#FF6B6B",
         icon: "🚀",
@@ -26,11 +26,12 @@ export const personalityTypes = {
                     "CLB THỂ THAO FSC"
                 ]
             }
-        ]
+        ],
+        result: "Lĩnh vực CLB phù hợp với bạn:\nCLB Kinh doanh – Khởi nghiệp\nCLB Thể thao\nCả hai đều là \"sân chơi\" lý tưởng giúp bạn rèn sức bền – cả thể chất lẫn tinh thần – để phát triển mỗi ngày. Vào đây kiểu gì cũng có đất \"dụng võ\" nè!"
     },
     connector: {
-        title: "Người truyền lửa - The Connector",
-        description: "Bạn là người giàu cảm xúc, có khả năng kết nối con người và truyền cảm hứng. Bạn luôn quan tâm đến cảm xúc của người khác và tạo ra môi trường tích cực.",
+        title: "THE CONNECTOR",
+        description: "Người chơi hệ thở thôi cũng truyền cảm hứng! Có vẻ bạn rất quan tâm đến sự gắn kết chân thành giữa người với người đúng không nào? Ngoài ra, bạn tỏa ra \"vibe\" tích cực một cách không cần cố và thường là chỗ dựa tinh thần đáng tin cậy. Khả năng kết nối mọi người của bạn mạnh mẽ như website \"FTU2 Connect\" luôn đó!",
         traits: ["Đồng cảm", "Giao tiếp tốt", "Truyền cảm hứng", "Gắn kết cộng đồng", "Lắng nghe"],
         color: "#4ECDC4",
         icon: "💫",
@@ -54,11 +55,12 @@ export const personalityTypes = {
                     "CLB IMC"
                 ]
             }
-        ]
+        ],
+        result: "Lĩnh vực CLB phù hợp với bạn:\nCLB Xã hội – Tình nguyện\nCLB Truyền thông – Sự kiện\nTại đây, bạn sẽ vừa thỏa sức là chính mình, vừa lan tỏa năng lượng đặc biệt đến người khác. Bước vô là \"bắt sóng\", ở lại là \"bật vibe\" luôn đó!"
     },
     creator: {
-        title: "Người kiến tạo - The Creator",
-        description: "Bạn là người giàu tưởng tượng, thích thể hiện bản thân qua hình ảnh, âm thanh và nghệ thuật. Bạn luôn tìm kiếm sự sáng tạo và độc đáo trong mọi việc.",
+        title: "THE CREATOR",
+        description: "Người chơi hệ \"não phải\" hoạt động hết công suất! Bạn yêu việc thể hiện bản thân qua hình ảnh, âm thanh, con chữ – và đằng sau đó là cả một \"kho ý tưởng\" độc nhất, không ai đoán được. Trí tưởng tượng của bạn phong phú như danh sách hoạt động ngoại khóa của FTU2 luôn đó!",
         traits: ["Sáng tạo", "Tưởng tượng phong phú", "Cá tính", "Thẩm mỹ cao", "Thích thể hiện"],
         color: "#FFE66D",
         icon: "🎨",
@@ -83,11 +85,12 @@ export const personalityTypes = {
                     "CLB IMC"
                 ]
             }
-        ]
+        ],
+        result: "Lĩnh vực CLB phù hợp với bạn:\nCLB Văn hóa – Nghệ thuật\nCLB Truyền thông – Sự kiện\nỞ các \"sân chơi\" này, bạn sẽ không chỉ giữ những ý tưởng trong đầu hay trong note điện thoại nữa, mà còn có vô vàn cơ hội để hiện thực hóa chúng đấy!"
     },
     analyst: {
-        title: "Học giả - The Analyst",
-        description: "Bạn là người thích kiến thức sâu, thích phân tích và học hỏi. Bạn có tư duy logic mạnh mẽ và luôn tìm hiểu kỹ càng trước khi đưa ra quyết định.",
+        title: "THE ANALYST",
+        description: "Người chơi hệ được cấp chứng chỉ \"mổ xẻ\" vấn đề! Bạn không bao giờ ngừng tò mò, luôn muốn đào sâu và tìm kiếm một góc độ hợp lý để nhìn vào vấn đề. Sự logic, tính chính xác và cách giải quyết, vận hành rõ ràng và hiệu quả sẽ là một điểm cộng lớn đối với bạn. Với sơ đồ tư duy và một tinh thần thép, bạn sẵn sàng nộp mọi thứ trước 23h59!",
         traits: ["Tư duy logic", "Phân tích sâu", "Kiên nhẫn", "Học hỏi", "Tỉ mỉ"],
         color: "#A8E6CF",
         icon: "🧠",
@@ -111,6 +114,7 @@ export const personalityTypes = {
                     "CLB KINH DOANH VÀ TIẾNG ANH BEC"
                 ]
             }
-        ]
+        ],
+        result: "Lĩnh vực CLB phù hợp với bạn:\nCLB Khoa học – Lý luận\nCLB Ngôn ngữ\nHai \"sân chơi\" sôi động này rất có thể sẽ là nơi lý tưởng để bạn tiếp tục mài giũa tư duy và thỏa mãn niềm yêu thích của mình đấy!"
     }
 };

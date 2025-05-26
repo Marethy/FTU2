@@ -23,7 +23,7 @@ export default function PersonalityTestPage() {
                         Khám phá CLB, Đội, Nhóm phù hợp với bạn
                     </Title>
                     <p className={styles.subtitle}>
-                        Bài test tính cách này sẽ giúp bạn tìm ra những CLB, Đội, Nhóm phù hợp nhất với sở thích và tính cách của mình tại FTU2
+                        Bài quiz định hướng này sẽ giúp bạn tìm ra những CLB, Đội, Nhóm phù hợp nhất với sở thích và tính cách của mình tại FTU2
                     </p>
                 </div>
                 <TestIntro onStartTest={handleStartTest} />
