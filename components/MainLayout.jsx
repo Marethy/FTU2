@@ -61,11 +61,15 @@ export default function MainLayout({ children }) {
       key: 'home',
       icon: <HomeOutlined />,
       label: <Link href="/">Trang chủ</Link>
-    },
-    {
+    },    {
       key: 'clubs',
       icon: <TeamOutlined />,
-      label: <Link href="/clubs">Câu lạc bộ</Link>
+      label: <Link href="/clubs">CLB, Đội, Nhóm</Link>
+    },
+    {
+      key: 'recruitment',
+      icon: <TeamOutlined />,
+      label: <Link href="/recruitment">Tuyển thành viên</Link>
     },
     {
       key: 'contests',
@@ -80,16 +84,10 @@ export default function MainLayout({ children }) {
     {
       key: 'personalityTest',
       icon: <BulbOutlined />,
-      label: <Link href="/personality-test">Quiz định hướng</Link>
-    },    {
+      label: <Link href="/personality-test">Quiz định hướng</Link>    },    {
       key: 'surveys',
       icon: <FormOutlined />,
       label: <Link href="/surveys">Khảo sát chéo</Link>
-    },
-    {
-      key: 'recruitment',
-      icon: <TeamOutlined />,
-      label: <Link href="/recruitment">Tuyển thành viên</Link>
     },
     {
       key: 'student',

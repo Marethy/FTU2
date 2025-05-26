@@ -559,11 +559,12 @@ export default function Home() {
               </>
             )}
           </Row>
-        </div>
-
-        {/* Categories - Hiển thị 7 domains mới */}
+        </div>        {/* Categories - Hiển thị 7 domains mới */}
         <div style={{ marginBottom: 48 }}>
-          <Title level={2} style={{ textAlign: 'center', marginBottom: 32 }}>Lĩnh vực hoạt động</Title>
+          <Title level={2} style={{ textAlign: 'center', marginBottom: 16 }}>Lĩnh vực CLB, Đội, Nhóm</Title>
+          <Paragraph style={{ textAlign: 'center', color: 'var(--text-secondary, #494952)', marginBottom: 32 }}>
+            Các lĩnh vực CLB, Đội, Nhóm đa dạng và đầy màu sắc. Đậm chất riêng - Vững chất chung của Nhà Ngoại.
+          </Paragraph>
           {loading ? (
             // Skeleton loading for categories
             <>
@@ -670,10 +671,8 @@ export default function Home() {
                           color: 'var(--text-primary, #1e1e1e)', 
                           fontSize: 18,
                           fontWeight: 600
-                        }}>{domain}</span>}
-                        description={
+                        }}>{domain}</span>}                        description={
                           <Space direction="vertical" style={{ width: '100%', marginTop: 8 }}>
-                            <Text style={{ color: 'var(--text-secondary, #494952)' }}>{domainClubCount || 'Nhiều'} CLB, Đội, Nhóm</Text>
                             <Link href={`/clubs?domain=${domainUrlMapping[domain] || domain.toLowerCase().replace(/\s+/g, '-')}`}>
                 
                               <Button 
