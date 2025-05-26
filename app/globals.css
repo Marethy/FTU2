@@ -5,16 +5,16 @@
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
-  /* Light Theme Colors */
-  --header-bg: #ffffff;
-  --logo-text-color: #000000;
-  --menu-text-color: #000000;
-  --menu-item-hover: rgba(255, 255, 255, 0.15);
-  --menu-item-active: #1890ff;
-  --body-bg: #f0f2f5;
-  --body-color: rgba(0, 0, 0, 0.85);
-  --footer-bg: #ffffff;
-  --footer-color: rgba(0, 0, 0, 0.85);
+  /* Light Theme Colors - Using our updated color palette */
+  --header-bg: var(--glass-bg, rgba(255, 255, 255, 0.7));
+  --logo-text-color: var(--text-primary, #1e1e1e);
+  --menu-text-color: var(--text-primary, #1e1e1e);
+  --menu-item-hover: rgba(19, 142, 255, 0.1);
+  --menu-item-active: var(--primary-color, #138eff);
+  --body-bg: var(--bg-secondary, #f5f5f7);
+  --body-color: var(--text-primary, #1e1e1e);
+  --footer-bg: var(--glass-bg, rgba(255, 255, 255, 0.7));
+  --footer-color: var(--text-secondary, #494952);
 }
 
 * {
@@ -46,7 +46,7 @@ a {
     --logo-text-color: #ffffff;
     --menu-text-color: #ffffff;
     --menu-item-hover: rgba(255, 255, 255, 0.15);
-    --menu-item-active: #1890ff;
+    --menu-item-active: #138eff;
     --body-bg: #000000;
     --body-color: rgba(255, 255, 255, 0.85);
     --footer-bg: #141414;
@@ -56,41 +56,41 @@ a {
 
 /* Dark Theme Variables */
 html.dark {
-  --header-bg: #141414;
+  --header-bg: rgba(0, 0, 0, 0.7);
   --logo-text-color: #ffffff;
   --menu-text-color: #ffffff;
-  --menu-item-hover: rgba(255, 255, 255, 0.15);
-  --menu-item-active: #1890ff;
-  --body-bg: #000000;
+  --menu-item-hover: rgba(19, 142, 255, 0.2);
+  --menu-item-active: var(--primary-color, #138eff);
+  --body-bg: #121212;
   --body-color: rgba(255, 255, 255, 0.85);
-  --footer-bg: #141414;
-  --footer-color: rgba(255, 255, 255, 0.85);
+  --footer-bg: rgba(0, 0, 0, 0.7);
+  --footer-color: rgba(255, 255, 255, 0.7);
 }
 
 /* Data attribute dark theme */
 [data-theme="dark"] {
-  --header-bg: #141414;
+  --header-bg: rgba(0, 0, 0, 0.7);
   --logo-text-color: #ffffff;
   --menu-text-color: #ffffff;
-  --menu-item-hover: rgba(255, 255, 255, 0.15);
-  --menu-item-active: #1890ff;
-  --body-bg: #000000;
+  --menu-item-hover: rgba(19, 142, 255, 0.2);
+  --menu-item-active: var(--primary-color, #138eff);
+  --body-bg: #121212;
   --body-color: rgba(255, 255, 255, 0.85);
-  --footer-bg: #141414;
-  --footer-color: rgba(255, 255, 255, 0.85);
+  --footer-bg: rgba(0, 0, 0, 0.7);
+  --footer-color: rgba(255, 255, 255, 0.7);
 }
 
 /* Force light theme */
 [data-theme="light"] {
-  --header-bg: #ffffff;
-  --logo-text-color: #000000;
-  --menu-text-color: #000000;
-  --menu-item-hover: rgba(0, 0, 0, 0.04);
-  --menu-item-active: #1890ff;
-  --body-bg: #f0f2f5;
-  --body-color: rgba(0, 0, 0, 0.85);
-  --footer-bg: #ffffff;
-  --footer-color: rgba(0, 0, 0, 0.85);
+  --header-bg: var(--glass-bg, rgba(255, 255, 255, 0.7));
+  --logo-text-color: var(--text-primary, #1e1e1e);
+  --menu-text-color: var(--text-primary, #1e1e1e);
+  --menu-item-hover: rgba(19, 142, 255, 0.1);
+  --menu-item-active: var(--primary-color, #138eff);
+  --body-bg: var(--bg-secondary, #f5f5f7);
+  --body-color: var(--text-primary, #1e1e1e);
+  --footer-bg: var(--glass-bg, rgba(255, 255, 255, 0.7));
+  --footer-color: var(--text-secondary, #494952);
 }
 
 /* Dark theme body styles */

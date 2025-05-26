@@ -29,7 +29,6 @@ export default function MainLayout({ children }) {
       body.setAttribute('data-theme', 'light');
     }
   }, [theme]);
-
   // Cải thiện logic để xử lý các path con
   const getSelectedKey = (path) => {
     if (path === '/') return 'home';
@@ -38,20 +37,25 @@ export default function MainLayout({ children }) {
     if (path.startsWith('/personality-test')) return 'personalityTest';
     if (path.startsWith('/volunteer')) return 'volunteer';
     if (path.startsWith('/surveys')) return 'surveys';
+    if (path.startsWith('/recruitment')) return 'recruitment';
     if (path.startsWith('/student')) return 'student';
     return 'home';
   };
 
   const selectedKey = getSelectedKey(pathname);
-  const menuItems = [
-    {
+  const menuItems = [    {
       key: 'logo',
       label: (
         <Link href="/" className={styles.logoLink}>
+          <img 
+            src="/favicon.png" 
+            alt="activeU Logo" 
+            className={styles.logoIcon} 
+          />
           <span className={styles.logoText}>activeU</span>
         </Link>
       ),
-      style: { marginRight: '40px' }
+      style: { marginRight: '10px' }
     },
     {
       key: 'home',
@@ -76,12 +80,16 @@ export default function MainLayout({ children }) {
     {
       key: 'personalityTest',
       icon: <BulbOutlined />,
-      label: <Link href="/personality-test">Quiz Định Hướng</Link>
-    },
-    {
+      label: <Link href="/personality-test">Quiz định hướng</Link>
+    },    {
       key: 'surveys',
       icon: <FormOutlined />,
       label: <Link href="/surveys">Khảo sát chéo</Link>
+    },
+    {
+      key: 'recruitment',
+      icon: <TeamOutlined />,
+      label: <Link href="/recruitment">Tuyển thành viên</Link>
     },
     {
       key: 'student',
@@ -96,14 +104,14 @@ export default function MainLayout({ children }) {
   return (
     <Layout className={`${styles.layout} ${theme === 'dark' ? styles.dark : ''}`}>
       <Header className={styles.header}>
-        <div className={styles.navContainer}>
-          <Menu
+        <div className={styles.navContainer}>          <Menu
             theme={theme === 'dark' ? 'dark' : 'light'}
             mode="horizontal"
             selectedKeys={[selectedKey]}
             items={menuItems}
             className={styles.menu}
-            disabledOverflow={true}
+            overflowedIndicator={<span style={{ fontSize: '20px' }}>···</span>}
+            popupClassName={styles.menuPopup}
           />
         </div>
         <div className={styles.themeSwitch}>

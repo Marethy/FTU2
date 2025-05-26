@@ -10,15 +10,17 @@
     text-align: center;
     margin-bottom: 3rem;
     padding: 3rem 2rem;
-    background: linear-gradient(135deg, #f5f7fa 0%, #f0f4ff 100%);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--glass-border);
 }
 
 .mainTitle {
     font-size: 2.5rem !important;
     margin-bottom: 1rem !important;
-    background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+    background: linear-gradient(45deg, #138eff, #13cfff, #ff8f13);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -27,7 +29,7 @@
 
 .subtitle {
     font-size: 1.2rem;
-    color: black;
+    color: var(--text-secondary);
     max-width: 600px;
     margin: 0 auto;
     line-height: 1.6;
@@ -47,15 +49,16 @@
     max-width: 1000px;
     margin: 0 auto;
     border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e8e8e8;
-    background: #ffffff;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .introCard:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-lg);
 }
 
 .sectionTitle {
@@ -83,19 +86,21 @@
     height: 200px;
     cursor: pointer;
     padding: 1.5rem;
-    background: #f8f9fa;
+    background: var(--primary-light);
     border-radius: 12px;
     transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
 }
 
 .featureItem:hover {
-    background: #e9ecef;
+    background: var(--accent-light);
     transform: translateY(-3px);
+    border-color: var(--accent-color);
 }
 
 .featureIcon {
     font-size: 3rem;
-    color: #4ECDC4;
+    color: var(--primary-color);
     margin-bottom: 1rem;
     display: inline-block;
 }
@@ -129,7 +134,7 @@
 .typeCard:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    border-color: var(--ant-primary-color);
+    border-color: #138eff;
 }
 
 .typeIcon {
@@ -174,7 +179,7 @@
     font-size: 1.1rem;
     padding: 0 3rem;
     border-radius: 25px;
-    background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+    background: linear-gradient(45deg, #138eff, #3ba0ff);
     border: none;
     font-weight: 600;
     transition: all 0.3s ease;
@@ -242,14 +247,12 @@
 }
 
 .questionDot.answered {
-    background-color: #e6f7ff;
-    border-color: #1890ff;
-    color: #1890ff;
+    background-color: #e6f7ff;    border-color: #138eff;
+    color: #138eff;
 }
 
-.questionDot.current {
-    background-color: #1890ff;
-    border-color: #1890ff;
+.questionDot.current {    background-color: #138eff;
+    border-color: #138eff;
     color: white;
     transform: scale(1.15);
     box-shadow: 0 0 0 4px rgba(24, 144, 255, 0.2);

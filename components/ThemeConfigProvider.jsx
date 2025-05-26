@@ -7,11 +7,10 @@ import { useContext } from 'react';
 export default function ThemeConfigProvider({ children }) {
   const { theme } = useContext(ThemeContext);
   const isDark = theme === 'dark';
-
   const themeConfig = {
     algorithm: isDark ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
     token: {
-      colorPrimary: '#0057a3',
+      colorPrimary: '#138eff',
       colorBgContainer: isDark ? '#141414' : '#ffffff',
       colorText: isDark ? '#ffffff' : '#000000',
       colorBgElevated: isDark ? '#1f1f1f' : '#ffffff',
@@ -45,21 +44,19 @@ export default function ThemeConfigProvider({ children }) {
         colorError: isDark ? '#a61d24' : '#ff4d4f',
         colorErrorBg: isDark ? '#2a1215' : '#fff2f0',
         colorErrorBorder: isDark ? '#58181c' : '#ffccc7',
-      },
-      Button: {
+      },      Button: {
         primaryColor: '#ffffff',
-        primaryBg: '#0057a3',
-        primaryBorderColor: '#0057a3',
-        primaryHoverBg: '#1890ff',
-        primaryHoverBorderColor: '#1890ff',
+        primaryBg: '#138eff',
+        primaryBorderColor: '#138eff',
+        primaryHoverBg: '#3ba0ff',
+        primaryHoverBorderColor: '#3ba0ff',
       },
       Tag: {
         colorBgContainer: isDark ? '#141414' : '#ffffff',
-        colorBorder: isDark ? '#434343' : '#d9d9d9',
-        colorText: isDark ? '#ffffff' : '#000000',
+        colorBorder: isDark ? '#434343' : '#d9d9d9',        colorText: isDark ? '#ffffff' : '#000000',
         colorSuccess: isDark ? '#49aa19' : '#52c41a',
         colorError: isDark ? '#a61d24' : '#ff4d4f',
-        colorInfo: isDark ? '#177ddc' : '#1890ff',
+        colorInfo: isDark ? '#138eff' : '#138eff',
       },
       Typography: {
         colorText: isDark ? '#ffffff' : '#000000',

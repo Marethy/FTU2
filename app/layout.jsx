@@ -10,9 +10,9 @@ export const metadata = {
   title: 'activeU',
   description: 'Kết nối sinh viên activeU',
   icons: {
-    icon: '/LOGO.png',
-    shortcut: '/LOGO.png',
-    apple: '/LOGO.png',
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
   },
 };
 
@@ -32,9 +32,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="vi">
       <head>
-        <link rel="icon" href="/LOGO.png" />
-        <link rel="shortcut icon" href="/LOGO.png" />
-        <link rel="apple-touch-icon" href="/LOGO.png" />
+        <link rel="icon" href="/favicon.png" />
+        <link rel="shortcut icon" href="/favicon.png" />
+        <link rel="apple-touch-icon" href="/favicon.png " />
       </head>
       <body className={inter.className}>
         <Providers>

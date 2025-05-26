@@ -13,30 +13,27 @@ export const ContestCard = ({ contest }) => {
     const today = new Date();
     const daysLeft = Math.ceil((deadlineDate - today) / (1000 * 60 * 60 * 24));
 
-    // Xác định trạng thái và màu sắc
-    const getStatusInfo = (status) => {
+    // Xác định trạng thái và màu sắc    const getStatusInfo = (status) => {
         switch (status) {
             case 'open':
                 return { text: 'Đang mở', color: 'green' };
             case 'coming-soon':
-                return { text: 'Sắp diễn ra', color: 'blue' };
+                return { text: 'Sắp diễn ra', color: '#138eff' };
             case 'closed':
                 return { text: 'Đã đóng', color: 'red' };
             default:
                 return { text: 'Không xác định', color: 'default' };
         }
-    };
-
-    const getCategoryColor = (category) => {
+    };const getCategoryColor = (category) => {
         switch (category) {
             case 'Khoa học - Lý luận':
-                return 'purple';
+                return '#002eff'; // Deep Blue (analogous-blue)
             case 'Kinh doanh - Khởi nghiệp':
-                return 'gold';
+                return '#138eff'; // Primary Blue
             case 'Văn hóa - Nghệ thuật':
                 return 'magenta';
             case 'Ngôn ngữ':
-                return 'cyan';
+                return '#13cfff'; // Cyan (analogous-cyan)
             case 'Thể thao':
                 return 'lime';
             default:
@@ -74,11 +71,10 @@ export const ContestCard = ({ contest }) => {
                     <Space>
                         <CalendarOutlined />
                         <Text>Hạn: {deadlineDate.toLocaleDateString('vi-VN')}</Text>
-                        {contest.status === 'open' && daysLeft > 0 && (
-                            <Badge
+                        {contest.status === 'open' && daysLeft > 0 && (                            <Badge
                                 count={`Còn ${daysLeft} ngày`}
                                 style={{
-                                    backgroundColor: daysLeft <= 5 ? '#ff4d4f' : '#1890ff',
+                                    backgroundColor: daysLeft <= 5 ? '#ff4d4f' : '#138eff',
                                     animation: daysLeft <= 5 ? 'pulse 2s infinite' : 'none'
                                 }}
                             />

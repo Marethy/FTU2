@@ -1,71 +1,87 @@
 :root {
-  /* Primary Color Palette */
-  --primary-color: #138eff;
-  --primary-light: #e3f2ff;
-  --primary-dark: #002eff;
+  /* Primary Color Palette - Material Design color roles */
+  --primary-color: #138eff; /* Primary */
+  --primary-light: #e3f2ff; /* Primary Container */
+  --primary-dark: #002eff; /* On Primary Container */
   
   /* Complementary Color */
-  --accent-color: #ff8f13;
-  --accent-light: #ffb96b;
-  --accent-dark: #e67300;
+  --accent-color: #ff8f13; /* Secondary */
+  --accent-light: #fff2e0; /* Secondary Container */
+  --accent-dark: #d26e00; /* On Secondary Container */
   
   /* Analogous Colors */
   --analogous-cyan: #13cfff;
   --analogous-blue: #002eff;
   
   /* Neutral Colors */
-  --neutral-light-gray: #d3d3d3;
+  --neutral-light-gray: #e2e2e6;
   --neutral-athens-gray: #efeff0;
-  --neutral-white-smoke: #ececec;
+  --neutral-white-smoke: #f5f5f7;
   
   /* Text Colors */
-  --text-primary: #1e1e1e;
-  --text-secondary: #495057;
+  --text-primary: #1e1e1e; /* On Surface */
+  --text-secondary: #494952; /* On Surface Variant */
   --text-light: #6c757d;
-  --text-on-primary: #ffffff;
+  --text-on-primary: #ffffff; /* On Primary */
   
   /* Background Colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #efeff0;
-  --bg-tertiary: #e3f2ff;
-  --bg-surface: #ffffff;
+  --bg-primary: #ffffff; /* Surface */
+  --bg-secondary: #f5f5f7; /* Surface Container */
+  --bg-tertiary: #e3f2ff; /* Surface Container Low */
+  --bg-surface: #ffffff; /* Background */
   
   /* Functional Colors */
-  --error-color: #b00020;
-  --success-color: #52c41a;
-  --warning-color: #faad14;
-  --info-color: #13cfff;
+  --error-color: #ba1a1a; /* Error */
+  --success-color: #117b30; /* Success */
+  --warning-color: #faad14; /* Warning */
+  --info-color: #13cfff; /* Info */
   
   /* Border and Shadow */
-  --border-color: #ececec;
+  --border-color: #e2e2e6; /* Outline */
   --shadow-sm: 0 4px 12px rgba(19, 142, 255, 0.1);
   --shadow-md: 0 8px 24px rgba(19, 142, 255, 0.15);
   --shadow-lg: 0 12px 40px rgba(19, 142, 255, 0.2);
+  
+  /* Glassmorphism Effect */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px rgba(19, 142, 255, 0.1);
+  --glass-blur: 10px;
 }
 
 .dark {
   /* Text Colors in Dark Mode */
-  --text-primary: #e8e8e8;
-  --text-secondary: #b8b8b8;
+  --text-primary: #e8e8e8; /* On Surface */
+  --text-secondary: #c4c4ca; /* On Surface Variant */
   --text-light: #d0d0d0;
-  --text-on-primary: #ffffff;
+  --text-on-primary: #ffffff; /* On Primary */
   
   /* Background Colors in Dark Mode */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #2a2a2a;
-  --bg-tertiary: #1d3557;
-  --bg-surface: #1f1f1f;
+  --bg-primary: #1a1a1a; /* Surface */
+  --bg-secondary: #2a2a2a; /* Surface Container */
+  --bg-tertiary: #002670; /* Surface Container Low */
+  --bg-surface: #1f1f1f; /* Background */
   
   /* Border and Shadow in Dark Mode */
-  --border-color: #3a3a3a;
+  --border-color: #3a3a3a; /* Outline */
   --shadow-sm: 0 4px 12px rgba(19, 142, 255, 0.2);
   --shadow-md: 0 8px 24px rgba(19, 142, 255, 0.3);
   --shadow-lg: 0 12px 40px rgba(19, 142, 255, 0.4);
   
   /* Primary Color Adjustments for Dark Mode */
-  --primary-color: #3a9fff;
-  --primary-light: #1c4b8f;
-  --accent-color: #ff9f33;
+  --primary-color: #3a9fff; /* Primary */
+  --primary-light: #00317d; /* Primary Container */
+  --primary-dark: #c9e3ff; /* On Primary Container */
+  
+  /* Accent Color Adjustments for Dark Mode */
+  --accent-color: #ff9f33; /* Secondary */
+  --accent-light: #632600; /* Secondary Container */
+  --accent-dark: #ffdcc0; /* On Secondary Container */
+  
+  /* Glassmorphism Effect in Dark Mode */
+  --glass-bg: rgba(26, 26, 26, 0.7);
+  --glass-border: rgba(58, 58, 58, 0.2);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 html,
@@ -91,6 +107,11 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--primary-color, #138eff);
 }
 
 /* Ant Design overrides */
@@ -158,6 +179,28 @@ a {
 
 .ant-progress-text {
   color: var(--text-primary);
+}
+
+/* Glassmorphism hover effects */
+.ant-card.ant-card-hoverable {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ant-card.ant-card-hoverable:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(19, 142, 255, 0.15)) !important;
+}
+
+/* Button hover effects */
+.ant-btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth transitions for all elements */
+* {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 /* Custom scrollbar */
@@ -230,28 +273,63 @@ div,
 [data-theme='light'] .ant-card,
 [data-theme='light'] .ant-modal-content,
 [data-theme='light'] .ant-drawer-content {
-  background-color: #ffffff !important;
-  color: #1a1a2e !important;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
-  border-radius: 8px !important;
+  background: var(--glass-bg, rgba(255, 255, 255, 0.7)) !important;
+  backdrop-filter: blur(var(--glass-blur, 10px)) !important;
+  color: var(--text-primary, #1e1e1e) !important;
+  box-shadow: var(--shadow-sm, 0 4px 12px rgba(19, 142, 255, 0.1)) !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.2)) !important;
 }
 
 [data-theme='light'] .ant-card-head,
 [data-theme='light'] .ant-modal-header,
 [data-theme='light'] .ant-drawer-header {
-  background-color: #ffffff !important;
-  color: #1a1a2e !important;
-  border-bottom: 1px solid #edf2f7 !important;
+  background: transparent !important;
+  color: var(--text-primary, #1e1e1e) !important;
+  border-bottom: 1px solid var(--glass-border, rgba(255, 255, 255, 0.2)) !important;
 }
 
 [data-theme='light'] .ant-btn-primary {
-  background-color: #4361ee !important;
-  border-color: #4361ee !important;
+  background-color: var(--primary-color, #138eff) !important;
+  border-color: var(--primary-color, #138eff) !important;
+  box-shadow: var(--shadow-sm, 0 4px 12px rgba(19, 142, 255, 0.1)) !important;
 }
 
 [data-theme='light'] .ant-btn-primary:hover {
-  background-color: #3a56d4 !important;
-  border-color: #3a56d4 !important;
+  background-color: var(--primary-dark, #002eff) !important;
+  border-color: var(--primary-dark, #002eff) !important;
+}
+
+/* Dark mode card styles */
+[data-theme='dark'] .ant-card,
+[data-theme='dark'] .ant-modal-content,
+[data-theme='dark'] .ant-drawer-content {
+  background: rgba(26, 26, 26, 0.7) !important;
+  backdrop-filter: blur(var(--glass-blur, 10px)) !important;
+  color: var(--text-primary, #e8e8e8) !important;
+  box-shadow: var(--shadow-sm, 0 4px 12px rgba(0, 0, 0, 0.2)) !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(58, 58, 58, 0.2) !important;
+}
+
+[data-theme='dark'] .ant-card-head,
+[data-theme='dark'] .ant-modal-header,
+[data-theme='dark'] .ant-drawer-header {
+  background: transparent !important;
+  color: var(--text-primary, #e8e8e8) !important;
+  border-bottom: 1px solid rgba(58, 58, 58, 0.2) !important;
+}
+
+[data-theme='dark'] .ant-btn-primary {
+  background-color: var(--primary-color, #3a9fff) !important;
+  border-color: var(--primary-color, #3a9fff) !important;
+  box-shadow: var(--shadow-sm, 0 4px 12px rgba(19, 142, 255, 0.2)) !important;
+}
+
+[data-theme='dark'] .ant-btn-primary:hover {
+  background-color: var(--primary-dark, #c9e3ff) !important;
+  border-color: var(--primary-dark, #c9e3ff) !important;
+  color: var(--bg-primary, #1a1a1a) !important;
 }
 
 .logoText {
@@ -264,4 +342,4 @@ div,
 .themeSwitch {
   color: var(--text-primary);
   padding: 0 24px;
-} 
+}

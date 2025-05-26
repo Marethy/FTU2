@@ -4,7 +4,7 @@ const ClubPlaceholder = ({ name, domain, size = 200 }) => {
     // Generate a color based on the domain
     const getColorFromDomain = (domain) => {
         const colors = {
-            'Công nghệ': '#1890ff',
+            'Công nghệ': '#138eff',
             'Kinh doanh': '#52c41a',
             'Văn hóa': '#fa541c',
             'Thể thao': '#faad14',

@@ -175,7 +175,7 @@ const getPersonalityColor = (personalityType) => {
     if (type.includes('leader') || type.includes('lãnh đạo')) return '#ff4d4f';
     if (type.includes('creative') || type.includes('sáng tạo')) return '#722ed1';
     if (type.includes('social') || type.includes('xã hội')) return '#52c41a';
-    if (type.includes('analytical') || type.includes('phân tích')) return '#1890ff';
+    if (type.includes('analytical') || type.includes('phân tích')) return '#138eff';
     if (type.includes('practical') || type.includes('thực tế')) return '#faad14';
 
     return '#13c2c2'; // Default cyan

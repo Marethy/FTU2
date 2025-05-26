@@ -583,7 +583,7 @@ export default function ContestsPage() {
                 }
                 style={{ marginBottom: 40 }}
                 extra={
-                  <Badge count={upcomingContests.length} style={{ backgroundColor: '#1890ff' }}>
+                  <Badge count={upcomingContests.length} style={{ backgroundColor: '#138eff' }}>
                     <span>Sắp tới</span>
                   </Badge>
                 }

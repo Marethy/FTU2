@@ -108,13 +108,12 @@ export default function SurveysPage() {
             { title: 'Khảo sát chéo' }
           ]}
           className={styles.breadcrumb}
-        />
-
-        <div className={styles.header}>
+        />        <div className={styles.header}>
           <Title level={2}>Khảo sát chéo</Title>
           <Text className={styles.subtitle}>
             Tham gia khảo sát để đóng góp ý kiến và cải thiện chất lượng học tập
           </Text>
+         
         </div>
 
         {/* Bộ lọc và tìm kiếm */}
@@ -193,6 +192,12 @@ export default function SurveysPage() {
 
         {/* Danh sách khảo sát */}
         <SurveysList surveys={filteredSurveys} />
+
+        {/* Tuyển thành viên */}
+        <div style={{ marginTop: '48px' }}>
+          <Title level={2} style={{ textAlign: 'center', marginBottom: '24px' }}>Tuyển thành viên</Title>
+          {/* Chưa có dữ liệu tuyển thành viên */}
+        </div>
       </div>
     </MainLayout>
   );

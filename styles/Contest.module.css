@@ -30,7 +30,7 @@
 
 .heroSection {
   padding: 60px 0;
-  background: linear-gradient(135deg, #2451B8 0%, #084EB0 100%);
+  background: linear-gradient(135deg, #138eff 0%, #002eff 100%);
   color: white;
   text-align: center;
   margin-bottom: 40px;
@@ -66,7 +66,7 @@
 
 .featured-carousel-card .ant-carousel .slick-dots li.slick-active button {
   opacity: 1;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, #138eff 0%, #002eff 100%);
 }
 
 /* Smooth transition for carousel */

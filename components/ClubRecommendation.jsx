@@ -6,16 +6,14 @@ const { Title, Paragraph } = Typography;
 
 export default function ClubRecommendation({ clubs }) {
     return (
-        <div className={styles.recommendationSection}>
-            <Title level={2} className={styles.recommendationTitle} style={{ color: '#1a1a1a' }}>
+        <div className={styles.recommendationSection}>            <Title level={2} className={styles.recommendationTitle} style={{ color: '#138eff' }}>
                 <TeamOutlined /> CLB phù hợp với bạn
             </Title>
 
             <Row gutter={[24, 24]}>
                 {clubs.map((category, index) => (
                     <Col xs={24} md={12} key={index}>
-                        <Card className={styles.categoryCard}>
-                            <Title level={4} className={styles.categoryTitle} style={{ color: '#2c3e50' }}>
+                        <Card className={styles.categoryCard}>                            <Title level={4} className={styles.categoryTitle} style={{ color: '#138eff' }}>
                                 {category.category}
                             </Title>
                             <div className={styles.clubsList}>

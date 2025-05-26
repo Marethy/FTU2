@@ -504,7 +504,7 @@ export default function ContestDetailClient({ id }) {
                                     valueStyle={{
                                         color:
                                             contest.status === 'open' ? '#52c41a' :
-                                                contest.status === 'coming-soon' ? '#1890ff' : '#ff4d4f'
+                                                contest.status === 'coming-soon' ? '#138eff' : '#ff4d4f'
                                     }}
                                 />
                             </Col>
@@ -514,7 +514,7 @@ export default function ContestDetailClient({ id }) {
                                         title="Thời gian còn lại"
                                         value={daysLeft}
                                         suffix="ngày"
-                                        valueStyle={{ color: daysLeft <= 3 ? '#ff4d4f' : '#1890ff' }}
+                                        valueStyle={{ color: daysLeft <= 3 ? '#ff4d4f' : '#138eff' }}
                                     />
                                 </Col>
                             )}
@@ -570,7 +570,7 @@ export default function ContestDetailClient({ id }) {
                             <Space>
                                 <Avatar
                                     size={64}
-                                    style={{ backgroundColor: '#1890ff' }}
+                                    style={{ backgroundColor: '#138eff' }}
                                 >
                                     {contest.club?.charAt(0) || 'C'}
                                 </Avatar>

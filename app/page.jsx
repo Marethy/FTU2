@@ -71,8 +71,7 @@ const DualImageCarousel = () => {
     }, 300);
   };
 
-  return (
-    <div
+  return (    <div
       className="academic-carousel-container"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -80,7 +79,7 @@ const DualImageCarousel = () => {
         position: 'relative',
         borderRadius: 20,
         overflow: 'hidden',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.15), 0 8px 25px rgba(0,0,0,0.1)',
+        boxShadow: 'var(--shadow-lg, 0 12px 40px rgba(19, 142, 255, 0.2))',
       }}
     >
       {/* Navigation Controls */}
@@ -96,11 +95,11 @@ const DualImageCarousel = () => {
           shape="circle"
           onClick={() => handleManualChange('prev')}
           style={{
-            background: 'rgba(255,255,255,0.9)',
-            color: 'black',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255,255,255,0.2)',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.1)'
+            background: 'var(--glass-bg, rgba(255, 255, 255, 0.7))',
+            color: 'var(--text-primary, #1e1e1e)',
+            backdropFilter: 'blur(var(--glass-blur, 10px))',
+            border: '1px solid var(--glass-border, rgba(255, 255, 255, 0.2))',
+            boxShadow: 'var(--shadow-sm, 0 4px 12px rgba(19, 142, 255, 0.1))'
           }}
           icon={<LeftOutlined />}
         />
@@ -108,11 +107,11 @@ const DualImageCarousel = () => {
           shape="circle"
           onClick={() => handleManualChange('next')}
           style={{
-            background: 'rgba(255,255,255,0.9)',
-            color: 'black',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255,255,255,0.2)',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.1)'
+            background: 'var(--glass-bg, rgba(255, 255, 255, 0.7))',
+            color: 'var(--text-primary, #1e1e1e)',
+            backdropFilter: 'blur(var(--glass-blur, 10px))',
+            border: '1px solid var(--glass-border, rgba(255, 255, 255, 0.2))',
+            boxShadow: 'var(--shadow-sm, 0 4px 12px rgba(19, 142, 255, 0.1))'
           }}
           icon={<RightOutlined />}
         />
@@ -122,14 +121,13 @@ const DualImageCarousel = () => {
       <div className={fadeClass} style={{ transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)' }}>
         <Row gutter={[24, 24]} style={{ margin: 0 }}>
           {imagePairs[currentPair]?.map((item, index) => (
-            <Col xs={24} sm={12} key={`${currentPair}-${index}`}>
-              <div style={{
+            <Col xs={24} sm={12} key={`${currentPair}-${index}`}>              <div style={{
                 position: 'relative',
                 borderRadius: 16,
                 overflow: 'hidden',
                 height: 420,
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                boxShadow: '0 15px 35px rgba(30,30,30,0.1), 0 5px 15px rgba(0,0,0,0.05)',
+                background: 'linear-gradient(135deg, var(--primary-color, #138eff) 0%, var(--analogous-blue, #002eff) 100%)',
+                boxShadow: 'var(--shadow-md, 0 8px 24px rgba(19, 142, 255, 0.15))',
                 transform: isHovered ? 'translateY(-5px)' : 'translateY(0)',
                 transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
               }}>
@@ -160,16 +158,16 @@ const DualImageCarousel = () => {
                   position: 'absolute',
                   top: 20,
                   left: 20,
-                  background: 'rgba(24, 144, 255, 0.9)',
-                  backdropFilter: 'blur(10px)',
+                  background: 'var(--glass-bg, rgba(255, 255, 255, 0.7))',
+                  backdropFilter: 'blur(var(--glass-blur, 10px))',
                   padding: '6px 16px',
                   borderRadius: 20,
-                  border: '1px solid rgba(255,255,255,0.2)'
+                  border: '1px solid var(--glass-border, rgba(255, 255, 255, 0.2))'
                 }}>
                   <Text style={{
-                    color: 'white',
+                    color: 'var(--primary-color, #138eff)',
                     fontSize: 12,
-                    fontWeight: 500,
+                    fontWeight: 600,
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
@@ -267,7 +265,7 @@ const DualImageCarousel = () => {
               height: 8,
               borderRadius: '50%',
               background: index === currentPair
-                ? 'linear-gradient(45deg, #1890ff, #722ed1)'
+                ? 'linear-gradient(45deg, #138eff, #002eff)'
                 : 'rgba(0,0,0,0.2)',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
@@ -324,25 +322,25 @@ const domainIcons = {
   'Khác': <TeamOutlined />
 }
 
-// Domain colors mapping
+// Domain colors mapping using our new color palette
 const domainColors = {
-  'Khoa học - Lý luận': '#722ed1',  // Tím
-  'Kinh doanh - Khởi nghiệp': '#1890ff', // Xanh dương
-  'Ngôn ngữ': '#13c2c2', // Xanh ngọc
-  'Thể thao': '#a0d911', // Xanh lá
-  'Truyền thông - Sự kiện': '#fa8c16', // Cam
-  'Văn hóa - Nghệ thuật': '#eb2f96', // Hồng
-  'Xã hội - Tình nguyện': '#52c41a', // Xanh lá đậm
-  // Giữ lại các domain cũ để tương thích ngược
-  'Kinh doanh': '#1890ff',
-  'Khoa học': '#52c41a',
-  'Văn hóa': '#fa8c16',
-  'Nghệ thuật': '#eb2f96',
-  'Thể thao': '#faad14',
-  'Xã hội': '#13c2c2',
-  'Công nghệ': '#722ed1',
+  'Khoa học - Lý luận': '#002eff',  // Deep Blue (analogous-blue)
+  'Kinh doanh - Khởi nghiệp': '#138eff', // Primary Blue
+  'Ngôn ngữ': '#13cfff', // Cyan (analogous-cyan)
+  'Thể thao': '#138eff', // Primary Blue
+  'Truyền thông - Sự kiện': '#ff8f13', // Orange (accent-color)
+  'Văn hóa - Nghệ thuật': '#ff8f13', // Orange (accent-color)
+  'Xã hội - Tình nguyện': '#002eff', // Deep Blue (analogous-blue)
+  // Giữ lại các domain cũ để tương thích ngược, nhưng áp dụng màu mới
+  'Kinh doanh': '#138eff', // Primary Blue
+  'Khoa học': '#002eff', // Deep Blue
+  'Văn hóa': '#ff8f13', // Orange
+  'Nghệ thuật': '#ff8f13', // Orange
+  'Thể thao': '#138eff', // Primary Blue
+  'Xã hội': '#002eff', // Deep Blue
+  'Công nghệ': '#13cfff', // Cyan
   // Domain mặc định
-  'Khác': '#262626'
+  'Khác': '#138eff' // Primary Blue
 }
 
 // Upcoming events
@@ -448,13 +446,27 @@ export default function Home() {
   const totalClubs = 36 // Tổng số clubs theo danh sách
   const totalEvents = 50
   const domainCount = 7 // 7 domains mới
-
   // Function to calculate days left until event
   const getDaysLeft = (dateString) => {
     const eventDate = new Date(dateString);
     const today = new Date();
     const timeDiff = eventDate - today;
     return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  };
+
+  // Function to map domain names to image filenames
+  const getDomainImageFilename = (domain) => {
+    const mapping = {
+      'Khoa học - Lý luận': 'khoahoc-lyluan.png',
+      'Kinh doanh - Khởi nghiệp': 'kinhdoanh-khoinghiep.png',
+      'Ngôn ngữ': 'ngonngu.png',
+      'Thể thao': 'thethao.png',
+      'Truyền thông - Sự kiện': 'truyenthong-sukien.png',
+      'Văn hóa - Nghệ thuật': 'vanhoa-nghethuat.png',
+      'Xã hội - Tình nguyện': 'congdong-thiennguyen.png'
+    };
+    
+    return mapping[domain] || 'kinhdoanh-khoinghiep.png'; // Default fallback
   };
 
   return (
@@ -495,35 +507,52 @@ export default function Home() {
                 ))}
               </>
             ) : (
-              <>
-                <Col xs={8} sm={8} md={8} lg={8} xl={8}>
-                  <Card>
+              <>                <Col xs={8} sm={8} md={8} lg={8} xl={8}>
+                  <Card style={{
+                    background: 'var(--glass-bg, rgba(255, 255, 255, 0.7))',
+                    backdropFilter: 'blur(var(--glass-blur, 10px))',
+                    border: '1px solid var(--glass-border, rgba(255, 255, 255, 0.2))',
+                    boxShadow: 'var(--shadow-sm, 0 4px 12px rgba(19, 142, 255, 0.1))',
+                    borderRadius: 12
+                  }}>
                     <Statistic
                       title="Câu lạc bộ"
                       value={totalClubs}
                       prefix={<TeamOutlined />}
-                      valueStyle={{ color: '#1890ff' }}
+                      valueStyle={{ color: 'var(--primary-color, #138eff)' }}
                     />
                   </Card>
                 </Col>
                 <Col xs={8} sm={8} md={8} lg={8} xl={8}>
-                  <Card>
+                  <Card style={{
+                    background: 'var(--glass-bg, rgba(255, 255, 255, 0.7))',
+                    backdropFilter: 'blur(var(--glass-blur, 10px))',
+                    border: '1px solid var(--glass-border, rgba(255, 255, 255, 0.2))',
+                    boxShadow: 'var(--shadow-sm, 0 4px 12px rgba(19, 142, 255, 0.1))',
+                    borderRadius: 12
+                  }}>
                     <Statistic
                       title="Sự kiện/năm"
                       value={totalEvents}
                       suffix="+"
                       prefix={<CalendarOutlined />}
-                      valueStyle={{ color: '#52c41a' }}
+                      valueStyle={{ color: 'var(--accent-color, #ff8f13)' }}
                     />
                   </Card>
                 </Col>
                 <Col xs={8} sm={8} md={8} lg={8} xl={8}>
-                  <Card>
+                  <Card style={{
+                    background: 'var(--glass-bg, rgba(255, 255, 255, 0.7))',
+                    backdropFilter: 'blur(var(--glass-blur, 10px))',
+                    border: '1px solid var(--glass-border, rgba(255, 255, 255, 0.2))',
+                    boxShadow: 'var(--shadow-sm, 0 4px 12px rgba(19, 142, 255, 0.1))',
+                    borderRadius: 12
+                  }}>
                     <Statistic
                       title="Lĩnh vực"
                       value={domainCount}
                       prefix={<StarOutlined />}
-                      valueStyle={{ color: '#eb2f96' }}
+                      valueStyle={{ color: 'var(--analogous-cyan, #13cfff)' }}
                     />
                   </Card>
                 </Col>
@@ -591,33 +620,73 @@ export default function Home() {
                   const domainClubCount = clubs.filter(club =>
                     club.domain === domain ||
                     (club.domain && club.domain.includes(domain))
-                  ).length;
-
-                  return (
-                    <Card
+                  ).length;                return (                    <Card
                       hoverable
-                      style={{ textAlign: 'center', height: '100%' }}
+                      style={{ 
+                        textAlign: 'center', 
+                        height: '100%', 
+                        background: 'var(--glass-bg, rgba(255, 255, 255, 0.7))',
+                        backdropFilter: 'blur(var(--glass-blur, 10px))',
+                        borderRadius: 16,
+                        overflow: 'hidden',
+                        boxShadow: 'var(--shadow-md, 0 8px 24px rgba(19, 142, 255, 0.15))',
+                        border: '1px solid var(--glass-border, rgba(255, 255, 255, 0.2))'
+                      }}
                       cover={
                         <div style={{
                           height: 200,
-                          background: domainColors[domain] || '#1890ff',
+                          background: domainColors[domain] || 'var(--primary-color, #138eff)',
                           display: 'flex',
                           alignItems: 'center',
-                          justifyContent: 'center'
+                          justifyContent: 'center',
+                          position: 'relative',
+                          overflow: 'hidden'
                         }}>
-                          {cloneElement(domainIcons[domain] || <TeamOutlined />, {
-                            style: { fontSize: 48, color: 'white' }
-                          })}
+                          {/* Add glassmorphism effect on top */}
+                          <div style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            background: `linear-gradient(135deg, ${domainColors[domain]}80 0%, ${domainColors[domain]}40 100%)`,
+                            zIndex: 1
+                          }} />                          {/* Map domain to image file */}                          <img 
+                            src={`/images/clubs_icon/${getDomainImageFilename(domain)}`}
+                            alt={domain}
+                            style={{
+                              width: 120,
+                              height: 120,
+                              objectFit: 'contain',
+                              position: 'relative',
+                              zIndex: 2,
+                              transition: 'transform 0.3s ease'
+                            }}                            className="domain-icon"
+                          />
                         </div>
                       }
-                    >
-                      <Card.Meta
-                        title={domain}
+                    >                      <Card.Meta
+                        title={<span style={{ 
+                          color: 'var(--text-primary, #1e1e1e)', 
+                          fontSize: 18,
+                          fontWeight: 600
+                        }}>{domain}</span>}
                         description={
-                          <Space direction="vertical" style={{ width: '100%' }}>
-                            <Text>{domainClubCount || 'Nhiều'} CLB & tổ chức</Text>
+                          <Space direction="vertical" style={{ width: '100%', marginTop: 8 }}>
+                            <Text style={{ color: 'var(--text-secondary, #494952)' }}>{domainClubCount || 'Nhiều'} CLB, Đội, Nhóm</Text>
                             <Link href={`/clubs?domain=${domainUrlMapping[domain] || domain.toLowerCase().replace(/\s+/g, '-')}`}>
-                              <Button type="primary" block>Xem chi tiết</Button>
+                
+                              <Button 
+                                type="primary" 
+                                block
+                                style={{
+                                  background: domainColors[domain] || 'var(--primary-color, #138eff)',
+                                  borderColor: domainColors[domain] || 'var(--primary-color, #138eff)',
+                                  boxShadow: 'var(--shadow-sm, 0 4px 12px rgba(19, 142, 255, 0.1))'
+                                }}
+                              >
+                                Xem chi tiết
+                              </Button>
                             </Link>
                           </Space>
                         }
@@ -665,12 +734,19 @@ export default function Home() {
         <div style={{ marginBottom: 48 }}>
           <Title level={2} style={{ textAlign: 'center', marginBottom: 32 }}>Sự kiện nổi bật</Title>
           <Row gutter={[16, 16]} justify="center">
-            <Col xs={24} sm={22} md={18} lg={16} xl={14}>
-              <Card
+            <Col xs={24} sm={22} md={18} lg={16} xl={14}>              <Card
                 title="Sự kiện sắp tới"
                 style={{
-                  boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
-                  borderRadius: '12px'
+                  background: 'var(--glass-bg, rgba(255, 255, 255, 0.7))',
+                  backdropFilter: 'blur(var(--glass-blur, 10px))',
+                  border: '1px solid var(--glass-border, rgba(255, 255, 255, 0.2))',
+                  boxShadow: 'var(--shadow-md, 0 8px 24px rgba(19, 142, 255, 0.15))',
+                  borderRadius: '16px'
+                }}
+                headStyle={{
+                  borderBottom: '1px solid var(--glass-border, rgba(255, 255, 255, 0.2))',
+                  fontSize: 18,
+                  fontWeight: 600
                 }}
               >
                 <Space direction="vertical" style={{ width: '100%' }} size="large">
@@ -684,22 +760,23 @@ export default function Home() {
                         size="small"
                         hoverable
                         style={{
-                          borderLeft: showCountdown ? '4px solid #f5222d' : '4px solid #1890ff',
-                          backgroundColor: showCountdown && daysLeft <= 2 ? '#fff1f0' : undefined,
+                          borderLeft: showCountdown ? '4px solid var(--error-color, #ba1a1a)' : `4px solid var(--primary-color, #138eff)`,
+                          backgroundColor: showCountdown && daysLeft <= 2 ? 'rgba(186, 26, 26, 0.05)' : 'var(--glass-bg, rgba(255, 255, 255, 0.7))',
+                          backdropFilter: 'blur(var(--glass-blur, 10px))',
                           borderRadius: '8px',
-                          transition: 'all 0.3s ease'
+                          transition: 'all 0.3s ease',
+                          boxShadow: 'var(--shadow-sm, 0 4px 12px rgba(19, 142, 255, 0.1))'
                         }}
-                      >
-                        <Space direction="vertical" style={{ width: '100%' }}>
-                          <Title level={5} style={{ margin: 0 }}>{event.title}</Title>
+                      >                        <Space direction="vertical" style={{ width: '100%' }}>
+                          <Title level={5} style={{ margin: 0, color: 'var(--text-primary, #1e1e1e)' }}>{event.title}</Title>
                           <Space>
-                            <CalendarOutlined />
-                            <Text>{new Date(event.date).toLocaleDateString('vi-VN')}</Text>
+                            <CalendarOutlined style={{ color: 'var(--primary-color, #138eff)' }} />
+                            <Text style={{ color: 'var(--text-secondary, #494952)' }}>{new Date(event.date).toLocaleDateString('vi-VN')}</Text>
 
                             {showCountdown && (
                               <Text
                                 style={{
-                                  color: daysLeft <= 2 ? '#f5222d' : '#fa8c16',
+                                  color: daysLeft <= 2 ? 'var(--error-color, #ba1a1a)' : 'var(--accent-color, #ff8f13)',
                                   fontWeight: 'bold',
                                   animation: daysLeft <= 2 ? 'pulse 2s infinite' : 'none'
                                 }}
@@ -708,7 +785,18 @@ export default function Home() {
                               </Text>
                             )}
                           </Space>
-                          <Tag color={event.type === 'Cuộc thi' ? 'red' : 'blue'}>{event.type}</Tag>
+                          <Tag 
+                            color={event.type === 'Cuộc thi' ? 'var(--accent-color, #ff8f13)' : 'var(--primary-color, #138eff)'}
+                            style={{
+                              background: event.type === 'Cuộc thi' ? 'var(--accent-light, #fff2e0)' : 'var(--primary-light, #e3f2ff)',
+                              color: event.type === 'Cuộc thi' ? 'var(--accent-dark, #d26e00)' : 'var(--primary-dark, #002eff)',
+                              border: 'none',
+                              borderRadius: '4px',
+                              padding: '2px 8px'
+                            }}
+                          >
+                            {event.type}
+                          </Tag>
                         </Space>
                       </Card>
                     );
@@ -717,16 +805,20 @@ export default function Home() {
               </Card>
             </Col>
           </Row>
-        </div>
-
- 
-
-        {/* Add styles for pulse animation */}
+        </div>        {/* Add styles for pulse animation */}
         <style jsx global>{`
             @keyframes pulse {
                 0% { opacity: 1; }
                 50% { opacity: 0.6; }
                 100% { opacity: 1; }
+            }
+            
+            .domain-icon {
+                transition: transform 0.3s ease;
+            }
+            
+            .ant-card:hover .domain-icon {
+                transform: scale(1.1);
             }
         `}</style>
       </div>

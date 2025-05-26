@@ -16,7 +16,7 @@ const ClubAvatar = ({
     // Generate color based on domain or name
     const getColor = () => {
         const colors = {
-            'Công nghệ': '#1890ff',
+            'Công nghệ': '#138eff',
             'Kinh doanh': '#52c41a',
             'Văn hóa': '#fa541c',
             'Thể thao': '#faad14',

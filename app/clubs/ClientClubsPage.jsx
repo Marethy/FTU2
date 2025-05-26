@@ -292,7 +292,7 @@ const getDomainColor = (domain) => {
   if (domainLower.includes('kinh doanh') || domainLower.includes('khởi nghiệp')) return '#faad14';
   if (domainLower.includes('ngôn ngữ')) return '#13c2c2';
   if (domainLower.includes('thể thao')) return '#a0d911';
-  if (domainLower.includes('truyền thông') || domainLower.includes('sự kiện')) return '#1890ff';
+  if (domainLower.includes('truyền thông') || domainLower.includes('sự kiện')) return '#138eff';
   if (domainLower.includes('văn hóa') || domainLower.includes('nghệ thuật')) return '#eb2f96';
   if (domainLower.includes('xã hội') || domainLower.includes('tình nguyện')) return '#52c41a';
 
